@@ -1,14 +1,18 @@
 'use client'
 import CallToAction from '@/app/components/CallToAction';
-// import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const eventImage = 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80';
 
 export default function EventDetailsPage() {
-  // const params = useParams();
-  // const festId = params?.festId;
-  // const eventId = params?.eventId;
+  const params = useParams();
+  const festId = params?.festId;
+  const eventId = params?.eventId;
+  const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -33,10 +37,44 @@ export default function EventDetailsPage() {
               <span className="text-2xl font-bold text-lime-300">₹200</span>
               <div className="text-xs text-gray-300">Individual fee</div>
             </div>
-            <button className="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Participate now ↗</button>
+            <Link href="#">
+              <button
+                className="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition"
+                onClick={e => {
+                  e.preventDefault();
+                  setShowModal(true);
+                }}
+              >
+                Participate now ↗
+              </button>
+            </Link>
           </div>
         </div>
       </div>
+
+      {/* Modal for registration type selection */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+          <div className="bg-zinc-900 rounded-2xl p-8 shadow-2xl flex flex-col items-center w-80">
+            <h3 className="text-xl font-bold mb-4 text-white">Choose Registration Type</h3>
+            <div className="flex gap-4 mb-4">
+              <button
+                className="px-6 py-2 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700 transition"
+                onClick={() => router.push(`/fests/${festId}/events/${eventId}/register/individual`)}
+              >
+                Individual
+              </button>
+              <button
+                className="px-6 py-2 rounded-full bg-pink-500 text-white font-bold hover:bg-pink-600 transition"
+                onClick={() => router.push(`/fests/${festId}/events/${eventId}/register/team`)}
+              >
+                Team
+              </button>
+            </div>
+            <button className="text-gray-400 hover:text-white mt-2" onClick={() => setShowModal(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-5xl mx-auto px-4 md:px-0 py-10 grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Event Details */}
@@ -76,27 +114,47 @@ export default function EventDetailsPage() {
           </ul>
           <button className="bg-zinc-700 text-white px-6 py-2 rounded-full">Download</button>
         </section>
+      </div>
 
-        {/* Event Sponsors Section */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="inline-block w-4 h-4 bg-pink-500 rounded-full animate-pulse" />
-            <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">EVENT SPONSORS</h2>
-          </div>
-          <div className="flex gap-6 overflow-x-auto pb-4">
-            {[
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo98Gu4mCos9dCRQKu1QPj2mL12YpK9_xjDg&s',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
-            ].map((logo, i) => (
-              <div key={i} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
-                <Image src={logo} alt="Sponsor" width={80} height={64} className="max-h-16 max-w-[80px] object-contain" />
-              </div>
-            ))}
-          </div>
+      {/* Event Sponsors Section */}
+      <div className="max-w-5xl mx-auto px-4 md:px-8 py-10">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="inline-block w-4 h-4 bg-pink-500 rounded-full animate-pulse" />
+          <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">EVENT SPONSORS</h2>
+        </div>
+        <div className="flex gap-6 overflow-x-auto pb-4">
+          {[
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo98Gu4mCos9dCRQKu1QPj2mL12YpK9_xjDg&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+          ].map((logo, i) => (
+            <div key={i} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
+              <Image src={logo} alt="Sponsor" width={80} height={64} className="max-h-16 max-w-[80px] object-contain" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Event Judges Section */}
+      <div className="max-w-5xl mx-auto px-4 md:px-8 py-10">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="inline-block w-4 h-4 bg-pink-500 rounded-full animate-pulse" />
+          <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">EVENT JUDGES</h2>
+        </div>
+        <div className="flex gap-6 overflow-x-auto pb-4">
+          {[
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo98Gu4mCos9dCRQKu1QPj2mL12YpK9_xjDg&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0HEjFSaLLj0ffKaOKTlFQAYwXUpir-ScjQ&s',
+          ].map((logo, i) => (
+            <div key={i} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[150px] h-[150px] shadow-md">
+              <Image src={logo} alt="Judge" width={80} height={64} className="max-h-20 max-w-[100px] object-contain" />
+            </div>
+          ))}
         </div>
       </div>
 

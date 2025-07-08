@@ -1,7 +1,8 @@
 'use client'
 import CallToAction from '@/app/components/CallToAction';
-// import { useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 const heroImage = 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80';
@@ -13,8 +14,8 @@ const galleryImages = [
 ];
 
 export default function FestDetailsPage() {
-  // const params = useParams();
-  // const festId = params?.festId;
+  const params = useParams();
+  const festId = params?.festId;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -40,7 +41,9 @@ export default function FestDetailsPage() {
               <span className="text-2xl font-bold text-white">₹200</span>
               <div className="text-xs text-gray-300">Individual fee</div>
             </div>
+            <Link href={`/fests/${festId}/register`}>
             <button className="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Register now ↗</button>
+            </Link>
           </div>
         </div>
       </div>
@@ -91,7 +94,7 @@ export default function FestDetailsPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1,2,3,4,5,6].map((i) => (
-              <div key={i} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col relative">
+              <Link key={i} href={`/fests/1/events/${i}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
                 <Image src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Event" width={600} height={160} className="w-full h-40 object-cover" />
                 <button className="absolute top-3 right-3 bg-black/60 rounded-full p-2 text-white hover:text-pink-400 transition">
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -102,9 +105,9 @@ export default function FestDetailsPage() {
                     <span className="font-bold text-white">₹2000</span>
                   </div>
                   <div className="text-gray-400 text-xs mb-2">@ IIT Roorkee<br />📅 14-20 Sep, 2025</div>
-                  <button className="mt-auto bg-lime-300 text-black font-bold px-4 py-2 rounded-full hover:bg-lime-200 transition">Participate now</button>
+                  <span className="mt-auto bg-lime-300 text-black font-bold px-4 py-2 rounded-full text-center">Participate now</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
