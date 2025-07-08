@@ -37,7 +37,7 @@ export default function TeamEventRegisterPage() {
               onChange={() => setIsLeader(true)}
               className="accent-lime-400 w-4 h-4"
             />
-            <span className="text-white">Yes, I'm the leader.</span>
+            <span className="text-white">Yes, I&apos;m the leader.</span>
           </label>
           <label className="flex items-center cursor-pointer gap-2">
             <input
@@ -47,7 +47,7 @@ export default function TeamEventRegisterPage() {
               onChange={() => setIsLeader(false)}
               className="accent-lime-400 w-4 h-4"
             />
-            <span className="text-white">No, I'm not the leader.</span>
+            <span className="text-white">No, I&apos;m not the leader.</span>
           </label>
         </div>
         {/* Form for Leader */}

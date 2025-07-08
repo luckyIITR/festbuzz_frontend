@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
+// const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
