@@ -2,12 +2,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useSignup } from '@/hooks/useSignup';
 
 // const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
 export default function RegisterPage() {
+  const { mutate, isLoading, isError, isSuccess, error } = useSignup();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (password !== confirm) return;
+    mutate({ name, email, password });
+  }
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center relative">
@@ -35,11 +47,13 @@ export default function RegisterPage() {
           <span className="mx-3 text-zinc-400 text-sm">OR</span>
           <div className="flex-1 h-px bg-zinc-700" />
         </div>
-        <form className="w-full flex flex-col gap-5">
+        <form className="w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div>
             <label className="block font-semibold mb-1">Username</label>
             <input
               type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
               placeholder="Enter username"
               className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400"
               autoComplete="username"
@@ -50,6 +64,8 @@ export default function RegisterPage() {
             <label className="block font-semibold mb-1">Email</label>
             <input
               type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400"
               autoComplete="email"
@@ -60,6 +76,8 @@ export default function RegisterPage() {
             <label className="block font-semibold mb-1">Password</label>
             <input
               type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               placeholder="Enter your password"
               className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 pr-12"
               autoComplete="new-password"
@@ -86,6 +104,8 @@ export default function RegisterPage() {
             <label className="block font-semibold mb-1">Confirm password</label>
             <input
               type={showConfirm ? 'text' : 'password'}
+              value={confirm}
+              onChange={e => setConfirm(e.target.value)}
               placeholder="Confirm your password"
               className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 pr-12"
               autoComplete="new-password"
@@ -115,9 +135,12 @@ export default function RegisterPage() {
           <button
             type="submit"
             className="w-full px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition mt-2"
+            disabled={isLoading}
           >
-            Sign up
+            {isLoading ? 'Signing up...' : 'Sign up'}
           </button>
+          {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Signup failed'}</div>}
+          {isSuccess && <div className="text-green-500 text-sm">Signup successful!</div>}
         </form>
         <div className="mt-6 text-center text-gray-400 text-sm">
           Already have an account?{' '}

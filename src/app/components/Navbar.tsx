@@ -1,9 +1,24 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('user');
+      setUser(userStr ? JSON.parse(userStr) : null);
+    }
+  }, []);
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.reload();
+  }
+
   return (
     <>
       <nav className="relative z-10 flex items-center justify-between px-6 py-4">
@@ -27,8 +42,17 @@ const Navbar = () => {
             placeholder="Search"
             className="rounded-full px-4 py-1 bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-lime-400 text-sm"
           />
-          <Link href="/login" className="px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">Login</Link>
-          <Link href="/signup" className="ml-2 px-5 py-1 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition">Sign up</Link>
+          {user ? (
+            <>
+              <Link href="/profile" className="px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">{user.name || 'Profile'}</Link>
+              <button onClick={handleLogout} className="ml-2 px-5 py-1 rounded-full bg-pink-500 text-white font-bold hover:bg-pink-400 transition">Logout</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">Login</Link>
+              <Link href="/signup" className="ml-2 px-5 py-1 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition">Sign up</Link>
+            </>
+          )}
         </div>
         {/* Hamburger Icon (Mobile) */}
         <button
@@ -63,8 +87,17 @@ const Navbar = () => {
             className="rounded-full px-4 py-2 bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-lime-400 text-lg w-64"
           />
           <div className="flex gap-4 mt-4">
-            <button className="px-6 py-2 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">Login</button>
-            <button className="px-6 py-2 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition">Sign up</button>
+            {user ? (
+              <>
+                <Link href="/profile" className="px-6 py-2 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition" onClick={() => setMobileMenuOpen(false)}>{user.name || 'Profile'}</Link>
+                <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="px-6 py-2 rounded-full bg-pink-500 text-white font-bold hover:bg-pink-400 transition">Logout</button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="px-6 py-2 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                <Link href="/signup" className="px-6 py-2 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition" onClick={() => setMobileMenuOpen(false)}>Sign up</Link>
+              </>
+            )}
           </div>
         </div>
       )}

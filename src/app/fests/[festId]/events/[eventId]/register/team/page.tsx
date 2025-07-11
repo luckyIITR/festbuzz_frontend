@@ -1,6 +1,9 @@
 'use client';
+import { useRegisterTeamEvent } from '@/hooks/useRegisterTeamEvent';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
+import { getToken } from '@/lib/token';
 
 const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
@@ -10,6 +13,18 @@ export default function TeamEventRegisterPage() {
   const teamName = 'MALHAR';
   const teamCode = '1234567';
   const [created, setCreated] = useState(false);
+  const [field1, setField1] = useState('');
+  const [field2, setField2] = useState('');
+  const params = useParams();
+  const festId = params?.festId as string;
+  const eventId = params?.eventId as string;
+  const { mutate, isLoading, isError, isSuccess, error } = useRegisterTeamEvent();
+
+  function handleRegister(e: React.FormEvent) {
+    e.preventDefault();
+    const token = getToken();
+    mutate({ festId, eventId, data: { field1, field2 }, token });
+  }
 
   return (
     <div className="min-h-screen bg-black text-white relative flex items-center justify-center pt-10 pb-20">
@@ -130,17 +145,21 @@ export default function TeamEventRegisterPage() {
             <span className="text-gray-400 text-xs">91+ 1234567890</span>
           </div>
         </div>
-        <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleRegister}>
           <div>
             <label className="block font-semibold mb-1">Add field</label>
-            <input type="text" placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <input type="text" value={field1} onChange={e => setField1(e.target.value)} placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
           <div>
             <label className="block font-semibold mb-1">Add additional field</label>
-            <input type="text" placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <input type="text" value={field2} onChange={e => setField2(e.target.value)} placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
-          <div className="md:col-span-2 flex justify-end mt-2">
-            <button type="submit" className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition">Confirm participation</button>
+          <div className="md:col-span-2 flex flex-col items-end mt-2 gap-2">
+            <button type="submit" className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition" disabled={isLoading}>
+              {isLoading ? 'Registering...' : 'Confirm participation'}
+            </button>
+            {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Registration failed'}</div>}
+            {isSuccess && <div className="text-green-500 text-sm">Registration successful!</div>}
           </div>
         </form>
       </div>
