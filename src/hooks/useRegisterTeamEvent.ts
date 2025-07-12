@@ -4,7 +4,17 @@ import { apiFetch } from '../lib/api';
 interface RegisterTeamEventPayload {
   festId: string;
   eventId: string;
-  data: any;
+  data: {
+    teamName: string;
+    teamMembers: Array<{
+      name: string;
+      email: string;
+      phone?: string;
+      college?: string;
+      year?: string;
+      branch?: string;
+    }>;
+  };
   token?: string;
 }
 

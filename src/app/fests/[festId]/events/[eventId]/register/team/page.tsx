@@ -13,17 +13,26 @@ export default function TeamEventRegisterPage() {
   const teamName = 'MALHAR';
   const teamCode = '1234567';
   const [created, setCreated] = useState(false);
-  const [field1, setField1] = useState('');
-  const [field2, setField2] = useState('');
+  const [teamMembers, setTeamMembers] = useState([
+    { name: '', email: '', phone: '', college: '', year: '', branch: '' }
+  ]);
   const params = useParams();
   const festId = params?.festId as string;
   const eventId = params?.eventId as string;
-  const { mutate, isLoading, isError, isSuccess, error } = useRegisterTeamEvent();
+  const { mutate, isPending, isError, isSuccess, error } = useRegisterTeamEvent();
 
   function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     const token = getToken();
-    mutate({ festId, eventId, data: { field1, field2 }, token });
+    mutate({ 
+      festId, 
+      eventId, 
+      data: { 
+        teamName, 
+        teamMembers 
+      }, 
+      token 
+    });
   }
 
   return (
@@ -147,16 +156,32 @@ export default function TeamEventRegisterPage() {
         </div>
         <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleRegister}>
           <div>
-            <label className="block font-semibold mb-1">Add field</label>
-            <input type="text" value={field1} onChange={e => setField1(e.target.value)} placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <label className="block font-semibold mb-1">Team Member Name</label>
+            <input type="text" value={teamMembers[0].name} onChange={e => setTeamMembers([{...teamMembers[0], name: e.target.value}])} placeholder="Enter member name" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" required />
           </div>
           <div>
-            <label className="block font-semibold mb-1">Add additional field</label>
-            <input type="text" value={field2} onChange={e => setField2(e.target.value)} placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <label className="block font-semibold mb-1">Team Member Email</label>
+            <input type="email" value={teamMembers[0].email} onChange={e => setTeamMembers([{...teamMembers[0], email: e.target.value}])} placeholder="Enter member email" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" required />
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Team Member Phone</label>
+            <input type="tel" value={teamMembers[0].phone} onChange={e => setTeamMembers([{...teamMembers[0], phone: e.target.value}])} placeholder="Enter member phone" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Team Member College</label>
+            <input type="text" value={teamMembers[0].college} onChange={e => setTeamMembers([{...teamMembers[0], college: e.target.value}])} placeholder="Enter member college" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Team Member Year</label>
+            <input type="text" value={teamMembers[0].year} onChange={e => setTeamMembers([{...teamMembers[0], year: e.target.value}])} placeholder="Enter member year" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Team Member Branch</label>
+            <input type="text" value={teamMembers[0].branch} onChange={e => setTeamMembers([{...teamMembers[0], branch: e.target.value}])} placeholder="Enter member branch" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
           <div className="md:col-span-2 flex flex-col items-end mt-2 gap-2">
-            <button type="submit" className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition" disabled={isLoading}>
-              {isLoading ? 'Registering...' : 'Confirm participation'}
+            <button type="submit" className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition" disabled={isPending}>
+              {isPending ? 'Registering...' : 'Confirm participation'}
             </button>
             {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Registration failed'}</div>}
             {isSuccess && <div className="text-green-500 text-sm">Registration successful!</div>}

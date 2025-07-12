@@ -2,12 +2,12 @@ import { useMutation } from '@tanstack/react-query';
 import { apiFetch } from '../lib/api';
 import { setToken } from '../lib/token';
 
-interface LoginPayload {
+interface VerifyOtpPayload {
   email: string;
-  password: string;
+  otp: string;
 }
 
-interface LoginResponse {
+interface VerifyOtpResponse {
   user?: {
     id: string;
     name: string;
@@ -17,17 +17,16 @@ interface LoginResponse {
   token?: string;
 }
 
-export function useLogin() {
+export function useVerifyOtp() {
   return useMutation({
-    mutationFn: (payload: LoginPayload) =>
-      apiFetch('/api/auth/login', {
+    mutationFn: (payload: VerifyOtpPayload) =>
+      apiFetch('/api/auth/verify-otp', {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
     onSuccess: (data: unknown) => {
-      const loginData = data as LoginResponse;
-      if (loginData?.token) setToken(loginData.token);
-      if (loginData?.user) localStorage.setItem('user', JSON.stringify(loginData.user));
+      const verifyData = data as VerifyOtpResponse;
+      if (verifyData?.token) setToken(verifyData.token);
     },
   });
 } 

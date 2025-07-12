@@ -8,6 +8,16 @@ interface SignupPayload {
   password: string;
 }
 
+interface SignupResponse {
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    role?: string;
+  };
+  token?: string;
+}
+
 export function useSignup() {
   return useMutation({
     mutationFn: (payload: SignupPayload) =>
@@ -15,8 +25,13 @@ export function useSignup() {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
-    onSuccess: (data: any) => {
-      if (data?.token) setToken(data.token);
+    onSuccess: (data: unknown) => {
+      const signupData = data as SignupResponse;
+      if (signupData?.token) setToken(signupData.token);
+      if (signupData?.user) {
+        localStorage.setItem('user', JSON.stringify(signupData.user));
+        window.dispatchEvent(new Event('userChanged'));
+      }
     },
   });
 } 

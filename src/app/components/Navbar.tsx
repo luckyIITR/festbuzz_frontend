@@ -2,15 +2,25 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role?: string;
+}
+
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    function syncUser() {
       const userStr = localStorage.getItem('user');
       setUser(userStr ? JSON.parse(userStr) : null);
     }
+    syncUser();
+    window.addEventListener('userChanged', syncUser);
+    return () => window.removeEventListener('userChanged', syncUser);
   }, []);
 
   function handleLogout() {

@@ -5,9 +5,9 @@ export async function apiFetch<T>(
   options: RequestInit = {},
   authToken?: string
 ): Promise<T> {
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options.headers,
+    ...(options.headers as Record<string, string>),
   };
   if (authToken) {
     headers['Authorization'] = `Bearer ${authToken}`;
@@ -21,6 +21,7 @@ export async function apiFetch<T>(
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));
+    console.log(error);
     throw new Error(error.message || 'API Error');
   }
   return res.json();

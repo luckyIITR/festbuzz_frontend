@@ -6,6 +6,22 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+interface Sponsor {
+  id?: string;
+  _id?: string;
+  name?: string;
+  logo?: string;
+  image?: string;
+}
+
+interface Judge {
+  id?: string;
+  _id?: string;
+  name?: string;
+  photo?: string;
+  bio?: string;
+}
+
 export default function EventDetailsPage() {
   const params = useParams();
   const router = useRouter();
@@ -136,7 +152,7 @@ export default function EventDetailsPage() {
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4">
           {Array.isArray(event.sponsors) && event.sponsors.length > 0 ? (
-            event.sponsors.map((sponsor: any) => (
+            event.sponsors.map((sponsor: Sponsor) => (
               <div key={sponsor.id || sponsor._id} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
                 <Image src={sponsor.logo || sponsor.image || 'https://via.placeholder.com/80x64'} alt={sponsor.name || 'Sponsor'} width={80} height={64} className="max-h-16 max-w-[80px] object-contain" />
               </div>
@@ -162,7 +178,7 @@ export default function EventDetailsPage() {
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4">
           {Array.isArray(event.judges) && event.judges.length > 0 ? (
-            event.judges.map((judge: any) => (
+            event.judges.map((judge: Judge) => (
               <div key={judge.id || judge._id} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[150px] h-[150px] shadow-md">
                 <Image src={judge.photo || 'https://via.placeholder.com/100x100'} alt={judge.name || 'Judge'} width={100} height={100} className="max-h-20 max-w-[100px] object-contain rounded-full" />
                 <div className="text-center mt-2">

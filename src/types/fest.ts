@@ -6,6 +6,13 @@ export interface Sponsor {
   website?: string;
 }
 
+export interface Judge {
+  id: string;
+  name: string;
+  photo?: string;
+  bio?: string;
+}
+
 export interface Event {
   id: string;
   name: string;
@@ -23,6 +30,8 @@ export interface Event {
   teamSize?: number;
   rules?: string;
   prizes?: string;
+  sponsors?: Sponsor[];
+  judges?: Judge[];
 }
 
 export interface Fest {

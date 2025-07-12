@@ -2,8 +2,15 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role?: string;
+}
+
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

@@ -3,23 +3,107 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useSignup } from '@/hooks/useSignup';
+import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
+import { useVerifyOtp } from '@/hooks/useVerifyOtp';
+import { GoogleLogin } from '@react-oauth/google';
+
+
+interface VerifyResponse {
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    role?: string;
+  };
+  token?: string;
+}
 
 // const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
 export default function RegisterPage() {
-  const { mutate, isLoading, isError, isSuccess, error } = useSignup();
+  const { mutate, isPending, isError, isSuccess, error } = useSignup();
+  const { mutate: googleAuth, isError: isGoogleError, error: googleError } = useGoogleAuth();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [showVerify, setShowVerify] = useState(false);
+  const [verifyCode, setVerifyCode] = useState(["", "", "", "", "", ""]);
+  const verifyInputsRef = useRef<(HTMLInputElement | null)[]>([]);
+  const { mutate: verifyOtp, isPending: isVerifying } = useVerifyOtp();
+  const [verifyErrorMsg, setVerifyErrorMsg] = useState<string | null>(null);
+  const [showVerifySuccess, setShowVerifySuccess] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirm) return;
     mutate({ name, email, password });
   }
+
+  function handleGoogleSuccess(credentialResponse: { credential?: string }) {
+    if (credentialResponse.credential) {
+      googleAuth({ accessToken: credentialResponse.credential });
+    }
+  }
+
+  function handleGoogleError() {
+    console.error('Google login failed');
+  }
+
+  // Redirect to verify page after successful signup
+  if (isSuccess && !showVerify) {
+    setShowVerify(true);
+  }
+
+
+
+  // --- VERIFY MODAL HANDLERS ---
+  const handleVerifyChange = (idx: number, value: string) => {
+    if (!/^[0-9]?$/.test(value)) return;
+    const newCode = [...verifyCode];
+    newCode[idx] = value;
+    setVerifyCode(newCode);
+    if (value && idx < 5) {
+      verifyInputsRef.current[idx + 1]?.focus();
+    }
+  };
+  const handleVerifyKeyDown = (idx: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !verifyCode[idx] && idx > 0) {
+      verifyInputsRef.current[idx - 1]?.focus();
+    }
+  };
+  const handleVerifyContinue = (e: React.FormEvent) => {
+    e.preventDefault();
+    setVerifyErrorMsg(null);
+    const otp = verifyCode.join("");
+    if (otp.length !== 6) {
+      setVerifyErrorMsg("Please enter the 6-digit code.");
+      return;
+    }
+    verifyOtp({ email, otp }, {
+      onSuccess: (data: unknown) => {
+        const verifyData = data as VerifyResponse;
+        if (verifyData?.user) localStorage.setItem('user', JSON.stringify(verifyData.user));
+        window.dispatchEvent(new Event('userChanged'));
+        setShowVerifySuccess(true);
+        setTimeout(() => {
+          setShowVerify(false);
+          setShowVerifySuccess(false);
+          router.push('/');
+        }, 1200);
+      },
+      onError: (err: unknown) => {
+        const error = err as Error;
+        setVerifyErrorMsg(error?.message || 'Verification failed');
+      }
+    });
+  };
+  // --- END VERIFY MODAL HANDLERS ---
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center relative">
@@ -34,14 +118,23 @@ export default function RegisterPage() {
         />
       </div>
       {/* Signup Card */}
-      <div className="relative z-10 w-full max-w-md bg-zinc-900 bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-md bg-zinc-900 bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 my-12 flex flex-col items-center">
         <h2 className="text-lg font-semibold mb-2 text-white">Festbuzz</h2>
         <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-pink-500 text-center">Sign up to Festbuzz</h1>
         {/* Google Signup */}
-        <button className="w-full flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 transition text-white font-semibold py-3 rounded-lg mb-4 border border-zinc-700">
-          <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width={22} height={22} />
-          <span>Sign up with Google</span>
-        </button>
+        <div className="w-full mb-4">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            useOneTap
+            theme="filled_black"
+            size="large"
+            text="signup_with"
+            shape="rectangular"
+            locale="en"
+            context="signup"
+          />
+        </div>
         <div className="flex items-center w-full my-4">
           <div className="flex-1 h-px bg-zinc-700" />
           <span className="mx-3 text-zinc-400 text-sm">OR</span>
@@ -135,18 +228,77 @@ export default function RegisterPage() {
           <button
             type="submit"
             className="w-full px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition mt-2"
-            disabled={isLoading}
+            disabled={isPending}
           >
-            {isLoading ? 'Signing up...' : 'Sign up'}
+            {isPending ? 'Signing up...' : 'Sign up'}
           </button>
           {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Signup failed'}</div>}
-          {isSuccess && <div className="text-green-500 text-sm">Signup successful!</div>}
+          {isGoogleError && <div className="text-red-500 text-sm">{(googleError as Error)?.message || 'Google signup failed'}</div>}
         </form>
         <div className="mt-6 text-center text-gray-400 text-sm">
           Already have an account?{' '}
           <Link href="/login" className="text-pink-400 hover:underline font-bold">Login</Link>
         </div>
       </div>
+      {/* VERIFY MODAL showVerify */}
+      {showVerify && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-md bg-zinc-900 rounded-2xl shadow-2xl p-5 md:p-8 flex flex-col items-center relative">
+            <h1 className="text-2xl md:text-3xl font-extrabold mb-2 text-pink-500 text-left w-full" style={{letterSpacing: '-1px'}}>ENTER CODE</h1>
+            <p className="text-base text-gray-200 mb-2 w-full text-left">
+              Enter the 6-digit code you received on<br />
+              <span className="font-bold text-white">{email}</span>
+            </p>
+            <form className="w-full flex flex-col items-center mt-4" onSubmit={handleVerifyContinue}>
+              <div className="flex gap-3 mb-6 w-full justify-center">
+                {verifyCode.map((digit, idx) => (
+                  <input
+                    key={idx}
+                    ref={el => { verifyInputsRef.current[idx] = el; }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={e => handleVerifyChange(idx, e.target.value)}
+                    onKeyDown={e => handleVerifyKeyDown(idx, e)}
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-zinc-800 text-xl md:text-2xl text-center text-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 font-bold transition"
+                    autoFocus={idx === 0}
+                  />
+                ))}
+              </div>
+              {verifyErrorMsg && (
+                <div className="text-red-400 text-sm mb-2 w-full text-center">{verifyErrorMsg}</div>
+              )}
+              <div className="flex gap-4 w-full mt-2">
+                <button
+                  type="submit"
+                  className="flex-1 py-3 rounded-full bg-blue-600 text-yellow-300 font-bold text-lg shadow-lg hover:bg-blue-700 transition disabled:opacity-60"
+                  disabled={isVerifying}
+                >
+                  {isVerifying ? 'Verifying...' : 'Continue'}
+                </button>
+                <button
+                  type="button"
+                  className="flex-1 py-3 rounded-full bg-zinc-800 text-white font-bold text-lg shadow-lg hover:bg-zinc-700 transition"
+                  onClick={() => setShowVerify(false)}
+                  disabled={isVerifying}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+            {showVerifySuccess && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 rounded-2xl z-20 animate-fade-in">
+                <svg className="w-20 h-20 text-lime-400 mb-4 animate-pop" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 13l3 3 7-7" />
+                </svg>
+                <div className="text-2xl font-bold text-lime-300 mb-2">Account Verified!</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
