@@ -29,8 +29,6 @@ interface Participant {
   email: string;
   phone: string;
   college: string;
-  course: string;
-  year: string;
   gender: 'male' | 'female' | 'other';
   status: 'active' | 'inactive' | 'pending';
   joinDate: string;
@@ -48,8 +46,6 @@ const mockParticipants: Participant[] = [
     email: 'john.doe@example.com',
     phone: '+91 98765 43210',
     college: 'IIT Roorkee',
-    course: 'Computer Science',
-    year: '3rd Year',
     gender: 'male',
     status: 'active',
     joinDate: '2024-01-15',
@@ -64,8 +60,6 @@ const mockParticipants: Participant[] = [
     email: 'jane.smith@example.com',
     phone: '+91 98765 43211',
     college: 'IIT Delhi',
-    course: 'Electrical Engineering',
-    year: '2nd Year',
     gender: 'female',
     status: 'active',
     joinDate: '2024-02-20',
@@ -80,8 +74,6 @@ const mockParticipants: Participant[] = [
     email: 'mike.johnson@example.com',
     phone: '+91 98765 43212',
     college: 'IIT Bombay',
-    course: 'Mechanical Engineering',
-    year: '4th Year',
     gender: 'male',
     status: 'active',
     joinDate: '2024-03-10',
@@ -96,8 +88,6 @@ const mockParticipants: Participant[] = [
     email: 'sarah.wilson@example.com',
     phone: '+91 98765 43213',
     college: 'IIT Kanpur',
-    course: 'Civil Engineering',
-    year: '1st Year',
     gender: 'female',
     status: 'pending',
     joinDate: '2024-12-15',
@@ -112,8 +102,6 @@ const mockParticipants: Participant[] = [
     email: 'david.brown@example.com',
     phone: '+91 98765 43214',
     college: 'IIT Madras',
-    course: 'Chemical Engineering',
-    year: '3rd Year',
     gender: 'male',
     status: 'inactive',
     joinDate: '2024-01-05',
@@ -148,7 +136,6 @@ export default function ParticipantManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [collegeFilter, setCollegeFilter] = useState<string>('all');
-  const [yearFilter, setYearFilter] = useState<string>('all');
 
   const filteredParticipants = participants.filter(participant => {
     const matchesSearch = participant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -156,8 +143,7 @@ export default function ParticipantManagement() {
                          participant.college.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || participant.status === statusFilter;
     const matchesCollege = collegeFilter === 'all' || participant.college === collegeFilter;
-    const matchesYear = yearFilter === 'all' || participant.year === yearFilter;
-    return matchesSearch && matchesStatus && matchesCollege && matchesYear;
+    return matchesSearch && matchesStatus && matchesCollege;
   });
 
   const getStatusColor = (status: string) => {
@@ -237,17 +223,7 @@ export default function ParticipantManagement() {
           <option value="IIT Kanpur">IIT Kanpur</option>
           <option value="IIT Madras">IIT Madras</option>
         </select>
-        <select
-          value={yearFilter}
-          onChange={(e) => setYearFilter(e.target.value)}
-          className="px-4 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="all">All Years</option>
-          <option value="1st Year">1st Year</option>
-          <option value="2nd Year">2nd Year</option>
-          <option value="3rd Year">3rd Year</option>
-          <option value="4th Year">4th Year</option>
-        </select>
+
       </div>
 
       {/* Stats Overview */}
@@ -400,11 +376,9 @@ export default function ParticipantManagement() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm text-white">{participant.college}</div>
-                      <div className="text-sm text-gray-400">{participant.course}</div>
-                      <div className="text-xs text-gray-500">{participant.year}</div>
-                    </div>
+                                         <div>
+                       <div className="text-sm text-white">{participant.college}</div>
+                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(participant.status)}`}>

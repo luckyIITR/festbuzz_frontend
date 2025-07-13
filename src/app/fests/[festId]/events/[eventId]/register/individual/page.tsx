@@ -15,7 +15,6 @@ export default function IndividualEventRegisterPage() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [college, setCollege] = useState('');
-  const [year, setYear] = useState('');
   const [branch, setBranch] = useState('');
 
   function handleSubmit(e: React.FormEvent) {
@@ -24,12 +23,11 @@ export default function IndividualEventRegisterPage() {
       festId, 
       eventId, 
       data: { 
-        participantName, 
-        email, 
-        phone, 
-        college, 
-        year, 
-        branch 
+              participantName,
+      email,
+      phone,
+      college,
+      branch 
       } 
     });
   }
@@ -89,8 +87,7 @@ export default function IndividualEventRegisterPage() {
             <input type="text" value={college} onChange={e => setCollege(e.target.value)} placeholder="Enter your college" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
           <div>
-            <label className="block font-semibold mb-1">Year</label>
-            <input type="text" value={year} onChange={e => setYear(e.target.value)} placeholder="Enter your year" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            
           </div>
           <div>
             <label className="block font-semibold mb-1">Branch</label>

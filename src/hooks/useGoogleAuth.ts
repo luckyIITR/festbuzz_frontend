@@ -34,8 +34,8 @@ export function useGoogleAuth() {
       if (authData?.user) {
         localStorage.setItem('user', JSON.stringify(authData.user));
         window.dispatchEvent(new Event('userChanged'));
-        // Redirect to home page after successful authentication
-        router.push('/');
+        // Redirect to profile page to complete profile setup
+        router.push('/profile');
       }
     },
   });

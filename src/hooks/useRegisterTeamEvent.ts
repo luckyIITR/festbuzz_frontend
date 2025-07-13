@@ -11,7 +11,7 @@ interface RegisterTeamEventPayload {
       email: string;
       phone?: string;
       college?: string;
-      year?: string;
+    
       branch?: string;
     }>;
   };

@@ -14,7 +14,7 @@ export default function TeamEventRegisterPage() {
   const teamCode = '1234567';
   const [created, setCreated] = useState(false);
   const [teamMembers, setTeamMembers] = useState([
-    { name: '', email: '', phone: '', college: '', year: '', branch: '' }
+    { name: '', email: '', phone: '', college: '', branch: '' }
   ]);
   const params = useParams();
   const festId = params?.festId as string;
@@ -172,8 +172,7 @@ export default function TeamEventRegisterPage() {
             <input type="text" value={teamMembers[0].college} onChange={e => setTeamMembers([{...teamMembers[0], college: e.target.value}])} placeholder="Enter member college" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
           <div>
-            <label className="block font-semibold mb-1">Team Member Year</label>
-            <input type="text" value={teamMembers[0].year} onChange={e => setTeamMembers([{...teamMembers[0], year: e.target.value}])} placeholder="Enter member year" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            
           </div>
           <div>
             <label className="block font-semibold mb-1">Team Member Branch</label>

@@ -9,7 +9,7 @@ interface RegisterEventPayload {
     email: string;
     phone?: string;
     college?: string;
-    year?: string;
+  
     branch?: string;
   };
   token?: string;
