@@ -1,9 +1,37 @@
 'use client';
+import { useRegisterEvent } from '@/hooks/useRegisterEvent';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
 
 const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
 export default function IndividualEventRegisterPage() {
+  const params = useParams();
+  const festId = params?.festId as string;
+  const eventId = params?.eventId as string;
+  const { mutate, isPending, isError, isSuccess, error } = useRegisterEvent();
+  const [participantName, setParticipantName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [college, setCollege] = useState('');
+  const [branch, setBranch] = useState('');
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    mutate({ 
+      festId, 
+      eventId, 
+      data: { 
+              participantName,
+      email,
+      phone,
+      college,
+      branch 
+      } 
+    });
+  }
+
   return (
     <div className="min-h-screen bg-black text-white relative flex items-center justify-center pt-10 pb-20">
       {/* Background image with overlay */}
@@ -15,7 +43,6 @@ export default function IndividualEventRegisterPage() {
           height={800}
           className="w-full h-full object-cover object-center opacity-60"
         />
-        {/* <div className="absolute inset-0 bg-black bg-opacity-70" /> */}
       </div>
       {/* Registration Card */}
       <div className="relative z-10 w-full max-w-2xl bg-zinc-900 bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 flex flex-col items-center">
@@ -42,17 +69,36 @@ export default function IndividualEventRegisterPage() {
             <span className="text-gray-400 text-xs">91+ 1234567890</span>
           </div>
         </div>
-        <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleSubmit}>
           <div>
-            <label className="block font-semibold mb-1">Add field</label>
-            <input type="text" placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <label className="block font-semibold mb-1">Participant Name</label>
+            <input type="text" value={participantName} onChange={e => setParticipantName(e.target.value)} placeholder="Enter your name" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" required />
           </div>
           <div>
-            <label className="block font-semibold mb-1">Add additional field</label>
-            <input type="text" placeholder="Enter details" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <label className="block font-semibold mb-1">Email</label>
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" required />
           </div>
-          <div className="md:col-span-2 flex justify-end mt-2">
-            <button type="submit" className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition">Confirm participation</button>
+          <div>
+            <label className="block font-semibold mb-1">Phone</label>
+            <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Enter your phone" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">College</label>
+            <input type="text" value={college} onChange={e => setCollege(e.target.value)} placeholder="Enter your college" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+          <div>
+            
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Branch</label>
+            <input type="text" value={branch} onChange={e => setBranch(e.target.value)} placeholder="Enter your branch" className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+          <div className="md:col-span-2 flex flex-col items-end mt-2 gap-2">
+            <button type="submit" className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition" disabled={isPending}>
+              {isPending ? 'Registering...' : 'Confirm participation'}
+            </button>
+            {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Registration failed'}</div>}
+            {isSuccess && <div className="text-green-500 text-sm">Registration successful!</div>}
           </div>
         </form>
       </div>

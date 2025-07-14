@@ -3,10 +3,17 @@
 import CallToAction from '../components/CallToAction';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useFests } from '@/hooks/useFests';
+import { Fest } from '@/types/fest';
 
 const eventImage = "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80";
 
 export default function FestsPage() {
+  const { data, isLoading, error } = useFests();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading fests</div>;
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
@@ -31,6 +38,7 @@ export default function FestsPage() {
               <span className="inline-block w-4 h-4 bg-pink-500 rounded-full animate-pulse" />
               <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">TRENDING NOW</h2>
             </div>
+
             <div className='flex justify-between md:flex-row-reverse flex-col '>
               <aside className="w-full md:w-64 flex-shrink-0">
                 <div className="bg-zinc-900 rounded-2xl md:p-6 p-5 shadow-lg mb-8">
@@ -44,6 +52,8 @@ export default function FestsPage() {
                   </div>
                 </div>
               </aside>
+
+            
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
                 {[1, 2, 3].map((i) => (
                   <Link key={i} href={`/fests/${i}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
@@ -82,15 +92,22 @@ export default function FestsPage() {
               <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">UPCOMING FESTS</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-              {[4, 5, 6].map((i) => (
-                <Link key={i} href={`/fests/${i}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
-                  <Image src={eventImage} alt="Event" width={600} height={160} className="w-full h-40 object-cover" />
+
+              {data?.map((fest: Fest) => (
+                <Link key={fest.id} href={`/fests/${fest.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
+                  <Image src={fest.bannerImage || fest.heroImage || eventImage} alt={fest.name} width={600} height={160} className="w-full h-40 object-cover" />
+
                   <div className="p-4 flex-1 flex flex-col">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-bold text-lg">Fest name</span>
-                      <span className="font-bold text-yellow-300">₹2000</span>
+                      <span className="font-bold text-lg">{fest.name}</span>
+                      <span className="font-bold text-yellow-300">₹{fest.price}</span>
                     </div>
-                    <div className="text-gray-400 text-xs mb-2">01 Jan 2025 • Mumbai</div>
+                    <div className="text-gray-400 text-xs mb-2">
+                      {fest.startDate && fest.endDate ? 
+                        `${new Date(fest.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(fest.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 
+                        'Date TBA'
+                      } • {fest.location}
+                    </div>
                     <span className="mt-auto bg-yellow-300 text-black font-bold px-4 py-2 rounded-full text-center">Book now</span>
                   </div>
                 </Link>
