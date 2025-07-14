@@ -8,8 +8,8 @@ const Navbar = () => {
     <>
       <nav className="relative z-10 flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <span className="font-extrabold text-lg tracking-tight text-lime-400">FEST</span>
+        <div className="flex items-center gap-2 bg-black px-5 py-2 rounded-2xl">
+          <span className="font-extrabold text-lg tracking-tight text-[#E1FF01]">FEST</span>
           <span className="text-lg md:text-lg text-white">✦</span>
           <span className="font-extrabold text-lg tracking-tight text-pink-500">BUZZ</span>
         </div>
@@ -28,7 +28,7 @@ const Navbar = () => {
             className="rounded-full px-4 py-1 bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-lime-400 text-sm"
           />
           <Link href="/login" className="px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">Login</Link>
-          <Link href="/signup" className="ml-2 px-5 py-1 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition">Sign up</Link>
+          <Link href="/signup" className="ml-2 px-5 py-1 rounded-full bg-[#E1FF01] text-black font-bold hover:bg-lime-300 transition">Sign up</Link>
         </div>
         {/* Hamburger Icon (Mobile) */}
         <button
