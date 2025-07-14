@@ -1,4 +1,5 @@
 export interface Sponsor {
+  _id: string;
   id: string;
   name: string;
   logo?: string;
@@ -36,6 +37,7 @@ export interface Event {
 
 export interface Fest {
   id: string;
+  _id?: string;
   name: string;
   description?: string;
   organizer: string;
