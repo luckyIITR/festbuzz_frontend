@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import { Urbanist } from "next/font/google";
 import Footer from "./components/Footer";
 import { ReactNode } from 'react';
 import QueryProvider from './QueryProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+const urbanist = Urbanist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-urbanist',
+});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +21,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body
+        className={`${urbanist.variable} antialiased`}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
           <QueryProvider>
             <Navbar />

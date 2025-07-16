@@ -75,27 +75,108 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
         <label className="text-white font-semibold mb-1">Add sponsors</label>
         <div className="flex flex-wrap gap-6">
           {form.sponsors.map((s, idx) => (
-            <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col gap-2 min-w-[220px] max-w-xs border-2 border-pink-400 shadow-md">
-              <div className="flex flex-col gap-1">
-                <label className="text-xs text-gray-400">Sponsor image</label>
-                <input type="file" name="image" accept="image/*" className="bg-white/10 text-white rounded shadow-sm" onChange={handleSponsorInput} />
+            <div
+              key={idx}
+              className="w-[320px] h-[180px] bg-white/10 backdrop-blur-md rounded-[15px] p-2 flex gap-2 border-2 border-pink-400 shadow-md"
+            >
+              {/* Left: Sponsor Image Upload */}
+              <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-white/10 overflow-hidden">
+                <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-white/10 overflow-hidden relative">
+                  <label className="cursor-pointer text-white text-xs text-center px-2 py-1">
+                    Sponsor image
+                    <input
+                      type="file"
+                      name="image"
+                      accept="image/*"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={handleSponsorInput}
+                    />
+                  </label>
+                </div>
+
               </div>
-              <input name="name" value={s.name} readOnly className="bg-white/10 rounded px-2 py-1 text-white mb-1 shadow-sm" placeholder="Sponsor name" />
-              <input name="title" value={s.title} readOnly className="bg-white/10 rounded px-2 py-1 text-white mb-1 shadow-sm" placeholder="Sponsor title" />
-              <input name="website" value={s.website} readOnly className="bg-white/10 rounded px-2 py-1 text-white shadow-sm" placeholder="Sponsor website" />
+
+              {/* Right: Sponsor Details */}
+              <div className="flex-1 h-full flex flex-col justify-between gap-1">
+                <input
+                  name="name"
+                  value={s.name}
+                  readOnly
+                  className="h-[40px] bg-white/10 rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                  placeholder="Sponsor name"
+                />
+                <input
+                  name="title"
+                  value={s.title}
+                  readOnly
+                  className="h-[40px] bg-white/10 rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                  placeholder="Sponsor title"
+                />
+                <input
+                  name="website"
+                  value={s.website}
+                  readOnly
+                  className="h-[40px] bg-white/10 rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                  placeholder="Sponsor website"
+                />
+              </div>
             </div>
+
           ))}
           {/* New sponsor input */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col gap-2 min-w-[220px] max-w-xs border-2 border-pink-400 shadow-md">
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-400">Sponsor image</label>
-              <input type="file" name="image" accept="image/*" className="bg-white/10 text-white rounded shadow-sm" onChange={handleSponsorInput} />
+          <div className="w-[320px] h-[180px] bg-white/10 backdrop-blur-md rounded-[15px] p-2 flex gap-2 border-2 border-pink-400 shadow-md">
+            {/* Left: Image Upload */}
+            <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-white/10 overflow-hidden">
+              <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-white/10 overflow-hidden relative">
+                <label className="cursor-pointer text-white text-xs text-center px-2 py-1">
+                  Sponsor image
+                  <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleSponsorInput}
+                  />
+                </label>
+              </div>
             </div>
-            <input name="name" value={newSponsor.name} onChange={handleSponsorInput} className="bg-white/10 rounded px-2 py-1 text-white mb-1 shadow-sm" placeholder="Sponsor name" />
-            <input name="title" value={newSponsor.title} onChange={handleSponsorInput} className="bg-white/10 rounded px-2 py-1 text-white mb-1 shadow-sm" placeholder="Sponsor title" />
-            <input name="website" value={newSponsor.website} onChange={handleSponsorInput} className="bg-white/10 rounded px-2 py-1 text-white shadow-sm" placeholder="Sponsor website" />
-            <button type="button" onClick={addSponsor} className="mt-2 w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-2xl shadow-md hover:bg-pink-600 transition-all">+</button>
+
+            {/* Right: Sponsor Input Fields */}
+            <div className="flex-1 h-full flex flex-col justify-between gap-1">
+              <input
+                name="name"
+                value={newSponsor.name}
+                onChange={handleSponsorInput}
+                className="h-[40px] bg-white/10 rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                placeholder="Sponsor name"
+              />
+              <input
+                name="title"
+                value={newSponsor.title}
+                onChange={handleSponsorInput}
+                className="h-[40px] bg-white/10 rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                placeholder="Sponsor title"
+              />
+              <div className="flex gap-1">
+                <input
+                  name="website"
+                  value={newSponsor.website}
+                  onChange={handleSponsorInput}
+                  className="h-[40px] flex-1 bg-white/10 rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                  placeholder="Sponsor website"
+                />
+
+              </div>
+            </div>
+
           </div>
+          <button
+            type="button"
+            onClick={addSponsor}
+            className="w-[40px] h-[40px] rounded-full bg-pink-500 flex items-center justify-center text-white text-xl shadow-md hover:bg-pink-600 transition-all"
+          >
+            +
+          </button>
         </div>
       </div>
       {/* Enter question here */}
@@ -108,12 +189,12 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
         <label className="text-white font-semibold mb-1">Input type</label>
         <div className="relative">
           <select name="type" value={newQuestion.type} onChange={handleQuestionInput} className="bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 text-white focus:outline-none w-full shadow-md focus:ring-2 focus:ring-blue-400 transition-all">
-            <option value="Text">Text</option>
-            <option value="Date">Date</option>
-            <option value="Time">Time</option>
-            <option value="Upload">Upload</option>
-            <option value="Select One">Select One</option>
-            <option value="Multiple Select">Multiple Select</option>
+            <option className="bg-[#1A1A1A]" value="Text">Text</option>
+            <option className="bg-[#1A1A1A]" value="Date">Date</option>
+            <option className="bg-[#1A1A1A]" value="Time">Time</option>
+            <option className="bg-[#1A1A1A]" value="Upload">Upload</option>
+            <option className="bg-[#1A1A1A]" value="Select One">Select One</option>
+            <option className="bg-[#1A1A1A]" value="Multiple Select">Multiple Select</option>
           </select>
           <button type="button" onClick={addQuestion} className="absolute right-[-2.5rem] top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-2xl shadow-md hover:bg-pink-600 transition-all">+</button>
         </div>
