@@ -134,8 +134,8 @@ export default function TeamEventRegisterPage() {
         )}
         {/* Event Registration Section (always visible) */}
         <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-pink-500 w-full text-left">Confirm your event registration</h1>
-        <div className="w-full bg-zinc-800 rounded-xl flex flex-col md:flex-row items-center justify-between p-4 mb-8">
-          <div className="flex items-center gap-4 flex-1">
+        <div className="w-full bg-zinc-800 rounded-xl flex flex-col md:flex-row md:items-center justify-between p-4 mb-8">
+         <div className="flex items-center gap-4 flex-1">
             <Image src={festLogo} alt="Fest Logo" width={60} height={60} className="w-16 h-16 rounded-full border-2 border-yellow-400 bg-black object-contain" />
             <div>
               <div className="text-xl md:text-2xl font-extrabold text-lime-200">MUSIC FESTIVAL</div>

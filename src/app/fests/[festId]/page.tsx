@@ -35,22 +35,22 @@ export default function FestDetailsPage() {
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
       <div className="relative w-full h-[320px] md:h-[300px] flex items-end overflow-hidden">
-        <Image 
-          src={fest.heroImage || fest.bannerImage || 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80'} 
-          alt={`${fest.name} Hero`} 
-          width={1500} 
-          height={400} 
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-80" 
+        <Image
+          src={fest.heroImage || fest.bannerImage || 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80'}
+          alt={`${fest.name} Hero`}
+          width={1500}
+          height={400}
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-80"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
-        <div className="relative z-10 w-full flex flex-col md:flex-row items-end justify-between px-6 md:px-16 pb-8">
-          <div className="flex items-center gap-6">
-            <Image 
-              src={fest.logo || fest.organizerLogo || 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png'} 
-              alt={`${fest.name} Logo`} 
-              width={80} 
-              height={80} 
-              className="w-20 h-20 rounded-full border-4 border-yellow-400 bg-black object-contain" 
+        <div className="relative z-10 w-full flex flex-col md:flex-row md:items-end  md:justify-between px-2 md:px-16 pb-8">
+          <div className="flex items-center gap-6 flex-row-reverse md:flex-row  ">
+            <Image
+              src={fest.logo || fest.organizerLogo || 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png'}
+              alt={`${fest.name} Logo`}
+              width={80}
+              height={80}
+              className="w-20 h-20 rounded-full border-4 border-yellow-400 bg-black object-contain"
             />
             <div>
               <h1 className="text-2xl md:text-4xl font-extrabold text-yellow-300 mb-1">{fest.name}</h1>
@@ -64,8 +64,8 @@ export default function FestDetailsPage() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-3 mt-6 md:mt-0">
-            <div className="text-right">
+          <div className="flex flex-col items-start md:items-end gap-3 mt-6 md:mt-0">
+            <div className="text-left md:text-right">
               <span className="text-2xl font-bold text-white">₹{fest.price}</span>
               <div className="text-xs text-gray-300">Individual fee</div>
             </div>
@@ -141,77 +141,81 @@ export default function FestDetailsPage() {
       </div>
 
       {/* Fest Events Section */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
-        {/* Events Grid */}
-        <section className="md:col-span-3">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row gap-8 mt-8">    {/* Events Grid */}
+        <section className="flex-1">
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-block w-4 h-4 bg-pink-500 rounded-full animate-pulse" />
             <h2 className="text-xl md:text-2xl font-extrabold text-lime-300 tracking-tight">FEST EVENTS</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {eventsLoading ? (
-              <div>Loading events...</div>
-            ) : eventsError ? (
-              <div>Error loading events</div>
-                         ) : events && events.length > 0 ? (
-               events.map((event: Event) => (
-                <Link key={event.id} href={`/fests/${festId}/events/${event.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
-                  <Image 
-                    src={event.image || event.bannerImage || 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80'} 
-                    alt={event.name} 
-                    width={600} 
-                    height={160} 
-                    className="w-full h-40 object-cover" 
-                  />
-                  <button className="absolute top-3 right-3 bg-black/60 rounded-full p-2 text-white hover:text-pink-400 transition">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                  <div className="p-4 flex-1 flex flex-col">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-bold text-lg">{event.name}</span>
-                      <span className="font-bold text-white">₹{event.price}</span>
-                    </div>
-                    <div className="text-gray-400 text-xs mb-2">
-                      @ {event.location || fest.location}<br />
-                      📅 {formatDateRange(event.startDate, event.endDate)}
-                    </div>
-                    <span className="mt-auto bg-lime-300 text-black font-bold px-4 py-2 rounded-full text-center">
-                      Participate now
-                    </span>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className="col-span-full text-center text-gray-400 py-8">
-                No events available for this fest
+
+          <div className='flex justify-between md:flex-row-reverse flex-col'>
+            <aside className="w-full md:w-64 flex-shrink-0">
+              <div className="bg-zinc-900 rounded-2xl p-6 shadow-lg mb-8">
+                <h3 className="font-bold text-xl mb-4 text-white">CATEGORY</h3>
+                <div className="flex  md:flex-col gap-3  overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 pb-4 ">
+                  {fest.categories && fest.categories.length > 0 ? (
+                    fest.categories.map((cat: string) => (
+                      <select key={cat} className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
+                        <option>{cat}</option>
+                      </select>
+                    ))
+                  ) : (
+                    ['Dance', 'Singing', 'Fine arts', 'Others'].map((cat) => (
+                      <select key={cat} className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
+                        <option>{cat}</option>
+                      </select>
+                    ))
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-        </section>
-        
-        {/* Category Sidebar */}
-        <aside className="w-full md:w-auto flex-shrink-0">
-          <div className="bg-zinc-900 rounded-2xl p-6 shadow-lg mb-8">
-            <h3 className="font-bold text-xl mb-4 text-white">CATEGORY</h3>
-            <div className="flex flex-col gap-3">
-              {fest.categories && fest.categories.length > 0 ? (
-                fest.categories.map((cat: string) => (
-                  <select key={cat} className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
-                    <option>{cat}</option>
-                  </select>
+            </aside>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {eventsLoading ? (
+                <div>Loading events...</div>
+              ) : eventsError ? (
+                <div>Error loading events</div>
+              ) : events && events.length > 0 ? (
+                events.map((event: Event) => (
+                  <Link key={event.id} href={`/fests/${festId}/events/${event.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
+                    <Image
+                      src={event.image || event.bannerImage || 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80'}
+                      alt={event.name}
+                      width={600}
+                      height={160}
+                      className="w-full h-40 object-cover"
+                    />
+                    <button className="absolute top-3 right-3 bg-black/60 rounded-full p-2 text-white hover:text-pink-400 transition">
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div className="p-4 flex-1 flex flex-col">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-bold text-lg">{event.name}</span>
+                        <span className="font-bold text-white">₹{event.price}</span>
+                      </div>
+                      <div className="text-gray-400 text-xs mb-2">
+                        @ {event.location || fest.location}<br />
+                        📅 {formatDateRange(event.startDate, event.endDate)}
+                      </div>
+                      <span className="mt-auto bg-lime-300 text-black font-bold px-4 py-2 rounded-full text-center">
+                        Participate now
+                      </span>
+                    </div>
+                  </Link>
                 ))
               ) : (
-                ['Dance', 'Singing', 'Fine arts', 'Others'].map((cat) => (
-                  <select key={cat} className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
-                    <option>{cat}</option>
-                  </select>
-                ))
+                <div className="col-span-full text-center text-gray-400 py-8">
+                  No events available for this fest
+                </div>
               )}
             </div>
           </div>
-        </aside>
+        </section>
+
+        {/* Category Sidebar */}
+
       </div>
 
       {/* Event Sponsors Section */}
@@ -221,16 +225,16 @@ export default function FestDetailsPage() {
           <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">EVENT SPONSORS</h2>
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4">
-                     {fest.sponsors && fest.sponsors.length > 0 ? (
-             fest.sponsors.map((sponsor, i: number) => (
+          {fest.sponsors && fest.sponsors.length > 0 ? (
+            fest.sponsors.map((sponsor, i: number) => (
               <div key={i} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
-                                 <Image 
-                   src={sponsor.logo || sponsor.image || 'https://via.placeholder.com/80x64'} 
-                   alt={sponsor.name || 'Sponsor'} 
-                   width={80} 
-                   height={64} 
-                   className="max-h-16 max-w-[80px] object-contain" 
-                 />
+                <Image
+                  src={sponsor.logo || sponsor.image || 'https://via.placeholder.com/80x64'}
+                  alt={sponsor.name || 'Sponsor'}
+                  width={80}
+                  height={64}
+                  className="max-h-16 max-w-[80px] object-contain"
+                />
               </div>
             ))
           ) : (

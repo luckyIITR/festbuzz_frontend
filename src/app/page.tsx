@@ -100,7 +100,7 @@ export default function Home() {
 
               <Image src={Firstcard} alt="Team" width={600} height={160} className="w-full h-full object-cover object-center" />
               {/* Decorative squares */}
-              <div className="absolute top-0 w-[39.7vw] h-[59vh]">
+              <div className="absolute top-0 left-0 w-[39.7vw] h-[59vh]">
                 <Image src={RectangleFirst} alt="Rectangle" width={600} height={160} className="relative w-full h-full object-cover " />
               </div>
             </div>
@@ -117,7 +117,7 @@ export default function Home() {
             </div>
             <div className="flex-1 p-6 md:p-10 flex flex-col justify-between order-1 md:order-2">
               <div>
-                <h3 className="text-xl md:text-2xl font-extrabold text-lime-200 mb-1">02 Explore & Enjoy</h3>
+                <h3 className="text-xl md:text-2xl font-extrabold text-[#E1FF01] mb-1">02 Explore & Enjoy</h3>
                 <p className="text-sm md:text-base text-white mb-2">For college students</p>
                 <p className="text-white text-sm md:text-base mb-4 max-w-md">
                   Discover and join exciting fests<br />
@@ -125,7 +125,7 @@ export default function Home() {
                   Collect rewards and goodies
                 </p>
               </div>
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-lime-200 text-black font-semibold shadow hover:bg-lime-100 transition text-sm md:text-base w-fit">
+              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E1FF01] text-black font-semibold shadow hover:bg-lime-100 transition text-sm md:text-base w-fit">
                 Sign up now <span>↗</span>
               </a>
             </div>
@@ -135,7 +135,7 @@ export default function Home() {
           <div className="relative flex flex-col md:flex-row items-stretch bg-[#0248F7] min-h-[260px] overflow-hidden rounded-2xl mb-6 px-4 md:px-8">
             <div className="flex-1 p-6 md:p-10 flex flex-col justify-between">
               <div>
-                <h3 className="text-xl md:text-2xl font-extrabold text-lime-200 mb-1">03 Engage & Reach</h3>
+                <h3 className="text-xl md:text-2xl font-extrabold text-[#E1FF01] mb-1">03 Engage & Reach</h3>
                 <p className="text-sm md:text-base text-white mb-2">For brands</p>
                 <p className="text-white text-sm md:text-base mb-4 max-w-md">
                   Showcase your products effectively<br />
@@ -143,7 +143,7 @@ export default function Home() {
                   Extend your reach to a broader audience
                 </p>
               </div>
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-lime-200 text-black font-semibold shadow hover:bg-lime-100 transition text-sm md:text-base w-fit">
+              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E1FF01] text-black font-semibold shadow hover:bg-lime-100 transition text-sm md:text-base w-fit">
                 Partner with us <span>↗</span>
               </a>
             </div>
