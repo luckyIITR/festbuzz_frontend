@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+
 import { Urbanist, DM_Sans } from "next/font/google";
+
 import Footer from "./components/Footer";
 import { ReactNode } from 'react';
 import QueryProvider from './QueryProvider';
@@ -13,6 +15,7 @@ const urbanist = Urbanist({
 });
 
 
+
 const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '700'], // Add desired weights
@@ -20,6 +23,7 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans', // Optional CSS variable name
   display: 'swap',
 })
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,7 +34,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body
+
         className={`${urbanist.variable} ${dmSans.variable} antialiased`}>
+
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
           <QueryProvider>
             <Navbar />
