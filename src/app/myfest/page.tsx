@@ -7,6 +7,7 @@ import { useWishlistFests } from '@/hooks/useWishlistFests';
 import { useRegisteredFests } from '@/hooks/useRegisteredFests';
 import { useRecommendedFests } from '@/hooks/useRecommendedFests';
 import { Fest } from '@/types/fest';
+import Image from 'next/image';
 
 const tabs = ['Upcoming', 'On Going', 'Past'];
 const secondaryTabs = ['Recently viewed', 'Wishlist', 'Registered'];
@@ -14,7 +15,13 @@ const secondaryTabs = ['Recently viewed', 'Wishlist', 'Registered'];
 function FestCard({ card }: { card: Fest }) {
   return (
     <div className="flex-1 flex flex-col w-full">
-      <img src={card.bannerImage || card.heroImage || '/assets/FirstCardImage.png'} alt={card.name} className="w-full h-40 sm:h-48 md:h-52 object-cover rounded-xl mb-3" />
+      <Image
+        src={card.bannerImage || card.heroImage || '/assets/FirstCardImage.png'}
+        alt={card.name}
+        width={320}
+        height={160}
+        className="w-full h-40 sm:h-48 md:h-52 object-cover rounded-xl mb-3"
+      />
       <div className="flex-1 flex flex-col">
         <div className="flex justify-between items-center mb-2">
           <span className="font-bold text-lg text-white truncate">{card.name}</span>

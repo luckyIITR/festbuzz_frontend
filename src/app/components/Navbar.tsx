@@ -44,7 +44,10 @@ const Navbar = () => {
           <Link href="/fests" className="hover:text-white/80">List your fest</Link>
           <Link href="/fests" className="hover:text-white/80">Explore fests</Link>
           {user && (
-            <Link href="/myfest" className="hover:text-white/80">My Fest</Link>
+            <>
+              <Link href="/myfest" className="hover:text-white/80">My Fest</Link>
+              <Link href="/dashboard" className="hover:text-white/80">Dashboard</Link>
+            </>
           )}
           <Link href="/about" className="hover:text-white/80">About us</Link>
         </div>
@@ -107,6 +110,7 @@ const Navbar = () => {
               <>
                 <Link href="/profile" className="px-6 py-2 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition" onClick={() => setMobileMenuOpen(false)}>{user.name || 'Profile'}</Link>
                 <Link href="/myfest" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>My Fest</Link>
+                <Link href="/dashboard" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
                 <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="px-6 py-2 rounded-full bg-pink-500 text-white font-bold hover:bg-pink-400 transition">Logout</button>
               
               </>

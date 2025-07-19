@@ -2,14 +2,12 @@
 
 import CallToAction from '../components/CallToAction';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useFests } from '@/hooks/useFests';
-import { Fest } from '@/types/fest';
 import FestCard from '../components/FestCard';
 import GradientFestCard from '../components/GradientFestCard';
 
 export default function FestsPage() {
-  const { data, isLoading, error } = useFests();
+  const { isLoading, error } = useFests();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading fests</div>;

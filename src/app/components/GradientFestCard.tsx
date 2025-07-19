@@ -3,11 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import FestImage from '../../../public/assets/CardImage.png';
 import LocationImage from '../../../public/assets/Location.png';
 import DateImage from '../../../public/assets/Calender.png';
 import { useFests } from '@/hooks/useFests';
-import { Fest } from '@/types/fest';
 
 const GradientFestCard = () => {
     const { data: fests, isLoading, error } = useFests();

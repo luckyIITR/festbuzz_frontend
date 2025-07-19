@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useFests } from '@/hooks/useFests';
 import LocationImage from '../../../public/assets/Location.png';
 import DateImage from '../../../public/assets/Calender.png';
-import { Fest } from '@/types/fest';
 const FestCard = () => {
   const { data: fests, isLoading, error } = useFests();
 

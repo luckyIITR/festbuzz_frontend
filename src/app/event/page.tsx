@@ -150,7 +150,7 @@ export default function CreateEventPage() {
                   <button type="button" className="text-[#E6FF4C] font-bold bg-transparent px-2 py-1 rounded hover:bg-[#222]">U</button>
                   <button type="button" className="text-white font-bold bg-transparent px-2 py-1 rounded hover:bg-[#222]">•</button>
                   <button type="button" className="text-white font-bold bg-transparent px-2 py-1 rounded hover:bg-[#222]">1.</button>
-                  <button type="button" className="text-white font-bold bg-transparent px-2 py-1 rounded hover:bg-[#222]">"</button>
+                  <button type="button" className="text-white font-bold bg-transparent px-2 py-1 rounded hover:bg-[#222]">&quot;</button>
                   <button type="button" className="text-white font-bold bg-transparent px-2 py-1 rounded hover:bg-[#222]">🔗</button>
                 </div>
                 <textarea

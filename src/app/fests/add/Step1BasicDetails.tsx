@@ -1,7 +1,6 @@
 import React from "react";
-import Image from "next/image";
 import StateDropdown from '../../components/StateDropdown' // adjust path accordingly
-type FormType = {
+export type FormType = {
   logo: File | null;
   photos: File[];
   festType: string;
