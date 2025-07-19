@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+
 const steps = [
     { label: 'Basics' },
     { label: 'Venue' },
@@ -16,13 +17,7 @@ const addOns = [
     { label: 'Roles' },
 ];
 
-const initialRewards = [
-    { rank: '1st', cash: '₹2000', coupon: '', goodies: '' },
-    { rank: '2nd', cash: '₹1000', coupon: '', goodies: '' },
-    { rank: '3rd', cash: '₹500', coupon: '', goodies: '' },
-];
-
-export default function page() {
+export default function PricingPage() {
 
     const router = useRouter();
 
@@ -57,7 +52,7 @@ export default function page() {
                             <span className='font-urbanist font-[700] text-[17px] pt-[1px]'>Add Event Details</span>
                         </button>
                         <ul className="ml-8 flex flex-col gap-3 mt-2">
-                            {steps.map((step, idx) => (
+                            {steps.map((step) => (
                                 <li key={step.label} className="flex items-center gap-2">
                                     <span className={`w-4 h-4 border-2 border-[#E6FF4C] rounded-full flex items-center justify-center `}>
                                         <span className={`w-2 h-2 rounded-full bg-[#E6FF4C]`}></span>

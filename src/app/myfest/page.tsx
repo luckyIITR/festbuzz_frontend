@@ -7,34 +7,10 @@ import { useWishlistFests } from '@/hooks/useWishlistFests';
 import { useRegisteredFests } from '@/hooks/useRegisteredFests';
 import { useRecommendedFests } from '@/hooks/useRecommendedFests';
 import { Fest } from '@/types/fest';
-import Image from 'next/image';
+import FestCard from '../components/FestCard';
 
 const tabs = ['Upcoming', 'On Going', 'Past'];
 const secondaryTabs = ['Recently viewed', 'Wishlist', 'Registered'];
-
-function FestCard({ card }: { card: Fest }) {
-  return (
-    <div className="flex-1 flex flex-col w-full">
-      <Image
-        src={card.bannerImage || card.heroImage || '/assets/FirstCardImage.png'}
-        alt={card.name}
-        width={320}
-        height={160}
-        className="w-full h-40 sm:h-48 md:h-52 object-cover rounded-xl mb-3"
-      />
-      <div className="flex-1 flex flex-col">
-        <div className="flex justify-between items-center mb-2">
-          <span className="font-bold text-lg text-white truncate">{card.name}</span>
-          <span className="font-bold text-yellow-300">{card.price ? `₹${card.price}` : '₹0'}</span>
-        </div>
-        <div className="text-gray-400 text-xs mb-2">
-          {card.startDate && card.endDate ? `${new Date(card.startDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} - ${new Date(card.endDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}` : 'Dates'} • {card.location}
-        </div>
-        <button className="mt-auto bg-yellow-300 text-black font-bold px-4 py-2 rounded-full text-center">Book now</button>
-      </div>
-    </div>
-  );
-}
 
 function FiltersSidebar() {
   const filters = ['Fest type', 'Date', 'Price', 'Ratings', 'Location'];
@@ -146,7 +122,7 @@ export default function MyFestPage() {
               )}
               {mainCards.map((card: Fest, idx: number) => (
                 <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
-                  <FestCard card={card} />
+                  <FestCard fest={card} />
                 </Link>
               ))}
             </div>
@@ -182,7 +158,7 @@ export default function MyFestPage() {
               )}
               {secondaryCards.map((card: Fest, idx: number) => (
                 <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
-                  <FestCard card={card} />
+                  <FestCard fest={card} />
                 </Link>
               ))}
             </div>
@@ -206,7 +182,7 @@ export default function MyFestPage() {
               )}
               {safeRecommended.map((card: Fest, idx: number) => (
                 <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
-                  <FestCard card={card} />
+                  <FestCard fest={card} />
                 </Link>
               ))}
             </div>

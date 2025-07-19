@@ -1,11 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-
 import { useRouter } from 'next/navigation';
-type Inputfield = {
-    input1: string;
-    input2: string;
-}
+
 type twofield = {
     input1: string;
     input3: string;
@@ -29,13 +25,7 @@ const addOns = [
     { label: 'Roles' },
 ];
 
-const initialRewards = [
-    { rank: '1st', cash: '₹2000', coupon: '', goodies: '' },
-    { rank: '2nd', cash: '₹1000', coupon: '', goodies: '' },
-    { rank: '3rd', cash: '₹500', coupon: '', goodies: '' },
-];
-
-export default function page() {
+export default function AddOnsPage() {
 
     const [Inputfield, setInputfields] = useState([{ input1: '', select: '' }]);
     const [currentStep, setCurrentStep] = useState(0);
@@ -421,7 +411,7 @@ export default function page() {
                             <span className='font-urbanist font-[700] text-[17px] pt-[1px]'>Add Event Details</span>
                         </button>
                         <ul className="ml-8 flex flex-col gap-3 mt-2">
-                            {steps.map((step, idx) => (
+                            {steps.map((step) => (
                                 <li key={step.label} className="flex items-center gap-2">
                                     <span className={`w-4 h-4 border-2 border-[#E6FF4C] rounded-full flex items-center justify-center `}>
                                         <span className={`w-2 h-2 rounded-full bg-[#E6FF4C]`}></span>
@@ -455,12 +445,12 @@ export default function page() {
                             Add ons
                         </button>
                         <ul className="ml-8 flex flex-col gap-3 mt-2">
-                            {addOns.map((item, idx) => (
+                            {addOns.map((item) => (
                                 <li key={item.label} className="flex items-center gap-2">
                                     <span className="w-4 h-4 border-2 border-[#E6FF4C] rounded-full flex items-center justify-center ">
-                                        <span className={`w-2 h-2 bg-[#181818] rounded-full  ${idx <= currentStep ? 'bg-[#E6FF4C]' : ''}`}></span>
+                                        <span className={`w-2 h-2 bg-[#181818] rounded-full  ${currentStep >= addOns.indexOf(item) ? 'bg-[#E6FF4C]' : ''}`}></span>
                                     </span>
-                                    <span className={`text-sm font-urbanist text-[14px] font-[600] ${idx <= currentStep ? 'text-white' : 'text-gray-400'}`}>{item.label}</span>
+                                    <span className={`text-sm font-urbanist text-[14px] font-[600] ${currentStep >= addOns.indexOf(item) ? 'text-white' : 'text-gray-400'}`}>{item.label}</span>
                                 </li>
                             ))}
                         </ul>

@@ -1,8 +1,5 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
-import Calender from '../../../public/assets/Calender.png'
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 const steps = [
   { label: 'Basics' },
