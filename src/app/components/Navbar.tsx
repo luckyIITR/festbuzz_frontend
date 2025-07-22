@@ -31,7 +31,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="relative z-10 flex  bg-[#000000] items-center justify-between px-6 py-4">
+      <nav className="relative z-10 flex  bg-[#101010] items-center justify-between px-6 py-4">
         {/* Logo */}
         <div className="flex items-center gap-2 bg-[#000000] px-5 py-2 rounded-2xl">
           <span className="font-extrabold text-lg tracking-tight text-[#E1FF01]">FEST</span>

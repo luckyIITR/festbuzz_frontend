@@ -26,7 +26,7 @@ interface EventEntry {
 const FestDashboard = () => {
   const params = useParams();
   const festId = params.festId as string;
-  
+
   // Loading and error state
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -132,17 +132,17 @@ const FestDashboard = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Technical': return 'bg-yellow-500 text-black';
-      case 'Cultural': return 'bg-pink-500 text-white';
-      case 'Sports': return 'bg-green-500 text-white';
-      case 'Workshop': return 'bg-blue-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'Technical': return 'bg-[#E1FF01] text-black';
+      case 'Cultural': return 'bg-[#FD3EB5] text-white';
+      case 'Sports': return 'bg-[#E1FF01] text-black';
+      case 'Workshop': return 'bg-[#FD3EB5] text-white';
+      default: return 'bg-[#FD3EB5] text-white';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Upcoming': return 'bg-gray-600 text-white';
+      case 'Upcoming': return 'bg-[#3C3C3C] text-[#E1FF01]';
       case 'Ongoing': return 'bg-green-600 text-white';
       case 'Completed': return 'bg-blue-600 text-white';
       default: return 'bg-gray-600 text-white';
@@ -173,19 +173,17 @@ const FestDashboard = () => {
       {/* Title Section */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full"></div>
-          </div>
+
           <h1 className="text-3xl font-bold">EVENT DASHBOARD</h1>
         </div>
         <p className="text-gray-400">Manage all events for {festData.name}</p>
       </div>
 
       {/* Fest Info Card */}
-      <div className="bg-gray-800 rounded-lg p-6 mb-8">
+      <div className="bg-[#1B1B1B] rounded-lg p-6 mb-8 w-full min-w-120 ">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">{festData.name}</h2>
+          <div className=''>
+            <h2 className="text-2xl font-bold mb-2 ">{festData.name}</h2>
             <p className="text-gray-400 mb-2">{festData.description}</p>
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
@@ -201,7 +199,7 @@ const FestDashboard = () => {
                 </svg>
                 {festData.date}
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(festData.status)}`}>
+              <span className={`px-3 py-1 rounded-full text-sm font-semibold  ${getStatusColor(festData.status)}`}>
                 {festData.status}
               </span>
             </div>
@@ -210,8 +208,8 @@ const FestDashboard = () => {
             <p className="text-sm text-gray-400">Registration Progress</p>
             <p className="text-2xl font-bold">{festData.totalRegistrations}/{festData.maxRegistrations}</p>
             <div className="w-32 bg-gray-600 rounded-full h-2 mt-1">
-              <div 
-                className="bg-yellow-500 h-2 rounded-full transition-all duration-300"
+              <div
+                className="bg-[#E1FF01] h-2 rounded-full transition-all duration-300"
                 style={{ width: `${getProgressPercentage(festData.totalRegistrations, festData.maxRegistrations)}%` }}
               ></div>
             </div>
@@ -230,14 +228,14 @@ const FestDashboard = () => {
             placeholder="Search events"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+            className="w-full pl-10 pr-4 py-3 bg-[#1B1B1B] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
           />
         </div>
-        
+
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="w-full sm:w-auto px-4 py-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+          className="w-full sm:w-auto px-4 py-3 bg-[#1B1B1B] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
         >
           <option>All categories</option>
           <option>Technical</option>
@@ -245,11 +243,11 @@ const FestDashboard = () => {
           <option>Sports</option>
           <option>Workshop</option>
         </select>
-        
+
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="w-full sm:w-auto px-4 py-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+          className="w-full sm:w-auto px-4 py-3 bg-[#1B1B1B] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
         >
           <option>All status</option>
           <option>Upcoming</option>
@@ -267,9 +265,9 @@ const FestDashboard = () => {
 
       {/* Event Table */}
       <div className="overflow-x-auto">
-        <div className="bg-gray-800 rounded-lg min-w-[800px]">
+        <div className="bg-[#1B1B1B] rounded-lg min-w-[800px]">
           {/* Table Header */}
-          <div className="bg-gray-700 px-6 py-4 grid grid-cols-6 gap-4 font-semibold text-xs sm:text-sm">
+          <div className="bg-[#313131] px-6 py-4 grid grid-cols-6 gap-4 font-semibold text-xs sm:text-sm">
             <div>Event details</div>
             <div>Category</div>
             <div>Status</div>

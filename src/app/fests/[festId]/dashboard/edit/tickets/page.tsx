@@ -121,9 +121,9 @@ export default function EditFestTickets() {
   if (isLoading && !form) return <div className="text-center py-10 text-pink-400">Loading fest details...</div>;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#23252B] via-[#1a1b1f] to-[#111215] px-2 sm:px-6 py-8">
-      <div className="w-full max-w-3xl bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-10 flex flex-col items-center transition-all duration-500">
-        <h2 className="text-2xl font-bold text-white mb-6">Edit Fest - Tickets</h2>
+    <div className="min-h-screen w-full flex items-center justify-center  bg-[#101010]px-2 sm:px-6 py-8">
+      <div className="w-full max-w-3xl  rounded-3xl p-6 sm:p-10 flex flex-col items-center transition-all duration-500">
+        <h2 className="text-2xl font-bold font-urbanist text-white mb-6">Edit Fest - Tickets</h2>
         <Step3Tickets form={form} setForm={setForm} handleNext={handleNext} handleBack={handleBack} />
       </div>
     </div>

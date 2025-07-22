@@ -7,7 +7,7 @@ interface SummaryCardProps {
 }
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ icon, label, value }) => (
-  <div className="bg-gray-800 rounded-lg p-6 flex items-center gap-4">
+  <div className="bg-[#1B1B1B] rounded-lg p-6 flex items-center gap-4">
     <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl">
       {icon}
     </div>
