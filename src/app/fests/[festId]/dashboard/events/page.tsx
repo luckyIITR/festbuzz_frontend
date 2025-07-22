@@ -1,7 +1,9 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-
+import { useRecommendedFests } from '@/hooks/useRecommendedFests';
+import { Fest } from '@/types/fest';
+import FestCard from '@/app/components/FestCard';
 const mockEvents = [
   {
     id: '1',
@@ -47,7 +49,12 @@ const tabs = [
 export default function EventsDashboardPage() {
   const [tab, setTab] = useState('Draft');
   const events = mockEvents.filter(e => e.status === tab);
-
+  const { data: recommended, isLoading: isLoadingRecommended, error: errorRecommended } = useRecommendedFests() as {
+    data: Fest[] | undefined;
+    isLoading: boolean;
+    error: Error | string | null;
+  };
+  const safeRecommended: Fest[] = Array.isArray(recommended) ? recommended : [];
   return (
     <div className="min-h-screen bg-[#18191C] text-white relative p-4 md:p-8">
       {/* Tabs */}
@@ -64,31 +71,8 @@ export default function EventsDashboardPage() {
       </div>
       {/* Event Cards */}
       <div className="flex flex-wrap gap-8 justify-start">
-        {events.map(event => (
-          <div key={event.id} className="bg-[#232428] rounded-2xl shadow-lg w-[300px] flex flex-col overflow-hidden relative">
-            <div className="h-40 w-full relative">
-              <Image src={event.image} alt={event.name} fill className="object-cover w-full h-full" />
-            </div>
-            <div className="p-4 flex-1 flex flex-col">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold truncate max-w-[180px]">{event.name}</h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400">{event.active ? 'Active' : 'Inactive'}</span>
-                  <span className={`w-8 h-5 flex items-center rounded-full px-1 ${event.active ? 'bg-yellow-300' : 'bg-gray-700'}`}>
-                    <span className={`w-3 h-3 rounded-full transition-all ${event.active ? 'bg-black translate-x-3' : 'bg-gray-400'}`}></span>
-                  </span>
-                </div>
-              </div>
-              <div className="text-gray-400 text-xs mb-1">{event.category}</div>
-              <div className="text-gray-400 text-xs mb-1">{event.fest}</div>
-              <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
-                <span>📍 {event.venue}</span>
-                <span>•</span>
-                <span>📅 {event.date}</span>
-              </div>
-              <button className="mt-auto w-full bg-black text-[#E1FD0C] font-semibold py-2 rounded-xl hover:bg-gray-900 transition-colors text-base">View details</button>
-            </div>
-          </div>
+        {safeRecommended.map((card: Fest, idx: number) => (
+          <FestCard fest={card} key={idx} />
         ))}
       </div>
       {/* Create Event Button */}

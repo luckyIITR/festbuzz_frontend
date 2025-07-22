@@ -30,19 +30,19 @@ const StateDropdown: React.FC<Props> = ({ value, onChange }) => {
             <button
                 type="button"
                 onClick={() => setOpen(!open)}
-                className="w-full bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 text-white shadow-md focus:ring-2 focus:ring-lime-400 transition-all text-left"
+                className="w-full bg-[#252525] font-urbanist font-[600]  backdrop-blur-md rounded-xl px-4 py-3 text-[#565656] shadow-md transition-all text-left"
             >
                 {value || 'State / Union Territory'}
             </button>
 
 
             {open && (
-                <ul className="absolute z-10 mt-1 w-full max-h-48 overflow-auto rounded-xl bg-[#2e2e2e] shadow-lg ring-1 ring-lime-400 ring-opacity-30">
+                <ul className="absolute z-10 mt-1 w-full max-h-48 overflow-auto  rounded-xl bg-[#252525] shadow-lg ring-1 ring-[#E1FF01] ring-opacity-30">
                     {statesAndUTs.map((item) => (
                         <li
                             key={item}
                             onClick={() => handleSelect(item)}
-                            className="px-4 py-2 text-white hover:bg-lime-600 cursor-pointer"
+                            className="px-4 py-2 text-white  cursor-pointer font-urbanist font-[600] text-[18px] "
                         >
                             {item}
                         </li>

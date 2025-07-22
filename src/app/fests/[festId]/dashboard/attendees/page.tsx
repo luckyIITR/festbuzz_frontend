@@ -43,7 +43,7 @@ export default function AttendeesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8">
+    <div className="min-h-screen bg-[#101010] text-white p-4 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Attendees</h1>
         <p className="text-gray-400">List of all registered participants for this fest</p>
@@ -58,13 +58,13 @@ export default function AttendeesPage() {
             placeholder="Search attendees"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+            className="w-full pl-10 pr-4 py-3 bg-[#1E1E1E] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
           />
         </div>
       </div>
-      <div className="bg-gray-800 rounded-lg overflow-x-auto">
+      <div className="bg-[#161616] rounded-lg overflow-x-auto">
         <div className="min-w-[700px]">
-          <div className="bg-gray-700 px-6 py-4 grid grid-cols-5 gap-4 font-semibold text-xs sm:text-sm">
+          <div className="bg-[#1E1E1E] text-[#E1FF01] px-6 py-4 grid grid-cols-5 gap-4 font-semibold text-xs sm:text-sm">
             <div>Name</div>
             <div>Email</div>
             <div>Phone</div>

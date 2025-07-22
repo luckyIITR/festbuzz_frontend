@@ -1,7 +1,8 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-
+import Image from 'next/image';
+import pinkdiamond from '../../../public/assets/PinkDiamond.png'
 interface FestEntry {
   id: string;
   name: string;
@@ -105,7 +106,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-[#101010] text-white">
       {/* Header */}
       
 
@@ -114,9 +115,7 @@ const Dashboard = () => {
         {/* Title Section */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-            </div>
+            <Image src={pinkdiamond} alt='' className='w-7 '/>
             <h1 className="text-3xl font-bold">DASHBOARD</h1>
           </div>
           <p className="text-gray-400">Manage all fests and their events</p>
@@ -133,14 +132,14 @@ const Dashboard = () => {
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+              className="w-full pl-10 pr-4 py-3 bg-[#1B1B1B] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
             />
           </div>
           
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="w-full sm:w-auto px-4 py-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+            className="w-full sm:w-auto px-4 py-3 bg-[#1B1B1B] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
           >
             <option>All categories</option>
             <option>Technical</option>
@@ -150,7 +149,7 @@ const Dashboard = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-auto px-4 py-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+            className="w-full sm:w-auto px-4 py-3 bg-[#1B1B1B] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
           >
             <option>All status</option>
             <option>Upcoming</option>
@@ -161,7 +160,7 @@ const Dashboard = () => {
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
           {summaryStats.map((stat, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg p-6 flex items-center gap-4">
+            <div key={index} className="bg-[#1B1B1B] rounded-lg p-6 flex items-center gap-4">
               <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl">
                 {stat.icon}
               </div>
@@ -175,9 +174,9 @@ const Dashboard = () => {
 
         {/* Fest Table */}
         <div className="overflow-x-auto">
-          <div className="bg-gray-800 rounded-lg min-w-[700px]">
+          <div className="bg-[#1B1B1B] rounded-lg min-w-[700px]">
             {/* Table Header */}
-            <div className="bg-gray-700 px-6 py-4 grid grid-cols-5 gap-4 font-semibold text-xs sm:text-sm">
+            <div className="bg-[#313131] px-6 py-4 grid grid-cols-5 gap-4 font-semibold text-xs sm:text-sm">
               <div>Fest details</div>
               <div>Status</div>
               <div>Events</div>
@@ -194,7 +193,7 @@ const Dashboard = () => {
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-lg">{fest.name} {fest.year}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        fest.category === 'Technical' ? 'bg-yellow-500 text-black' : 'bg-pink-500 text-white'
+                        fest.category === 'Technical' ? 'bg-[#E1FF01] text-black' : 'bg-[#FD3EB5] text-white'
                       }`}>
                         {fest.category}
                       </span>
@@ -237,7 +236,7 @@ const Dashboard = () => {
                     <p className="font-bold">{fest.registrations.current}/{fest.registrations.max}</p>
                     <div className="w-full bg-gray-600 rounded-full h-2 mt-1">
                       <div 
-                        className="bg-yellow-500 h-2 rounded-full transition-all duration-300"
+                        className="bg-[#E1FF01] h-2 rounded-full transition-all duration-300"
                         style={{ width: `${getProgressPercentage(fest.registrations.current, fest.registrations.max)}%` }}
                       ></div>
                     </div>
