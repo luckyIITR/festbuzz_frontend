@@ -124,9 +124,8 @@ const Pages = () => {
         <div className="font-urbanist font-[700] text-[16px] mt-10">Current team member</div>
  <div className="flex flex-col gap-2 mt-5">
         {team.map((member, index) => (
-         <div className="flex gap-2  ">
+         <div key={index} className="flex gap-2  ">
             <input
-              key={index}
               className="px-6 py-4 bg-[#2C2C2C] w-80 font-urbanist text-[16px] rounded-xl font-semibold text-[#FFFFF] placeholder:text-[#CFCFCF]"
               placeholder="Name"
               readOnly={!isEditing}

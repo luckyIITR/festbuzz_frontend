@@ -66,7 +66,6 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
   handleSponsorInput,
   handleQuestionInput,
   handleSubmit,
-  handleBack,
 }) => {
   return (
     <form className="w-full max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={handleSubmit}>

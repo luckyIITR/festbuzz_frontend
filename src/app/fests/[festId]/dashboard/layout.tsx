@@ -1,8 +1,7 @@
 'use client';
 import Sidebar from './Sidebar';
-import { ReactElement, ReactEventHandler, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { ReactFormState } from 'react-dom/client';
 import whiteDiamond from '../../../../../public/assets/WhiteDiamond.png'
 import Image from 'next/image';
 const sectionTitles: Record<string, string> = {

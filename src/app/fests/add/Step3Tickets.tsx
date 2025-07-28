@@ -38,7 +38,7 @@ interface Step3TicketsProps {
   handleBack: () => void;
 }
 
-const Step3Tickets: React.FC<Step3TicketsProps> = ({ form, setForm, handleNext, handleBack }) => {
+const Step3Tickets: React.FC<Step3TicketsProps> = ({ form, setForm, handleNext }) => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));

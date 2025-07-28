@@ -39,7 +39,7 @@ interface Step2AboutFestProps {
   handleTextArea: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const Step2AboutFest: React.FC<Step2AboutFestProps> = ({ form, setForm, handleNext, handleBack, handleTextArea }) => {
+const Step2AboutFest: React.FC<Step2AboutFestProps> = ({ form, setForm, handleNext, handleTextArea }) => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
