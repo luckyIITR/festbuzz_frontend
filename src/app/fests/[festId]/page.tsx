@@ -7,8 +7,36 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Event } from '@/types/fest';
+import { useRef, useState, useEffect } from 'react';
 
 export default function FestDetailsPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play();
+    }
+  }, []);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   const params = useParams();
   const festId = params?.festId as string;
   const { data: fest, isLoading: festLoading, error: festError } = useFest(festId);
@@ -254,7 +282,30 @@ export default function FestDetailsPage() {
           )}
         </div>
       </div>
+      <div className="relative w-4/5 h-120 m-auto">
+        <video
+          ref={videoRef}
+          className="w-full h-full bg-[#393939] rounded-2xl object-cover"
+          src="/assets/sample.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        ></video>
 
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-4 right-4 px-3 py-1 text-sm bg-black text-white rounded"
+        >
+          {isMuted ? 'Unmute' : 'Mute'}
+        </button>
+        <button
+          onClick={togglePlay}
+          className="absolute bottom-4 left-4 bg-black text-white px-4 py-2 rounded-xl shadow-md"
+        >
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+      </div>
       {/* Call-to-Action Banner */}
       <div className="max-w-3xl mx-auto px-4 md:px-8 py-12 flex flex-col items-center text-center">
         <span className="inline-block w-8 h-8 bg-pink-500 rounded-full mb-4 animate-pulse" />

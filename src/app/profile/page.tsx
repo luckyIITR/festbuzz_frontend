@@ -588,12 +588,12 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <div className="lg:col-span-2 ">
-          <div className="bg-[#181818] rounded-xl  p-6">
-            <h2 className="text-xl font-bold text-[#E1FF01] ">
-              {isEditing ? 'Edit Profile' : 'Profile Details'}
-            </h2>
-            <div className="lg:col-span-1">
+        <div className="lg:col-span-2 bg-[#181818] rounded-xl md:p-6 p-3 ">
+          <div className="">
+            <div className='flex justify-between mb-5 md:mb-10'>
+              <h2 className="text-xl font-bold text-[#E1FF01] ">
+                {isEditing ? 'Edit Profile' : 'Profile Details'}
+              </h2>
               <div className="bg-[#181818] rounded-xl  ">
                 <div className="flex items-center justify-between ">
                   <h2 className="text-xl font-bold"></h2>
@@ -605,246 +605,249 @@ export default function ProfilePage() {
                     {isEditing ? 'Cancel' : 'Edit'}
                   </button>
                 </div>
+              </div>
+            </div>
+            <div className="lg:col-span-1 ">
 
-                {/* Profile Image */}
 
-                <div className='flex gap-5 relative  items-center'>
-                  <div className="w-20 h-20 ml-4 bg-lime-400 rounded-full flex items-center justify-center mb-4">
-                    <span className="text-black font-bold text-2xl">
-                      {user.name?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  {isEditing && (
-                    <button className="absolute bottom-0 left-20 bg-blue-600 p-1 rounded-full hover:bg-blue-700 transition">
-                      <Camera size={12} className="text-white" />
-                    </button>
-                  )}
-                  <div className='w-60 mb-2 text-left text-[#4E4E4E] font-urbanist font-[700]  text-[16px]/5 '>At least 800x800 px recommend JPG or PNG is allowed</div>
+              {/* Profile Image */}
+
+              <div className='flex gap-5 relative  items-center'>
+                <div className="w-20 md:h-20 h-15 ml-4 bg-lime-400 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-black font-bold text-2xl">
+                    {user.name?.charAt(0).toUpperCase()}
+                  </span>
                 </div>
+                {isEditing && (
+                  <button className="absolute bottom-0 left-20 bg-blue-600 p-1 rounded-full hover:bg-blue-700 transition">
+                    <Camera size={12} className="text-white" />
+                  </button>
+                )}
+                <div className='w-60 mb-2 text-left text-[#4E4E4E] font-urbanist font-[700]  text-[16px]/5 '>At least 800x800 px recommend JPG or PNG is allowed</div>
+              </div>
 
-                {/* Profile Stats */}
-                <div className="  space-y-4 mt-6 mb-6">
-                  <div className='text-[#E1FF01] font-urbanist font-[700]'>Profle Stats  </div>
-                  <div className='flex justify-between'>
-                    <div className="flex items-center justify-between p-3 bg-[#2C2C2C] rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Award className="text-blue-400" size={20} />
-                        <div>
-                          <p className="text-sm text-gray-400">Fests Registered</p>
-                          <p className="font-semibold">{user.totalFestsRegistered || 0}</p>
-                        </div>
+              {/* Profile Stats */}
+              <div className="  space-y-4 mt-6 mb-6">
+                <div className='text-[#E1FF01] font-urbanist font-[700]'>Profle Stats  </div>
+                <div className='flex justify-between flex-col md:flex-row  gap-2 md:gap-0'>
+                  <div className="flex items-center justify-between p-3 bg-[#2C2C2C] rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Award className="text-blue-400" size={20} />
+                      <div>
+                        <p className="text-sm text-gray-400">Fests Registered</p>
+                        <p className="font-semibold">{user.totalFestsRegistered || 0}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-[#2C2C2C] rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <BookOpen className="text-green-400" size={20} />
-                        <div>
-                          <p className="text-sm text-gray-400">Events Registered</p>
-                          <p className="font-semibold">{user.totalEventsRegistered || 0}</p>
-                        </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-[#2C2C2C] rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <BookOpen className="text-green-400" size={20} />
+                      <div>
+                        <p className="text-sm text-gray-400">Events Registered</p>
+                        <p className="font-semibold">{user.totalEventsRegistered || 0}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-[#2C2C2C] rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Settings className="text-yellow-400" size={20} />
-                        <div>
-                          <p className="text-sm text-gray-400">Total Spent</p>
-                          <p className="font-semibold">₹{(user.totalAmountPaid || 0).toLocaleString()}</p>
-                        </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-[#2C2C2C] rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Settings className="text-yellow-400" size={20} />
+                      <div>
+                        <p className="text-sm text-gray-400">Total Spent</p>
+                        <p className="font-semibold">₹{(user.totalAmountPaid || 0).toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className='font-urbanist text-[#E1FF01] font-[700] mb-6'>Personal info</div>
-            {isEditing ? (
-              <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="+91 98765 43210"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      College/University
-                    </label>
-                    <input
-                      type="text"
-                      name="college"
-                      value={formData.college}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="e.g., IIT Roorkee"
-                    />
-                  </div>
-
-
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Gender
-                    </label>
-                    <select
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Date of Birth
-                    </label>
-                    <input
-                      type="date"
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
+          </div>
+          <div className='font-urbanist text-[#E1FF01] font-[700] mb-6'>Personal info</div>
+          {isEditing ? (
+            <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-6  ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6  ">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Address
+                    Phone Number
                   </label>
-                  <textarea
-                    name="address"
-                    value={formData.address}
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
                     onChange={handleInputChange}
-                    rows={3}
                     className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter your address"
+                    placeholder="+91 98765 43210"
                   />
                 </div>
 
-                <div className="flex gap-4">
-                  <button
-                    type="submit"
-                    disabled={updateProfileMutation.isPending}
-                    className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-                  >
-                    <Save size={16} />
-                    {updateProfileMutation.isPending ? 'Saving...' : 'Save Changes'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCancel}
-                    className="px-6 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-center gap-3">
-                    <User className="text-blue-400" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">Full Name</p>
-                      <p className="font-medium">{user.name}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Mail className="text-green-400" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">Email</p>
-                      <p className="font-medium">{user.email}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Phone className="text-yellow-400" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">Phone</p>
-                      <p className="font-medium">{user.phone || 'Not provided'}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <GraduationCap className="text-purple-400" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">College</p>
-                      <p className="font-medium">{user.college || 'Not provided'}</p>
-                    </div>
-                  </div>
-
-
-
-                  <div className="flex items-center gap-3">
-                    <User className="text-orange-400" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">Gender</p>
-                      <p className="font-medium capitalize">{user.gender || 'Not specified'}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Calendar className="text-teal-400" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">Date of Birth</p>
-                      <p className="font-medium">
-                        {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
-                      </p>
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    College/University
+                  </label>
+                  <input
+                    type="text"
+                    name="college"
+                    value={formData.college}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., IIT Roorkee"
+                  />
                 </div>
 
-                {user.address && (
-                  <div className="flex items-start gap-3">
-                    <MapPin className="text-red-400 mt-1" size={20} />
-                    <div>
-                      <p className="text-sm text-gray-400">Address</p>
-                      <p className="font-medium">{user.address}</p>
-                    </div>
-                  </div>
-                )}
 
-                <div className="pt-4 border-t border-zinc-800">
-                  <p className="text-sm text-gray-400">
-                    Member since: {user.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'Recently joined'}
-                  </p>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Gender
+                  </label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Date of Birth
+                  </label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
               </div>
-            )}
-          </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Address
+                </label>
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-4 py-2 bg-[#2C2C2C] border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter your address"
+                />
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  disabled={updateProfileMutation.isPending}
+                  className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                >
+                  <Save size={16} />
+                  {updateProfileMutation.isPending ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="px-6 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-center gap-3">
+                  <User className="text-blue-400" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Full Name</p>
+                    <p className="font-medium">{user.name}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Mail className="text-green-400" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Email</p>
+                    <p className="font-medium">{user.email}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Phone className="text-yellow-400" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Phone</p>
+                    <p className="font-medium">{user.phone || 'Not provided'}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <GraduationCap className="text-purple-400" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">College</p>
+                    <p className="font-medium">{user.college || 'Not provided'}</p>
+                  </div>
+                </div>
+
+
+
+                <div className="flex items-center gap-3">
+                  <User className="text-orange-400" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Gender</p>
+                    <p className="font-medium capitalize">{user.gender || 'Not specified'}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Calendar className="text-teal-400" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Date of Birth</p>
+                    <p className="font-medium">
+                      {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {user.address && (
+                <div className="flex items-start gap-3">
+                  <MapPin className="text-red-400 mt-1" size={20} />
+                  <div>
+                    <p className="text-sm text-gray-400">Address</p>
+                    <p className="font-medium">{user.address}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-4 border-t border-zinc-800">
+                <p className="text-sm text-gray-400">
+                  Member since: {user.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'Recently joined'}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-
-
       </div>
+
+
     </div>
   )
 }
