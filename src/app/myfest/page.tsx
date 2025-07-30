@@ -8,7 +8,8 @@ import { useRegisteredFests } from '@/hooks/useRegisteredFests';
 import { useRecommendedFests } from '@/hooks/useRecommendedFests';
 import { Fest } from '@/types/fest';
 import FestCard from '../components/FestCard';
-
+import EventCard from '../components/EventCard';
+import GradientFestCard from '../components/GradientFestCard';
 const tabs = ['Upcoming', 'On Going', 'Past'];
 const secondaryTabs = ['Recently viewed', 'Wishlist', 'Registered'];
 
@@ -94,11 +95,10 @@ export default function MyFestPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(idx)}
-              className={`px-8 py-2 rounded-full font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0057FF] ${
-                idx === activeTab
+              className={`px-8 py-2 rounded-full font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0057FF] ${idx === activeTab
                   ? 'bg-[#0057FF] text-white shadow-lg'
                   : 'bg-[#23252B] text-white'
-              }`}
+                }`}
             >
               {tab}
             </button>
@@ -108,7 +108,7 @@ export default function MyFestPage() {
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             {/* Event Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-8 mb-12 ">
               {isLoadingMyFests && <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center">Loading...</div>}
               {errorMyFests && (
                 typeof errorMyFests === 'string' ? (
@@ -121,8 +121,8 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {mainCards.map((card: Fest, idx: number) => (
-                <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
-                  <FestCard fest={card} />
+                <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className=" rounded-2xl overflow-hidden shadow-lg flex flex-col  transition cursor-pointer w-full">
+                  <GradientFestCard fest={card} />
                 </Link>
               ))}
             </div>
@@ -133,11 +133,10 @@ export default function MyFestPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveSecondaryTab(idx)}
-                  className={`px-8 py-2 rounded-full font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF3EB2] ${
-                    idx === activeSecondaryTab
+                  className={`px-8 py-2 rounded-full font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF3EB2] ${idx === activeSecondaryTab
                       ? 'bg-[#FF3EB2] text-white shadow-lg'
                       : 'bg-[#23252B] text-white'
-                  }`}
+                    }`}
                 >
                   {tab}
                 </button>
@@ -158,7 +157,7 @@ export default function MyFestPage() {
               )}
               {secondaryCards.map((card: Fest, idx: number) => (
                 <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
-                  <FestCard fest={card} />
+                  <EventCard fest={card} />
                 </Link>
               ))}
             </div>

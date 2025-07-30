@@ -3,21 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import LocationImage from '../../../public/assets/Location.png';
-import DateImage from '../../../public/assets/Calender.png';
 import { useFests } from '@/hooks/useFests';
 import { Fest } from '@/types/fest';
-
+import LocationImage from '../../../public/assets/Location.png';
+import DateImage from '../../../public/assets/Calender.png';
+import { useEvent } from '@/hooks/useEvent';
+import { Event } from '@/types/fest';
 interface FestCardProps {
-    fest?: Fest;
-    fests?: Fest[];
+    fest?: Event;
+    fests?: Event[];
 }
 
-const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
-    const { data: fetchedFests, isLoading, error } = useFests()
-    const fests = fetchedFests || propFests
+const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
+    const { data: fetchedFests, isLoading, error } = useFests();
+
+    // Use prop fests if provided, otherwise use fetched fests
+    const fests = propFests || fetchedFests;
+
     const [heartcolor, setHeartcolor] = useState<string[]>([]);
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
     useEffect(() => {
         setHeartcolor(new Array(fests?.length || 0).fill('fill-none'));
     }, [fests?.length]);
@@ -28,9 +33,7 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
         setHeartcolor(newcolor);
     };
 
-    if (isLoading) return <div className="text-white">Loading...</div>;
-    if (error) return <div className="text-red-500">Error loading fests</div>;
-
+    // If a single fest is provided, render just that one
     if (fest) {
         const truncated = fest.name.length > 27 ? fest.name.slice(0, 25) + ' ...' : fest.name;
         const displayName = hoverIndex === 0 ? fest.name : truncated;
@@ -63,17 +66,16 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                         maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%)',
                     }}
                 />
-
-                {/* Card content */}
                 <div className="relative z-10">
                     <Image
-                        src={fest.bannerImage || fest.heroImage || '/assets/CardImage.png'}
-                        alt="Event"
-                        width={284} // match card width
+                        src={fest.bannerImage || '/assets/CardImage.png'}
+                        alt="Fest"
+                        width={284}
                         height={160}
-                        className="object-cover rounded-[10px]"
+                        className="w-full h-[160px] object-cover rounded-[10px]"
                     />
 
+                    {/* Fest name with scroll on hover */}
                     <div
                         style={{
                             overflowX: 'auto',
@@ -81,10 +83,8 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                             whiteSpace: 'nowrap',
                             scrollbarWidth: 'thin',
                             scrollbarColor: '#FD3EB5 transparent',
-                            WebkitAppearance: 'none',
-                            msOverflowStyle: 'none',
                         }}
-                        className="ml-1 mr-0.5 mt-3 text-[20px] font-urbanist font-[500] h-[5vh] cursor-pointer hide-chrome-scroll-arrows"
+                        className="ml-1 mr-0.5 mt-3 text-[20px] font-urbanist font-[500] h-[4.5vh] cursor-pointer cross-browser-scroll"
                         onMouseEnter={() => setHoverIndex(0)}
                         onMouseLeave={() => setHoverIndex(null)}
                     >
@@ -139,7 +139,7 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                         </div>
 
                         <div className="flex flex-col text-right mr-2">
-                            <div className="font-urbanist font-[800] text-[#E1FF01] text-[22px]">
+                            <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
                                 ₹{fest.price || 0}
                             </div>
                             <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
@@ -148,14 +148,13 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                         </div>
                     </div>
 
-                    <Link href={`/fests/${fest._id || fest.id}`}>
-                        <button className="mt-3 h-8 rounded-xl mx-1 bg-[#E1FF01] w-full hover:ring-2 hover:ring-white text-[#0248F780] transition cursor-pointer font-urbanist font-[700]">
-                            View Info
-                        </button>
-                    </Link>
+                    <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-white text-[#FFFFFF] transition cursor-pointer font-urbanist font-[700]">
+                        View Info
+                    </button>
 
-                    <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#E1FF01]">
-                        {fest.categories?.[0] || 'General'}
+
+                    <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
+                        {fest.category?.[0] || 'General'}
                     </div>
 
                     <div
@@ -185,14 +184,12 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
     // Original behavior for grid of fests
     if (isLoading) return <div className="text-white">Loading...</div>;
     if (error) return <div className="text-red-500">Error loading fests</div>;
+
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
             {fests?.map((fest, i) => {
                 const isHovering = hoverIndex === i;
-                const truncated =
-                    fest.name.length > 27
-                        ? fest.name.slice(0, 25) + ' ...'
-                        : fest.name;
+                const truncated = fest.name.length > 27 ? fest.name.slice(0, 25) + ' ...' : fest.name;
                 const displayName = isHovering ? fest.name : truncated;
 
                 return (
@@ -227,7 +224,7 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                         {/* Card content */}
                         <div className="relative z-10">
                             <Image
-                                src={fest.bannerImage || fest.heroImage || '/assets/CardImage.png'}
+                                src={fest.bannerImage || '/assets/CardImage.png'}
                                 alt="Event"
                                 width={284} // match card width
                                 height={160}
@@ -318,7 +315,7 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                                 </div>
 
                                 <div className="flex flex-col text-right mr-2">
-                                    <div className="font-urbanist font-[800] text-[#E1FF01] text-[22px]">
+                                    <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
                                         ₹{fest.price || 0}
                                     </div>
                                     <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
@@ -328,13 +325,13 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                             </div>
 
                             <Link href={`/fests/${i}`}>
-                                <button className="mt-3 h-8 rounded-xl mx-1 bg-[#E1FF01] w-full hover:ring-2 hover:ring-[#FD3EB5]  transition cursor-pointer text-[#0248F780] font-urbanist font-[700]">
+                                <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-[#FD3EB5]  transition cursor-pointer text-[#FFFFFF] font-urbanist font-[700]">
                                     View Info
                                 </button>
                             </Link>
 
-                            <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#E1FF01]">
-                                {fest.categories?.[i] || 'General'}
+                            <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
+                                {'General'}
                             </div>
 
                             <div
@@ -358,12 +355,10 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                             </div>
                         </div>
                     </div>
-
                 );
             })}
         </div>
     );
 };
 
-export default GradientFestCard;
-
+export default FestCard;
