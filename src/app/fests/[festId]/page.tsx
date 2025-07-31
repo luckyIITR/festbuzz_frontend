@@ -7,8 +7,36 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Event } from '@/types/fest';
-
+import { useRef, useState, useEffect } from 'react';
+import FestCard from '@/app/components/FestCard';
 export default function FestDetailsPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play();
+    }
+  }, []);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   const params = useParams();
   const festId = params?.festId as string;
   const { data: fest, isLoading: festLoading, error: festError } = useFest(festId);
@@ -178,31 +206,7 @@ export default function FestDetailsPage() {
               ) : events && events.length > 0 ? (
                 events.map((event: Event) => (
                   <Link key={event.id} href={`/fests/${festId}/events/${event.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
-                    <Image
-                      src={event.image || event.bannerImage || 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80'}
-                      alt={event.name}
-                      width={600}
-                      height={160}
-                      className="w-full h-40 object-cover"
-                    />
-                    <button className="absolute top-3 right-3 bg-black/60 rounded-full p-2 text-white hover:text-pink-400 transition">
-                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-                    <div className="p-4 flex-1 flex flex-col">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="font-bold text-lg">{event.name}</span>
-                        <span className="font-bold text-white">₹{event.price}</span>
-                      </div>
-                      <div className="text-gray-400 text-xs mb-2">
-                        @ {event.location || fest.location}<br />
-                        📅 {formatDateRange(event.startDate, event.endDate)}
-                      </div>
-                      <span className="mt-auto bg-lime-300 text-black font-bold px-4 py-2 rounded-full text-center">
-                        Participate now
-                      </span>
-                    </div>
+                    <FestCard fest={event} />
                   </Link>
                 ))
               ) : (
@@ -254,7 +258,30 @@ export default function FestDetailsPage() {
           )}
         </div>
       </div>
+      <div className="relative w-4/5 h-120 m-auto">
+        <video
+          ref={videoRef}
+          className="w-full h-full bg-[#393939] rounded-2xl object-cover"
+          src="/assets/sample.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        ></video>
 
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-4 right-4 px-3 py-1 text-sm bg-black text-white rounded"
+        >
+          {isMuted ? 'Unmute' : 'Mute'}
+        </button>
+        <button
+          onClick={togglePlay}
+          className="absolute bottom-4 left-4 bg-black text-white px-4 py-2 rounded-xl shadow-md"
+        >
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+      </div>
       {/* Call-to-Action Banner */}
       <div className="max-w-3xl mx-auto px-4 md:px-8 py-12 flex flex-col items-center text-center">
         <span className="inline-block w-8 h-8 bg-pink-500 rounded-full mb-4 animate-pulse" />

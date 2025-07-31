@@ -5,11 +5,11 @@ const ProfileLayout = ({ children }: { children: ReactNode }) => {
 
     return (
         <div className='min-h-screen'>
-            <div className='flex gap-4 h-full' >
-                <div className='w-1/7 pt-8 h-full'>
+            <div className='flex md:flex-row flex-col gap-4 h-full' >
+                <div className='md:w-1/7 pt-8 h-full md:overflow-hidden overflow-auto'>
                     <Sidebar  />
                 </div>
-                <main className='w-6/7 mr-6'>
+                <main className=' w-screen md:w-6/7 md:mr-6 mr-0'>
                     {children}
                 </main>
             </div>

@@ -111,7 +111,7 @@ const Pages = () => {
           ))}
         </div>
 
-        <div className="flex gap-8 mt-10">
+        <div className="flex md:flex-row flex-col gap-8 mt-10">
           <div className="flex flex-col gap-2">
             <div className=" font-urbanist font-[700] text-[16px]">Your Team Name</div>
             <input className="px-6 py-4 bg-[#2C2C2C] font-urbanist text-[16px] rounded-xl font-semibold font-urbanist text-[#FFFFF] placeholder:text-[#CFCFCF]" placeholder="Team Name" readOnly={!isEditing} />

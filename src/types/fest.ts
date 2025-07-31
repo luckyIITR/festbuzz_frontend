@@ -18,7 +18,7 @@ export interface Event {
   id: string;
   name: string;
   description?: string;
-  price: number;
+  price?: number;
   startDate: string;
   endDate: string;
   location?: string;

@@ -25,8 +25,8 @@ const pages = () => {
             type='email' />
 
           <div className='flex w-full content-center justify-center flex-wrap gap-4'>
-            <input type="text" placeholder='Your Message' className='h-40 w-5/6 bg-[#1D1D1D] rounded-xl text-[#565656] px-4' />
-            <select name="" id="" className='w-45 bg-[#252525] h-10 rounded-xl pl-2 '>
+            <input type="text" placeholder='Your Message' className='h-40 md:w-5/6 w-full bg-[#1D1D1D] rounded-xl text-[#565656] px-4' />
+            <select name="" id="" className='md:w-45 w-full bg-[#252525] h-10 rounded-xl pl-2 '>
               <option value="">Message Type</option>
               <option value="">Fest related</option>
               <option value="">Event related</option>
