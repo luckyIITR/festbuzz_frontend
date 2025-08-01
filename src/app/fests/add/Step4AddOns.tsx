@@ -66,6 +66,7 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
   handleSponsorInput,
   handleQuestionInput,
   handleSubmit,
+  handleBack,
 }) => {
   return (
     <form className="w-full max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={handleSubmit}>
@@ -209,9 +210,14 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
           <span className="text-yellow-300 font-bold">Page 4 out 4</span><br />
           <span className="font-urbanist font-[500] text-[16px] text-[#818181]">You can easily manage these details later in manage event section.</span>
         </div>
-        <button type="submit" className="bg-[#0248F7] text-[#E1FF01] font-bold px-12 py-3 rounded-full text-lg shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-pink-400">
-          Submit
-        </button>
+        <div className="flex gap-4">
+          <button type="button" onClick={handleBack} className="bg-gray-600 hover:bg-gray-500 text-white font-bold px-8 py-3 rounded-full text-lg shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer">
+            Back
+          </button>
+          <button type="submit" className="bg-[#0248F7] text-[#E1FF01] font-bold px-12 py-3 rounded-full text-lg shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-pink-400 cursor-pointer">
+            Submit
+          </button>
+        </div>
       </div>
     </form>
   );

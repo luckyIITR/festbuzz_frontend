@@ -39,7 +39,7 @@ interface Step2AboutFestProps {
   handleTextArea: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const Step2AboutFest: React.FC<Step2AboutFestProps> = ({ form, setForm, handleNext, handleTextArea }) => {
+const Step2AboutFest: React.FC<Step2AboutFestProps> = ({ form, setForm, handleNext, handleBack, handleTextArea }) => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -116,9 +116,18 @@ const Step2AboutFest: React.FC<Step2AboutFestProps> = ({ form, setForm, handleNe
           <span className="text-yellow-300 font-bold">Page 2 out 4</span><br />
           <span className="font-urbanist font-[500] text-[16px] text-[#818181]">You can easily manage these details later in manage event section.</span>
         </div>
-        <button type="submit" className="bg-[#0248F7] text-[#E1FF01] font-bold px-12 py-3 rounded-full text-lg shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-pink-400">
-          Next
-        </button>
+        <div className="flex gap-3">
+          <button 
+            type="button" 
+            onClick={handleBack}
+            className="bg-gray-600 hover:bg-gray-500 text-white font-bold px-8 py-3 rounded-full text-lg shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
+          >
+            Back
+          </button>
+          <button type="submit" className="bg-[#0248F7] text-[#E1FF01] font-bold px-12 py-3 rounded-full text-lg shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-pink-400 cursor-pointer">
+            Next
+          </button>
+        </div>
       </div>
     </form>
   );

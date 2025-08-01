@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import SummaryCard from './SummaryCard';
 import EventRow from './EventRow';
 import { useEffect } from 'react';
+import Link from 'next/link';
 
 interface EventEntry {
   id: string;
@@ -293,12 +294,12 @@ const FestDashboard = () => {
 
       {/* Add Event Button */}
       <div className="mt-8 text-center">
-        <button className="bg-pink-500 hover:bg-pink-600 px-8 py-3 rounded-lg font-semibold text-lg transition-colors flex items-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-pink-400">
+        <Link href={`/fests/${festId}/add-event`} className="bg-pink-500 hover:bg-pink-600 px-8 py-3 rounded-lg font-semibold text-lg transition-colors flex items-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-pink-400">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           Add New Event
-        </button>
+        </Link >
       </div>
     </>
   );
