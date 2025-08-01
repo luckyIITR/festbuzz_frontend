@@ -1,15 +1,14 @@
 'use client'
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useMyFests } from '@/hooks/useMyFests';
 import { useRecentlyViewedFests } from '@/hooks/useRecentlyViewedFests';
 import { useWishlistFests } from '@/hooks/useWishlistFests';
 import { useRegisteredFests } from '@/hooks/useRegisteredFests';
 import { useRecommendedFests } from '@/hooks/useRecommendedFests';
 import { Fest } from '@/types/fest';
-import FestCard from '../components/FestCard';
-import EventCard from '../components/EventCard';
+
 import GradientFestCard from '../components/GradientFestCard';
+import FestCard from '../components/FestCard';
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import Image from 'next/image';
 import CallToAction from '../components/CallToAction';
@@ -124,7 +123,7 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {mainCards.map((card: Fest, idx: number) => (
-                  <GradientFestCard fest={card} />
+                  <GradientFestCard key={card.id || idx} fest={card} />
               ))}
             </div>
 
@@ -157,7 +156,7 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {secondaryCards.map((card: Fest, idx: number) => (
-                  <GradientFestCard fest={card} />
+                  <GradientFestCard key={card.id || idx} fest={card} />
               ))}
             </div>
 
@@ -179,7 +178,7 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {safeRecommended.map((card: Fest, idx: number) => (
-                  <FestCard fest={card} />
+                  <FestCard key={card.id || idx} fest={card} />
               ))}
             </div>
           </div>

@@ -15,7 +15,7 @@ import PinkDiamond from '../../public/assets/PinkDiamond.png'
 export default function Home() {
   // Remove mobileMenuOpen and navbar code
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen  text-white overflow-hidden">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <Image

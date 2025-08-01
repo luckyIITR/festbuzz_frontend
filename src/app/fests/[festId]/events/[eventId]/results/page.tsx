@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
 import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import image from '../../../../../../../public/assets/HomePageImage.png'
 import lo from '../../../../../../../public/assets/Location.png'
 import cal from '../../../../../../../public/assets/Calender.png'
@@ -20,7 +20,7 @@ interface Sponsor {
 }
 
 
-const page = () => {
+const Page = () => {
   const params = useParams();
   const festId = params?.festId as string;
   const eventId = params?.eventId as string;
@@ -273,4 +273,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
