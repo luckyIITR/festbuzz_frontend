@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface User {
   id: string;
@@ -10,6 +11,7 @@ interface User {
 }
 
 const Navbar = () => {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -31,46 +33,45 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="relative z-10 flex  bg-[#101010] items-center justify-between px-6 py-4">
+      <nav className="relative z-10 flex  items-center justify-between px-6 py-4">
+
         {/* Logo */}
         <div className="flex items-center gap-2 bg-[#000000] px-5 py-2 rounded-2xl">
           <span className="font-extrabold text-lg tracking-tight text-[#E1FF01]">FEST</span>
           <span className="text-lg md:text-lg text-white">✦</span>
           <span className="font-extrabold text-lg tracking-tight text-pink-500">BUZZ</span>
         </div>
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-6 text-gray-200 font-medium">
-          <Link href="/" className="text-white font-bold">Home</Link>
-          <Link href="/fests" className="hover:text-white/80">List your fest</Link>
-          <Link href="/fests" className="hover:text-white/80">Explore fests</Link>
-          {user && (
-            <>
-              <Link href="/myfest" className="hover:text-white/80">My Fest</Link>
-              <Link href="/dashboard" className="hover:text-white/80">Dashboard</Link>
-            </>
-          )}
-          <Link href="/about" className="hover:text-white/80">About us</Link>
-        </div>
-        {/* Search & Auth (Desktop) */}
-        <div className="hidden md:flex items-center gap-3">
+
+
+        <div className='hidden md:flex items-center gap-6 text-gray-200 font-medium bg-[#000000] px-3 py-2  rounded-3xl  '>
+
           <input
             type="text"
-            placeholder="Search"
-            className="rounded-full px-4 py-1 bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-lime-400 text-sm"
+            placeholder="🔍︎ Search"
+            className="rounded-full px-4 py-1 font-urbanist font-[600] bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E1FF01] text-sm"
           />
+          {/* Desktop Menu */}
 
+          <Link href="/" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/' ? 'text-[#E1FF01]' : 'text-white'}`}>Home</Link>
+          <Link href="/fests" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/fests' ? 'text-[#E1FF01]' : 'text-white'}`}>Explore fests</Link>
+          {user && (
+            <>
+              <Link href="/myfest" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/myfest' ? 'text-[#E1FF01]' : 'text-white'}`}>My Fest</Link>
+              <Link href="/dashboard" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`}>Dashboard</Link>
+            </>
+          )}
+          <Link href="/about" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/about' ? 'text-[#E1FF01]' : 'text-white'}`}>Campus Ambassador</Link>
+          {/* Search & Auth (Desktop) */}
           {user ? (
             <>
-              <Link href="/profile" className="px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">{user.name || 'Profile'}</Link>
-              <button onClick={handleLogout} className="ml-2 px-5 py-1 rounded-full  bg-[#E1FF01] text-white font-bold hover:bg-pink-400 transition">Logout</button>
+              <Link href="/profile" className={`px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition   ${pathname === '/profile' ? 'text-[#E1FF01]' : 'text-white'}`} >{user.name || 'Profile'}</Link>
+              <button onClick={handleLogout} className="ml-2 px-5 py-1 rounded-full  bg-[#E1FF01] text-black font-bold hover:bg-pink-400 transition">Logout</button>
             </>
           ) : (
             <>
-              <Link href="/login" className="px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition">Login</Link>
-              <Link href="/signup" className="ml-2 px-5 py-1 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition">Sign up</Link>
+              <Link href="/signup" className={`ml-2 px-5 py-1 font-[700] font-urbanist rounded-full bg-[#E1FF01] text-black  hover:bg-lime-300 transition  ${pathname === '/signup' ? 'text-[#E1FF01]' : 'text-black'}`}>Sign up</Link>
             </>
           )}
-
         </div>
         {/* Hamburger Icon (Mobile) */}
         <button
@@ -87,40 +88,40 @@ const Navbar = () => {
       </nav>
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 bg-black bg-opacity-90 flex flex-col items-center justify-center space-y-8 transition-all duration-300">
-          <button
-            className="absolute top-6 right-6 text-white text-3xl focus:outline-none"
-            aria-label="Close menu"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            &times;
-          </button>
-          <Link href="/" className="text-2xl font-bold text-white" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-          <Link href="/fests" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>List your fest</Link>
-          <Link href="/fests" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>Explore fests</Link>
-          
-          <Link href="/about" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>About us</Link>
-          <input
-            type="text"
-            placeholder="Search"
-            className="rounded-full px-4 py-2 bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-lime-400 text-lg w-64"
-          />
-          <div className="flex gap-4 mt-4">
-            {user ? (
-              <>
-                <Link href="/profile" className="px-6 py-2 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition" onClick={() => setMobileMenuOpen(false)}>{user.name || 'Profile'}</Link>
-                <Link href="/myfest" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>My Fest</Link>
-                <Link href="/dashboard" className="text-2xl text-white" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
-                <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="px-6 py-2 rounded-full bg-pink-500 text-white font-bold hover:bg-pink-400 transition">Logout</button>
-              
-              </>
-              
-            ) : (
-              <>
-                <Link href="/login" className="px-6 py-2 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition" onClick={() => setMobileMenuOpen(false)}>Login</Link>
-                <Link href="/signup" className="px-6 py-2 rounded-full bg-lime-400 text-black font-bold hover:bg-lime-300 transition" onClick={() => setMobileMenuOpen(false)}>Sign up</Link>
-              </>
-            )}
+        <div className='w-screen'>
+          <div className="fixed top-0 right-0  w-40 z-30 bg-black bg-opacity-90 flex flex-col  p-4 justify-center gap-2 transition-all duration-300">
+            <button
+              className="absolute top-4 right-6 text-white text-3xl focus:outline-none"
+              aria-label="Close menu"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              &times;
+            </button>
+             <input
+              type="text"
+              placeholder="Search"
+              className="rounded-xl mt-10 -ml-2 px-3  bg-zinc-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-lime-400 text-lg w-35"
+            />
+            <Link href="/" className={`font-urbanist ${pathname === '/' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link href="/fests" className={`font-urbanist ${pathname === '/fests' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>Explore fests</Link>
+
+            <Link href="/about" className={`font-urbanist ${pathname === '/about' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>About us</Link>
+           
+              {user ? (
+                <>
+                  <Link href="/myfest" className={`font-urbanist ${pathname === '/myfest' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>My Fest</Link>
+                  <Link href="/dashboard" className={`font-urbanist${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`}onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+                  <Link href="/profile" className="px-3 py-1 -ml-2 rounded-full bg-zinc-900 text-white font-urbanist hover:bg-zinc-800 transition uppercase" onClick={() => setMobileMenuOpen(false)}>{user.name || 'Profile'}</Link>
+                  <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="px-3 py-1 text-left -ml-2 rounded-full bg-pink-500 text-white font-urbanist font-bold hover:bg-pink-400 transition">Logout</button>
+
+                </>
+
+              ) : (
+                <>
+                  <Link href="/signup" className="px-3 -ml-2 py-1 rounded-full bg-[#E1FF01] text-black text-left font-urbanist font-bold hover:bg-lime-300 transition" onClick={() => setMobileMenuOpen(false)}>Login In</Link>
+                </>
+              )}
+           
           </div>
         </div>
       )}
