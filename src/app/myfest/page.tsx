@@ -10,6 +10,9 @@ import { Fest } from '@/types/fest';
 import FestCard from '../components/FestCard';
 import EventCard from '../components/EventCard';
 import GradientFestCard from '../components/GradientFestCard';
+import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
+import Image from 'next/image';
+import CallToAction from '../components/CallToAction';
 const tabs = ['Upcoming', 'On Going', 'Past'];
 const secondaryTabs = ['Recently viewed', 'Wishlist', 'Registered'];
 
@@ -96,8 +99,8 @@ export default function MyFestPage() {
               key={tab}
               onClick={() => setActiveTab(idx)}
               className={`px-8 py-2 rounded-full font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0057FF] ${idx === activeTab
-                  ? 'bg-[#0057FF] text-white shadow-lg'
-                  : 'bg-[#23252B] text-white'
+                ? 'bg-[#0057FF] text-white shadow-lg'
+                : 'bg-[#23252B] text-white'
                 }`}
             >
               {tab}
@@ -132,8 +135,8 @@ export default function MyFestPage() {
                   key={tab}
                   onClick={() => setActiveSecondaryTab(idx)}
                   className={`px-8 py-2 rounded-full font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF3EB2] ${idx === activeSecondaryTab
-                      ? 'bg-[#FF3EB2] text-white shadow-lg'
-                      : 'bg-[#23252B] text-white'
+                    ? 'bg-[#FF3EB2] text-white shadow-lg'
+                    : 'bg-[#23252B] text-white'
                     }`}
                 >
                   {tab}
@@ -183,7 +186,36 @@ export default function MyFestPage() {
           {/* Filters Sidebar */}
           <FiltersSidebar />
         </div>
+
       </div>
+      <div className='flex w-full md:justify-around content-center flex-wrap mt-25 md:gap-4 justify-center  '>
+        <div className='flex justify-center content-center flex-wrap gap-1 '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1 '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1  md:w-auto w-0 overflow-hidden'>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 w-5 h-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+      </div>
+      <CallToAction />
     </div>
   );
 }
