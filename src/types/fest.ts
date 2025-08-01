@@ -18,6 +18,7 @@ export interface Event {
   id: string;
   name: string;
   description?: string;
+  festId?: string;
   price?: number;
   startDate: string;
   endDate: string;

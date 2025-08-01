@@ -30,7 +30,7 @@ const page = () => {
             <div className='flex pl-5 md:w-200 w-80 m-auto mt-10 font-urbanist font-[300] text-xl text-center'>
                 We are more than just a platform; we are your partners in creating unforgettable experiences. At Festbuzz, we blend innovation and expertise to offer a comprehensive solution for event organizers, brands, and attendees.
                 <br /><br />
-                Our commitment to excellence drives us to continually push the boundaries of what's possible, ensuring that every event we touch is a resounding success.
+                Our commitment to excellence drives us to continually push the boundaries of what&apos;s possible, ensuring that every event we touch is a resounding success.
             </div>
             <div className='flex w-full justify-center content-center flex-wrap mt-20 gap-1 pr-5'>
                 <Image src={YellowDiamond} className=' object-cover h-8 w-8 ' alt='' />

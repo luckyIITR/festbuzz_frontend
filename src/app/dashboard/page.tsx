@@ -114,9 +114,20 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-8">
         {/* Title Section */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Image src={pinkdiamond} alt='' className='w-7 '/>
-            <h1 className="text-3xl font-bold">DASHBOARD</h1>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <Image src={pinkdiamond} alt='' className='w-7 '/>
+              <h1 className="text-3xl font-bold">DASHBOARD</h1>
+            </div>
+            <Link 
+              href="/fests/add" 
+              className="bg-[#FD3EB5] hover:bg-[#E91E63] text-white px-6 py-3 rounded-lg font-semibold text-sm flex items-center gap-2 transition-colors duration-200 shadow-lg hover:shadow-xl"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Create New Fest
+            </Link>
           </div>
           <p className="text-gray-400">Manage all fests and their events</p>
         </div>
@@ -250,12 +261,12 @@ const Dashboard = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
                       </svg>
                     </Link>
-                    <button className="w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+                    <Link href={`/fests/${fest.id}/add-event`} className="w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
                       Add event +
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                       </svg>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               ))}

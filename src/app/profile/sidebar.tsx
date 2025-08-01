@@ -6,13 +6,11 @@ import documents from '../../../public/assets/Documents.png';
 import Notification from '../../../public/assets/Notification.png';
 import Man from '../../../public/assets/Profileman.png';
 import Logout from '../../../public/assets/Logout.png';
-import { usePathname, useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const params = useParams();
-  const festId = params.festId as string;
 
   const items = [
     {

@@ -81,12 +81,6 @@ const EventRow: React.FC<EventRowProps> = ({ event, getCategoryColor, getStatusC
     </div>
     {/* Action */}
     <div className="space-y-2">
-      <button className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
-        Manage
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
-        </svg>
-      </button>
       <button className="w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
         Edit event
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

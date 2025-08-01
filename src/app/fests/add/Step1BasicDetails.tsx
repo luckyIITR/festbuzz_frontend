@@ -163,7 +163,7 @@ const Step1BasicDetails: React.FC<Step1BasicDetailsProps> = ({ form, setForm, ha
           <span className="text-yellow-300 font-bold">Page 1 out 4</span><br />
           <span className="font-urbanist font-[500] text-[16px] text-[#818181]">You can easily manage these details later in manage event section.</span>
         </div>
-        <button type="submit" className="bg-[#0248F7] text-[#E1FF01] font-bold px-12 py-3 rounded-full text-lg shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-pink-400">
+        <button type="submit" className="bg-[#0248F7] text-[#E1FF01] font-bold px-12 py-3 rounded-full text-lg shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-pink-400 cursor-pointer">
           Next
         </button>
       </div>

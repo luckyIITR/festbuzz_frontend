@@ -1,44 +1,8 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
 import { useRecommendedFests } from '@/hooks/useRecommendedFests';
 import { Fest } from '@/types/fest';
 import FestCard from '@/app/components/FestCard';
-const mockEvents = [
-  {
-    id: '1',
-    name: 'Dancing on floor..',
-    category: 'Event category',
-    fest: 'Thombus 25’',
-    venue: 'IIT Roorkee',
-    date: '14-20 Sep. 2025',
-    image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
-    status: 'Draft',
-    active: true,
-  },
-  {
-    id: '2',
-    name: 'Dancing on floor..',
-    category: 'Event category',
-    fest: 'Thombus 25’',
-    venue: 'IIT Roorkee',
-    date: '14-20 Sep. 2025',
-    image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
-    status: 'Draft',
-    active: false,
-  },
-  {
-    id: '3',
-    name: 'Dancing on floor..',
-    category: 'Event category',
-    fest: 'Thombus 25’',
-    venue: 'IIT Roorkee',
-    date: '14-20 Sep. 2025',
-    image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
-    status: 'Draft',
-    active: false,
-  },
-];
 
 const tabs = [
   { label: 'Draft', value: 'Draft' },
@@ -48,8 +12,7 @@ const tabs = [
 
 export default function EventsDashboardPage() {
   const [tab, setTab] = useState('Draft');
-  const events = mockEvents.filter(e => e.status === tab);
-  const { data: recommended, isLoading: isLoadingRecommended, error: errorRecommended } = useRecommendedFests() as {
+  const { data: recommended } = useRecommendedFests() as {
     data: Fest[] | undefined;
     isLoading: boolean;
     error: Error | string | null;
