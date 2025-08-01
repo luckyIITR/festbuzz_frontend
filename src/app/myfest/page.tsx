@@ -107,7 +107,7 @@ export default function MyFestPage() {
         <div className="flex flex-col md:flex-row flex-1 gap-8">
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            {/* Event Cards Grid */}
+            {/* Fest Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-8 mb-12 ">
               {isLoadingMyFests && <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center">Loading...</div>}
               {errorMyFests && (
@@ -121,9 +121,7 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {mainCards.map((card: Fest, idx: number) => (
-                <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className=" rounded-2xl overflow-hidden shadow-lg flex flex-col  transition cursor-pointer w-full">
                   <GradientFestCard fest={card} />
-                </Link>
               ))}
             </div>
 
@@ -156,9 +154,7 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {secondaryCards.map((card: Fest, idx: number) => (
-                <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
-                  <EventCard fest={card} />
-                </Link>
+                  <GradientFestCard fest={card} />
               ))}
             </div>
 
@@ -180,9 +176,7 @@ export default function MyFestPage() {
                 <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
               )}
               {safeRecommended.map((card: Fest, idx: number) => (
-                <Link key={card._id || card.id || idx} href={`/fests/${card._id || card.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:ring-2 hover:ring-lime-400 transition cursor-pointer w-full">
                   <FestCard fest={card} />
-                </Link>
               ))}
             </div>
           </div>

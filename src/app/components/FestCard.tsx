@@ -324,7 +324,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                 </div>
               </div>
 
-              <Link href={`/fests/${i}`}>
+              <Link href={`/fests/${fest._id || fest.id}`}>
                 <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-[#FD3EB5]  transition cursor-pointer text-[#FFFFFF] font-urbanist font-[700]">
                   View Info
                 </button>

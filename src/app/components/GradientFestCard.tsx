@@ -149,7 +149,7 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                     </div>
 
                     <Link href={`/fests/${fest._id || fest.id}`}>
-                        <button className="mt-3 h-8 rounded-xl mx-1 bg-[#E1FF01] w-full hover:ring-2 hover:ring-white text-[#0248F780] transition cursor-pointer font-urbanist font-[700]">
+                        <button className="mt-3 h-8 rounded-xl mx-1 bg-[#E1FF01] w-full hover:ring-2 hover:ring-white text-black transition cursor-pointer font-urbanist font-[700]">
                             View Info
                         </button>
                     </Link>
@@ -327,7 +327,7 @@ const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) =
                                 </div>
                             </div>
 
-                            <Link href={`/fests/${i}`}>
+                            <Link href={`/fests/${fest._id || fest.id}`}>
                                 <button className="mt-3 h-8 rounded-xl mx-1 bg-[#E1FF01] w-full hover:ring-2 hover:ring-[#FD3EB5]  transition cursor-pointer text-[#0248F780] font-urbanist font-[700]">
                                     View Info
                                 </button>

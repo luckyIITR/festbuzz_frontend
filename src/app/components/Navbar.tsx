@@ -41,7 +41,7 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 text-gray-200 font-medium">
           <Link href="/" className="text-white font-bold">Home</Link>
-          <Link href="/fests" className="hover:text-white/80">List your fest</Link>
+          {/* <Link href="/fests" className="hover:text-white/80">List your fest</Link> */}
           <Link href="/fests" className="hover:text-white/80">Explore fests</Link>
           {user && (
             <>

@@ -7,25 +7,25 @@ import { useFests } from '@/hooks/useFests';
 import { Fest } from '@/types/fest';
 import LocationImage from '../../../public/assets/Location.png';
 import DateImage from '../../../public/assets/Calender.png';
-import { useEvent } from '@/hooks/useEvent';
+// import { useEvents } from '@/hooks/useEvents';
 import { Event } from '@/types/fest';
-interface FestCardProps {
-    fest?: Event;
-    fests?: Event[];
+interface EventCardProps {
+    event?: Event;
+    events?: Event[];
 }
 
-const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
-    const { data: fetchedFests, isLoading, error } = useFests();
+const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
+    // const { data: fetchedEvents, isLoading, error } = useEvents();
 
     // Use prop fests if provided, otherwise use fetched fests
-    const fests = propFests || fetchedFests;
+    const events = propEvents ; //|| fetchedEvents;
 
     const [heartcolor, setHeartcolor] = useState<string[]>([]);
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
     useEffect(() => {
-        setHeartcolor(new Array(fests?.length || 0).fill('fill-none'));
-    }, [fests?.length]);
+        setHeartcolor(new Array(events?.length || 0).fill('fill-none'));
+    }, [events?.length]);
 
     const handleClick = (i: number) => {
         const newcolor = [...heartcolor];
@@ -34,9 +34,9 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
     };
 
     // If a single fest is provided, render just that one
-    if (fest) {
-        const truncated = fest.name.length > 27 ? fest.name.slice(0, 25) + ' ...' : fest.name;
-        const displayName = hoverIndex === 0 ? fest.name : truncated;
+    if (event) {
+        const truncated = event.name.length > 27 ? event.name.slice(0, 25) + ' ...' : event.name;
+        const displayName = hoverIndex === 0 ? event.name : truncated;
 
         return (
             <div
@@ -68,7 +68,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                 />
                 <div className="relative z-10">
                     <Image
-                        src={fest.bannerImage || '/assets/CardImage.png'}
+                        src={event.bannerImage || '/assets/CardImage.png'}
                         alt="Fest"
                         width={284}
                         height={160}
@@ -113,7 +113,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                     </div>
 
                     <div className="ml-1 text-[16px] text-[#717171] font-urbanist font-[600]">
-                        {fest.description?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
+                        {event.description?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
                     </div>
 
                     <div className="flex justify-between flex-wrap mt-4">
@@ -121,14 +121,14 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                             <div className="flex items-center gap-1">
                                 <Image src={LocationImage} alt="Location" width={9} height={20} />
                                 <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                                    {fest.location || 'TBA'}
+                                    {event.location || 'TBA'}
                                 </div>
                             </div>
                             <div className="flex items-center gap-1">
                                 <Image src={DateImage} alt="Date" width={9} height={20} />
                                 <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                                    {fest.startDate
-                                        ? new Date(fest.startDate).toLocaleDateString('en-IN', {
+                                    {event.startDate
+                                        ? new Date(event.startDate).toLocaleDateString('en-IN', {
                                             day: 'numeric',
                                             month: 'short',
                                             year: 'numeric',
@@ -140,7 +140,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
 
                         <div className="flex flex-col text-right mr-2">
                             <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                                ₹{fest.price || 0}
+                                ₹{event.price || 0}
                             </div>
                             <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                                 Participation fees
@@ -148,13 +148,15 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                         </div>
                     </div>
 
-                    <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-white text-[#FFFFFF] transition cursor-pointer font-urbanist font-[700]">
-                        View Info
-                    </button>
+                    <Link href={`/fests/${event.festId}/events/${event.id}`}>
+                        <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-white text-[#FFFFFF] transition cursor-pointer font-urbanist font-[700]">
+                            View Info   
+                        </button>
+                    </Link>
 
 
                     <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
-                        {fest.category?.[0] || 'General'}
+                        {event.category?.[0] || 'General'}
                     </div>
 
                     <div
@@ -182,15 +184,15 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
     }
 
     // Original behavior for grid of fests
-    if (isLoading) return <div className="text-white">Loading...</div>;
-    if (error) return <div className="text-red-500">Error loading fests</div>;
+    // if (isLoading) return <div className="text-white">Loading...</div>;
+    // if (error) return <div className="text-red-500">Error loading fests</div>;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-            {fests?.map((fest, i) => {
+            {events?.map((event, i) => {
                 const isHovering = hoverIndex === i;
-                const truncated = fest.name.length > 27 ? fest.name.slice(0, 25) + ' ...' : fest.name;
-                const displayName = isHovering ? fest.name : truncated;
+                const truncated = event.name.length > 27 ? event.name.slice(0, 25) + ' ...' : event.name;
+                const displayName = isHovering ? event.name : truncated;
 
                 return (
                     <div
@@ -224,7 +226,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                         {/* Card content */}
                         <div className="relative z-10">
                             <Image
-                                src={fest.bannerImage || '/assets/CardImage.png'}
+                                src={event.bannerImage || '/assets/CardImage.png'}
                                 alt="Event"
                                 width={284} // match card width
                                 height={160}
@@ -289,7 +291,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                             </div>
 
                             <div className="ml-1 text-[16px] text-[#717171]  font-urbanist font-[600]">
-                                {fest.description?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
+                                {event.description?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
                             </div>
 
                             <div className="flex justify-between flex-wrap mt-4">
@@ -297,14 +299,14 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                                     <div className="flex items-center gap-1">
                                         <Image src={LocationImage} alt="Location" width={9} height={20} />
                                         <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                                            {fest.location || 'TBA'}
+                                            {event.location || 'TBA'}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <Image src={DateImage} alt="Date" width={9} height={20} />
                                         <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                                            {fest.startDate
-                                                ? new Date(fest.startDate).toLocaleDateString('en-IN', {
+                                            {event.startDate
+                                                ? new Date(event.startDate).toLocaleDateString('en-IN', {
                                                     day: 'numeric',
                                                     month: 'short',
                                                     year: 'numeric',
@@ -316,7 +318,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
 
                                 <div className="flex flex-col text-right mr-2">
                                     <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                                        ₹{fest.price || 0}
+                                        ₹{event.price || 0}
                                     </div>
                                     <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                                         Participation fees
@@ -324,7 +326,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                                 </div>
                             </div>
 
-                            <Link href={`/fests/${i}`}>
+                            <Link href={`/fests/${event.festId}/events/${event.id}`}>
                                 <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-[#FD3EB5]  transition cursor-pointer text-[#FFFFFF] font-urbanist font-[700]">
                                     View Info
                                 </button>
@@ -361,4 +363,4 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
     );
 };
 
-export default FestCard;
+export default EventCard;

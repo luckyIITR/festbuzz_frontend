@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { Event } from '@/types/fest';
 import { useRef, useState, useEffect } from 'react';
 import FestCard from '@/app/components/FestCard';
+import EventCard from '@/app/components/EventCard';
 export default function FestDetailsPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -206,7 +207,7 @@ export default function FestDetailsPage() {
               ) : events && events.length > 0 ? (
                 events.map((event: Event) => (
                   <Link key={event.id} href={`/fests/${festId}/events/${event.id}`} className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg flex flex-col relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
-                    <FestCard fest={event} />
+                    <EventCard event={event} />
                   </Link>
                 ))
               ) : (
