@@ -64,7 +64,7 @@ const Navbar = () => {
           {/* Search & Auth (Desktop) */}
           {user ? (
             <>
-              <Link href="/profile" className={`px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition   ${pathname === '/profile' ? 'text-[#E1FF01]' : 'text-white'}`} >{user.name || 'Profile'}</Link>
+              <Link href="/profile" className={`px-5 py-1 rounded-full bg-zinc-900 text-white font-semibold hover:bg-zinc-800 transition ${pathname === '/profile' ? 'text-[#E1FF01]' : 'text-white'}`}>{user?.name || 'Profile'}</Link>
               <button onClick={handleLogout} className="ml-2 px-5 py-1 rounded-full  bg-[#E1FF01] text-black font-bold hover:bg-pink-400 transition">Logout</button>
             </>
           ) : (
@@ -111,7 +111,7 @@ const Navbar = () => {
                 <>
                   <Link href="/myfest" className={`font-urbanist ${pathname === '/myfest' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>My Fest</Link>
                   <Link href="/dashboard" className={`font-urbanist${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`}onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
-                  <Link href="/profile" className="px-3 py-1 -ml-2 rounded-full bg-zinc-900 text-white font-urbanist hover:bg-zinc-800 transition uppercase" onClick={() => setMobileMenuOpen(false)}>{user.name || 'Profile'}</Link>
+                  <Link href="/profile" className="px-3 py-1 -ml-2 rounded-full bg-zinc-900 text-white font-urbanist hover:bg-zinc-800 transition uppercase" onClick={() => setMobileMenuOpen(false)}>{user?.name || 'Profile'}</Link>
                   <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="px-3 py-1 text-left -ml-2 rounded-full bg-pink-500 text-white font-urbanist font-bold hover:bg-pink-400 transition">Logout</button>
 
                 </>

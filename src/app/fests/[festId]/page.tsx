@@ -8,8 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Event } from '@/types/fest';
 import { useRef, useState, useEffect } from 'react';
-import FestCard from '@/app/components/FestCard';
 import EventCard from '@/app/components/EventCard';
+
 export default function FestDetailsPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
