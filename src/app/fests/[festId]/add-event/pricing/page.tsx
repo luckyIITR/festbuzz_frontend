@@ -22,7 +22,7 @@ export default function PricingPage() {
     const router = useRouter();
 
     const handleNext = () => {
-        router.push('/event/addones');
+        router.push('./addones');
 
     };
     const handleback = () => {
