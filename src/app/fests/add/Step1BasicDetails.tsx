@@ -1,5 +1,8 @@
 import React from "react";
 import StateDropdown from '../../components/StateDropdown' // adjust path accordingly
+import { useState, useEffect, useCallback } from "react";
+import useCollegeList from '../../../hooks/useCollegeList'
+import CollegeDropdown from '../../components/CollegeDropdown'
 export type FormType = {
   logo: File | null;
   photos: File[];
@@ -38,20 +41,24 @@ interface Step1BasicDetailsProps {
 }
 
 const Step1BasicDetails: React.FC<Step1BasicDetailsProps> = ({ form, setForm, handleNext }) => {
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const collegeList = useCollegeList();
+
+  const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  }, [setForm]);
+
+  const handleLogo = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setForm((prev) => ({ ...prev, logo: e.target.files![0] }));
     }
-  };
-  const handlePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
+  }, [setForm]);
+
+  const handlePhotos = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setForm((prev) => ({ ...prev, photos: Array.from(e.target.files!) }));
     }
-  };
+  }, [setForm]);
   return (
     <form className="w-full max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={e => { e.preventDefault(); handleNext(); }}>
       {/* Upload logo */}
@@ -115,7 +122,6 @@ const Step1BasicDetails: React.FC<Step1BasicDetailsProps> = ({ form, setForm, ha
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20.2648 21.6496L17.3148 18.6996C16.5148 19.2329 15.6525 19.6413 14.7278 19.9246C13.8032 20.2079 12.8238 20.3496 11.7898 20.3496C10.4065 20.3496 9.10651 20.0869 7.88984 19.5616C6.67318 19.0363 5.61484 18.3239 4.71484 17.4246C3.81484 16.5253 3.10251 15.4669 2.57784 14.2496C2.05318 13.0323 1.79051 11.7323 1.78984 10.3496C1.78984 9.31628 1.93151 8.33728 2.21484 7.41261C2.49818 6.48794 2.90651 5.62528 3.43984 4.82461L0.464844 1.84961L1.88984 0.424609L21.6898 20.2246L20.2648 21.6496ZM10.7898 18.2996V16.3496C10.2398 16.3496 9.76918 16.1539 9.37784 15.7626C8.98651 15.3713 8.79051 14.9003 8.78984 14.3496V13.3496L3.98984 8.54961C3.93984 8.84961 3.89418 9.14961 3.85284 9.44961C3.81151 9.74961 3.79051 10.0496 3.78984 10.3496C3.78984 12.3663 4.45251 14.1329 5.77784 15.6496C7.10318 17.1663 8.77384 18.0496 10.7898 18.2996ZM20.1398 15.8246L18.6898 14.3746C19.0398 13.7579 19.3108 13.1123 19.5028 12.4376C19.6948 11.7629 19.7905 11.0669 19.7898 10.3496C19.7898 8.71628 19.3358 7.22461 18.4278 5.87461C17.5198 4.52461 16.3072 3.54961 14.7898 2.94961V3.34961C14.7898 3.89961 14.5942 4.37061 14.2028 4.76261C13.8115 5.15461 13.3405 5.35028 12.7898 5.34961H10.7898V6.47461L6.31484 1.99961C7.11484 1.48294 7.97318 1.07894 8.88984 0.787609C9.80651 0.496276 10.7732 0.350276 11.7898 0.349609C13.1732 0.349609 14.4732 0.612276 15.6898 1.13761C16.9065 1.66294 17.9648 2.37528 18.8648 3.27461C19.7648 4.17394 20.4775 5.23228 21.0028 6.44961C21.5282 7.66694 21.7905 8.96694 21.7898 10.3496C21.7898 11.3663 21.6442 12.3329 21.3528 13.2496C21.0615 14.1663 20.6572 15.0246 20.1398 15.8246Z" fill="#565656" />
               </svg>
-
             </div>
             <div className="font-urbanist font-[600]">Private</div>
           </button>
@@ -146,8 +152,13 @@ const Step1BasicDetails: React.FC<Step1BasicDetailsProps> = ({ form, setForm, ha
       </div>
       {/* College */}
       <div className="flex flex-col gap-2">
-        <label className="text-white font-urbanist font-[700]  mb-1">Enter your university/college name*</label>
-        <input name="college" value={form.college} onChange={handleInput} className="bg-[#252525] backdrop-blur-md font-urbanist font-[600] rounded-xl px-4 py-3 text-white focus:outline-none shadow-md focus:ring-2 focus:ring-pink-400 transition-all placeholder:text-[#565656]" placeholder="Name your college" />
+        <label className="text-white font-urbanist font-[700] mb-1">Enter your university/college name*</label>
+        <CollegeDropdown
+          value={form.college}
+          onChange={(val) => setForm(prev => ({ ...prev, college: val }))}
+         colleges={collegeList}
+        />
+
       </div>
       {/* Fest dates */}
       <div className="flex flex-col gap-2">
