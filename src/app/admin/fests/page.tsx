@@ -157,7 +157,7 @@ export default function FestManagement() {
                          fest.organizer.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          fest.college.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || fest.status === statusFilter;
-    const matchesCategory = categoryFilter === 'all' || fest.categories.includes(categoryFilter);
+            const matchesCategory = categoryFilter === 'all' || fest.type === categoryFilter;
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
@@ -376,11 +376,11 @@ export default function FestManagement() {
                           </span>
                         )}
                       </div>
-                      <div className="text-sm text-gray-400">{fest.description}</div>
+                      <div className="text-sm text-gray-400">{fest.about}</div>
                       <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
                         <div className="flex items-center gap-1">
                           <MapPin size={12} />
-                          {fest.location}
+                          {fest.venue || fest.city}
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock size={12} />
@@ -388,11 +388,11 @@ export default function FestManagement() {
                         </div>
                       </div>
                       <div className="flex gap-1 mt-2">
-                        {fest.categories.map((category) => (
-                          <span key={category} className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getCategoryColor(category)}`}>
-                            {category}
+                        {fest.type && (
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getCategoryColor(fest.type)}`}>
+                            {fest.type}
                           </span>
-                        ))}
+                        )}
                       </div>
                     </div>
                   </td>

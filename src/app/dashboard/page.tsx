@@ -3,113 +3,102 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-interface FestEntry {
-  id: string;
-  name: string;
-  year: string;
-  category: 'Technical' | 'Cultural';
-  description: string;
-  location: string;
-  date: string;
-  status: 'Upcoming' | 'Completed';
-  events: number;
-  entryFee: number;
-  registrations: {
-    current: number;
-    max: number;
-  };
-}
+import { useFests } from '@/hooks/useFests';
+import { useMultipleRegistrationCounts } from '@/hooks/useRegistration';
+import { Fest } from '@/types/fest';
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All categories');
   const [statusFilter, setStatusFilter] = useState('All status');
 
-  // Mock data based on the image
-  const festData: FestEntry[] = [
-    {
-      id: '1',
-      name: 'Thomso',
-      year: '2025',
-      category: 'Technical',
-      description: 'Annual tech festival feat. hackathons, worksh...',
-      location: 'IIT Roorkee',
-      date: '14-20 Sep, 2025',
-      status: 'Upcoming',
-      events: 12,
-      entryFee: 1000,
-      registrations: { current: 450, max: 500 }
-    },
-    {
-      id: '2',
-      name: 'Thomso',
-      year: '2025',
-      category: 'Technical',
-      description: 'Annual tech festival feat. hackathons, worksh...',
-      location: 'IIT Roorkee',
-      date: '14-20 Sep, 2025',
-      status: 'Upcoming',
-      events: 12,
-      entryFee: 1000,
-      registrations: { current: 450, max: 500 }
-    },
-    {
-      id: '3',
-      name: 'Thomso',
-      year: '2025',
-      category: 'Cultural',
-      description: 'Annual tech festival feat. hackathons, worksh...',
-      location: 'IIT Roorkee',
-      date: '14-20 Sep, 2025',
-      status: 'Completed',
-      events: 20,
-      entryFee: 1000,
-      registrations: { current: 350, max: 500 }
-    },
-    {
-      id: '4',
-      name: 'Thomso',
-      year: '2025',
-      category: 'Cultural',
-      description: 'Annual tech festival feat. hackathons, worksh...',
-      location: 'IIT Roorkee',
-      date: '14-20 Sep, 2025',
-      status: 'Completed',
-      events: 20,
-      entryFee: 1000,
-      registrations: { current: 350, max: 500 }
-    },
-    {
-      id: '5',
-      name: 'Thomso',
-      year: '2025',
-      category: 'Cultural',
-      description: 'Annual tech festival feat. hackathons, worksh...',
-      location: 'IIT Roorkee',
-      date: '14-20 Sep, 2025',
-      status: 'Completed',
-      events: 20,
-      entryFee: 1000,
-      registrations: { current: 350, max: 500 }
-    }
-  ];
+  // Use the useFests hook to get real data
+  const { data: fests, isLoading, error } = useFests();
+  
+  // Get registration counts for all fests
+  const festIds = fests?.map(fest => fest.id || fest._id || '').filter(Boolean) || [];
+  const { data: registrationCounts, isLoading: isLoadingRegistrations } = useMultipleRegistrationCounts(festIds);
 
+  // Calculate summary stats from real data
   const summaryStats = [
-    { label: 'Total fests', value: '00', icon: '🎪' },
-    { label: 'Active fests', value: '00', icon: '🔥' },
-    { label: 'Total registrations', value: '00', icon: '👥' },
-    { label: 'Total revenue', value: '00', icon: '💰' }
+    { 
+      label: 'Total fests', 
+      value: fests ? fests.length.toString() : '0', 
+      icon: '🎪' 
+    },
+    { 
+      label: 'Active fests', 
+      value: fests ? fests.filter(fest => fest.isRegistrationOpen).length.toString() : '0', 
+      icon: '🔥' 
+    },
+    { 
+      label: 'Total registrations', 
+      value: registrationCounts ? registrationCounts.reduce((total, reg) => total + reg.totalRegistrations, 0).toString() : '0', 
+      icon: '👥' 
+    },
+    { 
+      label: 'Total revenue', 
+      value: fests ? fests.reduce((total, fest) => total + (fest.tickets?.[0]?.price || 0), 0).toString() : '0', 
+      icon: '💰' 
+    }
   ];
 
   const getProgressPercentage = (current: number, max: number) => {
     return Math.min((current / max) * 100, 100);
   };
 
+  // Helper function to get registration count for a specific fest
+  const getRegistrationCount = (festId: string) => {
+    if (!registrationCounts) return null;
+    return registrationCounts.find(reg => reg.festId === festId);
+  };
+
+  // Filter fests based on search and filters
+  const filteredFests = fests?.filter((fest: Fest) => {
+    const matchesSearch = fest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         fest.college.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         fest.venue?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         fest.city.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = categoryFilter === 'All categories' || fest.type === categoryFilter;
+    
+    // Determine status based on dates
+    const now = new Date();
+    const startDate = new Date(fest.startDate);
+    const endDate = new Date(fest.endDate);
+    let status = 'Completed';
+    if (now < startDate) status = 'Upcoming';
+    else if (now >= startDate && now <= endDate) status = 'Ongoing';
+    
+    const matchesStatus = statusFilter === 'All status' || status === statusFilter;
+    
+    return matchesSearch && matchesCategory && matchesStatus;
+  }) || [];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#101010] text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+          <p>Loading fests...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#101010] text-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-400 mb-4">Error loading fests</p>
+          <p className="text-gray-400">Please try again later</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#101010] text-white">
-      {/* Header */}
-      
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-8">
         {/* Title Section */}
@@ -155,6 +144,8 @@ const Dashboard = () => {
             <option>All categories</option>
             <option>Technical</option>
             <option>Cultural</option>
+            <option>Sports</option>
+            <option>Others</option>
           </select>
           
           <select
@@ -164,6 +155,7 @@ const Dashboard = () => {
           >
             <option>All status</option>
             <option>Upcoming</option>
+            <option>Ongoing</option>
             <option>Completed</option>
           </select>
         </div>
@@ -197,79 +189,123 @@ const Dashboard = () => {
 
             {/* Table Rows */}
             <div className="divide-y divide-gray-700 text-xs sm:text-sm">
-              {festData.map((fest) => (
-                <div key={fest.id} className="px-6 py-6 grid grid-cols-5 gap-4 items-center">
-                  {/* Fest Details */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-lg">{fest.name} {fest.year}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        fest.category === 'Technical' ? 'bg-[#E1FF01] text-black' : 'bg-[#FD3EB5] text-white'
-                      }`}>
-                        {fest.category}
-                      </span>
-                    </div>
-                    <p className="text-gray-400 text-sm">{fest.description}</p>
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      {fest.location}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      {fest.date}
-                    </div>
-                  </div>
-
-                  {/* Status */}
-                  <div>
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                      fest.status === 'Upcoming' 
-                        ? 'bg-gray-600 text-white' 
-                        : 'bg-gray-600 text-white'
-                    }`}>
-                      {fest.status}
-                    </span>
-                  </div>
-
-                  {/* Events */}
-                  <div>
-                    <p className="font-bold">{fest.events} events</p>
-                    <p className="text-sm text-gray-400">Rs. {fest.entryFee} entry fee</p>
-                  </div>
-
-                  {/* Registrations */}
-                  <div>
-                    <p className="font-bold">{fest.registrations.current}/{fest.registrations.max}</p>
-                    <div className="w-full bg-gray-600 rounded-full h-2 mt-1">
-                      <div 
-                        className="bg-[#E1FF01] h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${getProgressPercentage(fest.registrations.current, fest.registrations.max)}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  {/* Action */}
-                  <div className="space-y-2">
-                    <Link href={`/fests/${fest.id}/dashboard`} className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
-                      Manage Events
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
-                      </svg>
-                    </Link>
-                    <Link href={`/fests/${fest.id}/add-event`} className="w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
-                      Add event +
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      </svg>
-                    </Link>
-                  </div>
+              {filteredFests.length === 0 ? (
+                <div className="px-6 py-12 text-center text-gray-400">
+                  No fests found matching your criteria
                 </div>
-              ))}
+              ) : (
+                filteredFests.map((fest: Fest) => {
+                  // Determine status based on dates
+                  const now = new Date();
+                  const startDate = new Date(fest.startDate);
+                  const endDate = new Date(fest.endDate);
+                  let status = 'Completed';
+                  if (now < startDate) status = 'Upcoming';
+                  else if (now >= startDate && now <= endDate) status = 'Ongoing';
+
+                  // Format date range
+                  const formatDateRange = (start: string, end: string) => {
+                    const startDate = new Date(start);
+                    const endDate = new Date(end);
+                    return `${startDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} - ${endDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+                  };
+
+                  // Get registration count for this fest
+                  const registrationCount = getRegistrationCount(fest.id || fest._id || '');
+
+                  return (
+                    <div key={fest.id || fest._id} className="px-6 py-6 grid grid-cols-5 gap-4 items-center">
+                      {/* Fest Details */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-bold text-lg">{fest.name}</h3>
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            fest.type === 'Technical' ? 'bg-[#E1FF01] text-black' : 'bg-[#FD3EB5] text-white'
+                          }`}>
+                            {fest.type}
+                          </span>
+                        </div>
+                        <p className="text-gray-400 text-sm">{fest.about?.slice(0, 50) || 'No description available'}</p>
+                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          {fest.venue || fest.city}
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {formatDateRange(fest.startDate, fest.endDate)}
+                        </div>
+                      </div>
+
+                      {/* Status */}
+                      <div>
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          status === 'Upcoming' 
+                            ? 'bg-blue-600 text-white' 
+                            : status === 'Ongoing'
+                            ? 'bg-green-600 text-white'
+                            : 'bg-gray-600 text-white'
+                        }`}>
+                          {status}
+                        </span>
+                      </div>
+
+                      {/* Events */}
+                      <div>
+                        <p className="font-bold">{fest.events?.length || 0} events</p>
+                        <p className="text-sm text-gray-400">₹{fest.tickets?.[0]?.price || 0} entry fee</p>
+                      </div>
+
+                      {/* Registrations */}
+                      <div>
+                        {isLoadingRegistrations ? (
+                          <div className="text-sm text-gray-400">Loading...</div>
+                        ) : registrationCount ? (
+                          <div>
+                            <p className="font-bold">{registrationCount.totalRegistrations} total</p>
+                            <div className="text-sm text-gray-400">
+                              <div>✓ {registrationCount.confirmedCount} confirmed</div>
+                              <div>⏳ {registrationCount.pendingCount} pending</div>
+                              <div>❌ {registrationCount.cancelledCount} cancelled</div>
+                            </div>
+                            <div className="w-full bg-gray-600 rounded-full h-2 mt-1">
+                              <div 
+                                className="bg-[#E1FF01] h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${getProgressPercentage(registrationCount.confirmedCount, registrationCount.totalRegistrations)}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <p className="font-bold">No data</p>
+                            <p className="text-sm text-gray-400">Registration info unavailable</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action */}
+                      <div className="space-y-2">
+                        <Link href={`/fests/${fest.id || fest._id}/dashboard`} className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+                          Manage Events
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
+                          </svg>
+                        </Link>
+                        <Link href={`/fests/${fest.id || fest._id}/add-event`} className="w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+                          Add event +
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

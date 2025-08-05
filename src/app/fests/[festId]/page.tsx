@@ -1,8 +1,9 @@
 'use client'
 import CallToAction from '@/app/components/CallToAction';
 import { useFest } from '@/hooks/useFest';
-import { useFestEvents } from '@/hooks/useFestEvents';
+import { useFestEventsByStatus } from '@/hooks/useEvents';
 import { useFestRegistrationStatus } from '@/hooks/useFestRegistrationStatus';
+import { useTrackFestView } from '@/hooks/useTrackFestView';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -41,8 +42,12 @@ export default function FestDetailsPage() {
   const params = useParams();
   const festId = params?.festId as string;
   const { data: fest, isLoading: festLoading, error: festError } = useFest(festId);
-  const { data: events, isLoading: eventsLoading, error: eventsError } = useFestEvents(festId);
+  const { data: eventsData, isLoading: eventsLoading, error: eventsError } = useFestEventsByStatus(festId, 'published');
+  const events = eventsData || [];
   const { data: registrationStatus, isLoading: statusLoading } = useFestRegistrationStatus(festId);
+  
+  // Track fest view for recently viewed functionality
+  useTrackFestView(festId);
 
   if (festLoading) return <div>Loading...</div>;
   if (festError) return <div>Error loading fest details</div>;
@@ -84,10 +89,10 @@ export default function FestDetailsPage() {
             <div>
               <h1 className="text-2xl md:text-4xl font-extrabold text-yellow-300 mb-1">{fest.name}</h1>
               <div className="text-gray-200 text-sm mb-1">
-                Organized by - <span className="font-semibold">{fest.organizer}</span>
+                Organized by - <span className="font-semibold">{fest.college}</span>
               </div>
               <div className="flex items-center gap-2 text-gray-400 text-xs">
-                <span>🏫 {fest.location}</span>
+                <span>🏫 {fest.venue || fest.city}</span>
                 <span>•</span>
                 <span>📅 {formatDateRange(fest.startDate, fest.endDate)}</span>
               </div>
@@ -95,7 +100,7 @@ export default function FestDetailsPage() {
           </div>
           <div className="flex flex-col items-start md:items-end gap-3 mt-6 md:mt-0">
             <div className="text-left md:text-right">
-              <span className="text-2xl font-bold text-white">₹{fest.price}</span>
+                              <span className="text-2xl font-bold text-white">₹{fest.tickets?.[0]?.price || 0}</span>
               <div className="text-xs text-gray-300">Individual fee</div>
             </div>
             {isLoadingStatus ? (
@@ -128,17 +133,17 @@ export default function FestDetailsPage() {
             <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">FEST DETAILS</h2>
           </div>
           <div className="text-white text-base mb-4">
-            <span className="font-bold">Eligibility:</span> {fest.eligibility || 'No criteria'}<br />
-            <span className="font-bold">Theme:</span> {fest.theme || 'Not specified'}
+            <span className="font-bold">Type:</span> {fest.type || 'Not specified'}<br />
+            <span className="font-bold">Mode:</span> {fest.festMode || 'Not specified'}
           </div>
           <div className="text-gray-300 text-sm mb-4">
-            <span className="font-bold">Special Attractions:</span> {fest.specialAttractions || 'To be announced'}
+            <span className="font-bold">Venue:</span> {fest.venue || 'To be announced'}
           </div>
           <div className="text-gray-300 text-sm mb-4">
-            <span className="font-bold">Perks for Participants:</span> {fest.perks || 'Certificates and networking opportunities'}
+            <span className="font-bold">College:</span> {fest.college || 'Not specified'}
           </div>
           <div className="text-gray-300 text-sm mb-4">
-            <span className="font-bold">Description:</span> {fest.description || 'No description available'}
+            <span className="font-bold">About:</span> {fest.about || 'No description available'}
           </div>
           <button className="bg-zinc-900 text-white px-6 py-2 rounded-full mt-2">Read more</button>
         </section>
@@ -182,14 +187,12 @@ export default function FestDetailsPage() {
               <div className="bg-zinc-900 rounded-2xl p-6 shadow-lg mb-8">
                 <h3 className="font-bold text-xl mb-4 text-white">CATEGORY</h3>
                 <div className="flex  md:flex-col gap-3  overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 pb-4 ">
-                  {fest.categories && fest.categories.length > 0 ? (
-                    fest.categories.map((cat: string) => (
-                      <select key={cat} className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
-                        <option>{cat}</option>
-                      </select>
-                    ))
+                  {fest.type ? (
+                    <select className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
+                      <option>{fest.type}</option>
+                    </select>
                   ) : (
-                    ['Dance', 'Singing', 'Fine arts', 'Others'].map((cat) => (
+                    ['Technical', 'Cultural', 'Sports', 'Others'].map((cat) => (
                       <select key={cat} className="bg-zinc-800 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-lime-400 w-full">
                         <option>{cat}</option>
                       </select>
@@ -234,7 +237,7 @@ export default function FestDetailsPage() {
             fest.sponsors.map((sponsor, i: number) => (
               <div key={i} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
                 <Image
-                  src={sponsor.logo || sponsor.image || 'https://via.placeholder.com/80x64'}
+                  src={sponsor.image || 'https://via.placeholder.com/80x64'}
                   alt={sponsor.name || 'Sponsor'}
                   width={80}
                   height={64}

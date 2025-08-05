@@ -5,127 +5,24 @@ import SummaryCard from './SummaryCard';
 import EventRow from './EventRow';
 import { useEffect } from 'react';
 import Link from 'next/link';
-
-interface EventEntry {
-  id: string;
-  name: string;
-  category: 'Technical' | 'Cultural' | 'Sports' | 'Workshop';
-  description: string;
-  location: string;
-  date: string;
-  time: string;
-  status: 'Upcoming' | 'Ongoing' | 'Completed';
-  price: number;
-  registrations: {
-    current: number;
-    max: number;
-  };
-  isTeamEvent: boolean;
-  teamSize?: number;
-}
+import { useFest } from '@/hooks/useFest';
+import { useFestEvents } from '@/hooks/useFestEvents';
+import { useRegistrationCount } from '@/hooks/useRegistration';
+import { Fest, Event } from '@/types/fest';
 
 const FestDashboard = () => {
   const params = useParams();
   const festId = params.festId as string;
 
+  // Use existing hooks to get real data
+  const { data: fest, isLoading: festLoading, error: festError } = useFest(festId);
+  const { data: events, isLoading: eventsLoading, error: eventsError } = useFestEvents(festId);
+  const { data: registrationCount, isLoading: registrationLoading } = useRegistrationCount(festId);
+
   // Loading and error state
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All categories');
   const [statusFilter, setStatusFilter] = useState('All status');
-
-  // Mock fest data
-  const festData = {
-    id: festId,
-    name: 'Thomso 2025',
-    description: 'Annual tech festival featuring hackathons, workshops, and cultural events',
-    location: 'IIT Roorkee',
-    date: '14-20 Sep, 2025',
-    status: 'Upcoming',
-    totalEvents: 12,
-    totalRegistrations: 450,
-    maxRegistrations: 500,
-    revenue: 45000
-  };
-
-  // Mock event data
-  const eventData: EventEntry[] = [
-    {
-      id: '1',
-      name: 'Hackathon 2025',
-      category: 'Technical',
-      description: '24-hour coding competition with exciting prizes...',
-      location: 'Main Auditorium',
-      date: '15 Sep, 2025',
-      time: '10:00 AM',
-      status: 'Upcoming',
-      price: 500,
-      registrations: { current: 120, max: 150 },
-      isTeamEvent: true,
-      teamSize: 4
-    },
-    {
-      id: '2',
-      name: 'Dance Competition',
-      category: 'Cultural',
-      description: 'Show your dance moves and win exciting prizes...',
-      location: 'Cultural Hall',
-      date: '16 Sep, 2025',
-      time: '6:00 PM',
-      status: 'Upcoming',
-      price: 200,
-      registrations: { current: 45, max: 100 },
-      isTeamEvent: false
-    },
-    {
-      id: '3',
-      name: 'AI Workshop',
-      category: 'Workshop',
-      description: 'Learn the basics of artificial intelligence...',
-      location: 'Computer Lab',
-      date: '17 Sep, 2025',
-      time: '2:00 PM',
-      status: 'Upcoming',
-      price: 300,
-      registrations: { current: 80, max: 80 },
-      isTeamEvent: false
-    },
-    {
-      id: '4',
-      name: 'Cricket Tournament',
-      category: 'Sports',
-      description: 'Inter-college cricket tournament...',
-      location: 'Sports Ground',
-      date: '18 Sep, 2025',
-      time: '9:00 AM',
-      status: 'Upcoming',
-      price: 100,
-      registrations: { current: 200, max: 200 },
-      isTeamEvent: true,
-      teamSize: 11
-    },
-    {
-      id: '5',
-      name: 'Battle of Bands',
-      category: 'Cultural',
-      description: 'Music competition for bands...',
-      location: 'Open Air Theatre',
-      date: '19 Sep, 2025',
-      time: '7:00 PM',
-      status: 'Upcoming',
-      price: 400,
-      registrations: { current: 15, max: 20 },
-      isTeamEvent: true,
-      teamSize: 6
-    }
-  ];
-
-  const summaryStats = [
-    { label: 'Total events', value: festData.totalEvents.toString(), icon: '🎪' },
-    { label: 'Active events', value: '8', icon: '🔥' },
-    { label: 'Total registrations', value: `${festData.totalRegistrations}/${festData.maxRegistrations}`, icon: '👥' },
-    { label: 'Total revenue', value: `Rs. ${festData.revenue}`, icon: '💰' }
-  ];
 
   const getProgressPercentage = (current: number, max: number) => {
     return Math.min((current / max) * 100, 100);
@@ -150,14 +47,75 @@ const FestDashboard = () => {
     }
   };
 
-  useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
-      setLoading(false);
-    }, 800);
-  }, []);
+  // Calculate summary stats from real data
+  const summaryStats = [
+    { 
+      label: 'Total events', 
+      value: events ? events.length.toString() : '0', 
+      icon: '🎪' 
+    },
+    { 
+      label: 'Active events', 
+      value: events ? events.filter(event => {
+        const now = new Date();
+        const startDate = new Date(event.startDate);
+        const endDate = new Date(event.endDate);
+        return now >= startDate && now <= endDate;
+      }).length.toString() : '0', 
+      icon: '🔥' 
+    },
+    { 
+      label: 'Total registrations', 
+      value: registrationCount ? `${registrationCount.data.totalRegistrations}` : '0', 
+      icon: '👥' 
+    },
+    { 
+      label: 'Total revenue', 
+      value: events ? `₹${events.reduce((total, event) => total + (event.price || 0), 0)}` : '₹0', 
+      icon: '💰' 
+    }
+  ];
 
-  if (loading) {
+  // Filter events based on search and filters
+  const filteredEvents = events?.filter((event: Event) => {
+    const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         event.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         event.location?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = categoryFilter === 'All categories' || event.category === categoryFilter;
+    
+    // Determine status based on dates
+    const now = new Date();
+    const startDate = new Date(event.startDate);
+    const endDate = new Date(event.endDate);
+    let status = 'Completed';
+    if (now < startDate) status = 'Upcoming';
+    else if (now >= startDate && now <= endDate) status = 'Ongoing';
+    
+    const matchesStatus = statusFilter === 'All status' || status === statusFilter;
+    
+    return matchesSearch && matchesCategory && matchesStatus;
+  }) || [];
+
+  // Format date range
+  const formatDateRange = (start: string, end: string) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    return `${startDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} - ${endDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+  };
+
+  // Determine fest status based on dates
+  const getFestStatus = () => {
+    if (!fest) return 'Unknown';
+    const now = new Date();
+    const startDate = new Date(fest.startDate);
+    const endDate = new Date(fest.endDate);
+    if (now < startDate) return 'Upcoming';
+    else if (now >= startDate && now <= endDate) return 'Ongoing';
+    else return 'Completed';
+  };
+
+  if (festLoading || eventsLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-pink-400">
         <svg className="animate-spin h-10 w-10 mb-4" viewBox="0 0 24 24">
@@ -169,51 +127,80 @@ const FestDashboard = () => {
     );
   }
 
+  if (festError || eventsError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-red-400">
+        <p className="mb-4">Error loading fest data</p>
+        <p className="text-gray-400">Please try again later</p>
+      </div>
+    );
+  }
+
+  if (!fest) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-gray-400">
+        <p>Fest not found</p>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Title Section */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-
           <h1 className="text-3xl font-bold">EVENT DASHBOARD</h1>
         </div>
-        <p className="text-gray-400">Manage all events for {festData.name}</p>
+        <p className="text-gray-400">Manage all events for {fest.name}</p>
       </div>
 
       {/* Fest Info Card */}
       <div className="bg-[#1B1B1B] rounded-lg p-6 mb-8 w-full min-w-120 ">
         <div className="flex items-center justify-between">
           <div className=''>
-            <h2 className="text-2xl font-bold mb-2 ">{festData.name}</h2>
-            <p className="text-gray-400 mb-2">{festData.description}</p>
+            <h2 className="text-2xl font-bold mb-2 ">{fest.name}</h2>
+            <p className="text-gray-400 mb-2">{fest.about || 'No description available'}</p>
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                {festData.location}
+                {fest.venue || fest.city}
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                {festData.date}
+                {formatDateRange(fest.startDate, fest.endDate)}
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm font-semibold  ${getStatusColor(festData.status)}`}>
-                {festData.status}
+              <span className={`px-3 py-1 rounded-full text-sm font-semibold  ${getStatusColor(getFestStatus())}`}>
+                {getFestStatus()}
               </span>
             </div>
           </div>
           <div className="text-right">
             <p className="text-sm text-gray-400">Registration Progress</p>
-            <p className="text-2xl font-bold">{festData.totalRegistrations}/{festData.maxRegistrations}</p>
-            <div className="w-32 bg-gray-600 rounded-full h-2 mt-1">
-              <div
-                className="bg-[#E1FF01] h-2 rounded-full transition-all duration-300"
-                style={{ width: `${getProgressPercentage(festData.totalRegistrations, festData.maxRegistrations)}%` }}
-              ></div>
-            </div>
+            {registrationLoading ? (
+              <div className="text-sm text-gray-400">Loading...</div>
+            ) : registrationCount ? (
+              <>
+                <p className="text-2xl font-bold">{registrationCount.data.totalRegistrations}</p>
+                <div className="text-sm text-gray-400">
+                  <div>✓ {registrationCount.data.confirmedCount} confirmed</div>
+                  <div>⏳ {registrationCount.data.pendingCount} pending</div>
+                  <div>❌ {registrationCount.data.cancelledCount} cancelled</div>
+                </div>
+                <div className="w-32 bg-gray-600 rounded-full h-2 mt-1">
+                  <div
+                    className="bg-[#E1FF01] h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${getProgressPercentage(registrationCount.data.confirmedCount, registrationCount.data.totalRegistrations)}%` }}
+                  ></div>
+                </div>
+              </>
+            ) : (
+              <div className="text-sm text-gray-400">No registration data</div>
+            )}
           </div>
         </div>
       </div>
@@ -279,15 +266,31 @@ const FestDashboard = () => {
 
           {/* Table Rows */}
           <div className="divide-y divide-gray-700 text-xs sm:text-sm">
-            {eventData.map((event) => (
-              <EventRow
-                key={event.id}
-                event={event}
-                getCategoryColor={getCategoryColor}
-                getStatusColor={getStatusColor}
-                getProgressPercentage={getProgressPercentage}
-              />
-            ))}
+            {filteredEvents.length === 0 ? (
+              <div className="px-6 py-12 text-center text-gray-400">
+                No events found matching your criteria
+              </div>
+            ) : (
+              filteredEvents.map((event: Event) => {
+                // Determine status based on dates
+                const now = new Date();
+                const startDate = new Date(event.startDate);
+                const endDate = new Date(event.endDate);
+                let status = 'Completed';
+                if (now < startDate) status = 'Upcoming';
+                else if (now >= startDate && now <= endDate) status = 'Ongoing';
+
+                return (
+                  <EventRow
+                    key={event.id}
+                    event={event}
+                    getCategoryColor={getCategoryColor}
+                    getStatusColor={getStatusColor}
+                    getProgressPercentage={getProgressPercentage}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </div>
