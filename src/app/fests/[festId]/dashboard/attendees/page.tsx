@@ -1,53 +1,75 @@
 'use client';
-import { useState, useEffect } from 'react';
-
-interface Attendee {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  college: string;
-  status: 'Registered' | 'Checked In' | 'Cancelled';
-}
-
-const mockAttendees: Attendee[] = [
-  { id: '1', name: 'Aman Sharma', email: 'aman@example.com', phone: '9876543210', college: 'IIT Roorkee', status: 'Registered' },
-  { id: '2', name: 'Priya Singh', email: 'priya@example.com', phone: '9123456780', college: 'IIT Delhi', status: 'Checked In' },
-  { id: '3', name: 'Rahul Verma', email: 'rahul@example.com', phone: '9988776655', college: 'IIT Bombay', status: 'Registered' },
-  { id: '4', name: 'Sneha Patel', email: 'sneha@example.com', phone: '9871234567', college: 'BITS Pilani', status: 'Cancelled' },
-  { id: '5', name: 'Vikram Joshi', email: 'vikram@example.com', phone: '9001122334', college: 'IIT Kanpur', status: 'Checked In' },
-];
+import { useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useFestCandidates } from '@/hooks/useAttendees';
+import { Candidate } from '@/types/fest';
 
 const statusColor = {
-  'Registered': 'bg-blue-500',
-  'Checked In': 'bg-green-500',
-  'Cancelled': 'bg-red-500',
+  'confirmed': 'bg-green-500',
+  'pending': 'bg-yellow-500',
+  'cancelled': 'bg-red-500',
 };
 
 export default function AttendeesPage() {
+  const params = useParams();
+  const festId = params.festId as string;
+  
   const [search, setSearch] = useState('');
-  const [attendees, setAttendees] = useState<Attendee[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<'confirmed' | 'pending' | 'cancelled' | ''>('');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setAttendees(mockAttendees);
-      setLoading(false);
-    }, 500);
-  }, []);
+  // Get candidates with filters
+  const { data: candidatesData, isLoading, error } = useFestCandidates(festId, {
+    search: search || undefined,
+    status: statusFilter || undefined,
+    page: currentPage,
+    limit: 50
+  });
 
-  const filtered = attendees.filter(a =>
-    a.name.toLowerCase().includes(search.toLowerCase()) ||
-    a.email.toLowerCase().includes(search.toLowerCase()) ||
-    a.college.toLowerCase().includes(search.toLowerCase())
-  );
+  const candidates = candidatesData?.data.candidates || [];
+  const pagination = candidatesData?.data.pagination;
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setCurrentPage(1); // Reset to first page when searching
+  };
+
+  const handleStatusFilter = (status: 'confirmed' | 'pending' | 'cancelled' | '') => {
+    setStatusFilter(status);
+    setCurrentPage(1); // Reset to first page when filtering
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#101010] text-white p-4 md:p-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Attendees</h1>
+          <p className="text-red-400">Error loading attendees: {error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#101010] text-white p-4 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Attendees</h1>
-        <p className="text-gray-400">List of all registered participants for this fest</p>
+        <p className="text-gray-400">
+          {candidatesData?.data.festName ? `${candidatesData.data.festName} - ` : ''}
+          List of all registered participants for this fest
+        </p>
+        {pagination && (
+          <p className="text-sm text-gray-500 mt-2">
+            Showing {candidates.length} of {pagination.totalItems} attendees
+          </p>
+        )}
       </div>
+
+      {/* Filters */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 mb-8">
         <div className="flex-1 relative">
           <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,43 +77,135 @@ export default function AttendeesPage() {
           </svg>
           <input
             type="text"
-            placeholder="Search attendees"
+            placeholder="Search attendees by name, email, phone, college, city..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={e => handleSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-3 bg-[#1E1E1E] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
           />
         </div>
+        
+        {/* Status Filter */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleStatusFilter('')}
+            className={`px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+              statusFilter === '' 
+                ? 'bg-pink-500 text-white' 
+                : 'bg-[#1E1E1E] text-gray-300 hover:bg-gray-700'
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => handleStatusFilter('confirmed')}
+            className={`px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+              statusFilter === 'confirmed' 
+                ? 'bg-green-500 text-white' 
+                : 'bg-[#1E1E1E] text-gray-300 hover:bg-gray-700'
+            }`}
+          >
+            Confirmed
+          </button>
+          <button
+            onClick={() => handleStatusFilter('pending')}
+            className={`px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+              statusFilter === 'pending' 
+                ? 'bg-yellow-500 text-white' 
+                : 'bg-[#1E1E1E] text-gray-300 hover:bg-gray-700'
+            }`}
+          >
+            Pending
+          </button>
+          <button
+            onClick={() => handleStatusFilter('cancelled')}
+            className={`px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+              statusFilter === 'cancelled' 
+                ? 'bg-red-500 text-white' 
+                : 'bg-[#1E1E1E] text-gray-300 hover:bg-gray-700'
+            }`}
+          >
+            Cancelled
+          </button>
+        </div>
       </div>
+
+      {/* Attendees Table */}
       <div className="bg-[#161616] rounded-lg overflow-x-auto">
-        <div className="min-w-[700px]">
-          <div className="bg-[#1E1E1E] text-[#E1FF01] px-6 py-4 grid grid-cols-5 gap-4 font-semibold text-xs sm:text-sm">
+        <div className="min-w-[800px]">
+          <div className="bg-[#1E1E1E] text-[#E1FF01] px-6 py-4 grid grid-cols-7 gap-4 font-semibold text-xs sm:text-sm">
             <div>Name</div>
             <div>Email</div>
             <div>Phone</div>
             <div>College</div>
+            <div>City</div>
             <div>Status</div>
+            <div>Ticket</div>
           </div>
-          {loading ? (
-            <div className="flex items-center justify-center py-10 text-pink-400">Loading attendees...</div>
-          ) : filtered.length === 0 ? (
-            <div className="flex items-center justify-center py-10 text-gray-400">No attendees found.</div>
+          
+          {isLoading ? (
+            <div className="flex items-center justify-center py-10 text-pink-400">
+              Loading attendees...
+            </div>
+          ) : candidates.length === 0 ? (
+            <div className="flex items-center justify-center py-10 text-gray-400">
+              No attendees found.
+            </div>
           ) : (
-            filtered.map(a => (
-              <div key={a.id} className="px-6 py-4 grid grid-cols-5 gap-4 items-center border-b border-gray-700 last:border-b-0 text-xs sm:text-sm">
-                <div className="font-medium">{a.name}</div>
-                <div className="text-gray-300">{a.email}</div>
-                <div className="text-gray-300">{a.phone}</div>
-                <div className="text-gray-300">{a.college}</div>
-                <div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[a.status]} text-white`}>
-                    {a.status}
-                  </span>
+            <>
+              {candidates.map((candidate: Candidate) => (
+                <div key={candidate.registrationId} className="px-6 py-4 grid grid-cols-7 gap-4 items-center border-b border-gray-700 last:border-b-0 text-xs sm:text-sm">
+                  <div className="font-medium">{candidate.name}</div>
+                  <div className="text-gray-300">{candidate.email}</div>
+                  <div className="text-gray-300">{candidate.phone}</div>
+                  <div className="text-gray-300">{candidate.college}</div>
+                  <div className="text-gray-300">{candidate.city}, {candidate.state}</div>
+                  <div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[candidate.registrationStatus]} text-white`}>
+                      {candidate.registrationStatus}
+                    </span>
+                  </div>
+                  <div className="text-gray-300 font-mono text-xs">{candidate.ticket}</div>
                 </div>
-              </div>
-            ))
+              ))}
+            </>
           )}
         </div>
       </div>
+
+      {/* Pagination */}
+      {pagination && pagination.totalPages > 1 && (
+        <div className="flex items-center justify-between mt-8">
+          <div className="text-sm text-gray-400">
+            Page {pagination.currentPage} of {pagination.totalPages}
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={() => handlePageChange(pagination.currentPage - 1)}
+              disabled={!pagination.hasPrev}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                pagination.hasPrev
+                  ? 'bg-[#1E1E1E] text-white hover:bg-gray-700'
+                  : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Previous
+            </button>
+            
+            <button
+              onClick={() => handlePageChange(pagination.currentPage + 1)}
+              disabled={!pagination.hasNext}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                pagination.hasNext
+                  ? 'bg-[#1E1E1E] text-white hover:bg-gray-700'
+                  : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

@@ -7,6 +7,7 @@ import { useFests } from '@/hooks/useFests';
 import { Fest } from '@/types/fest';
 import LocationImage from '../../../public/assets/Location.png';
 import DateImage from '../../../public/assets/Calender.png';
+import WishlistToggle from './WishlistToggle';
 
 interface FestCardProps {
   fest?: Fest;
@@ -19,18 +20,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
   // Use prop fests if provided, otherwise use fetched fests
   const fests = propFests || fetchedFests;
 
-  const [heartcolor, setHeartcolor] = useState<string[]>([]);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    setHeartcolor(new Array(fests?.length || 0).fill('fill-none'));
-  }, [fests?.length]);
-
-  const handleClick = (i: number) => {
-    const newcolor = [...heartcolor];
-    newcolor[i] = newcolor[i] === 'fill-none' ? 'fill-pink-500' : 'fill-none';
-    setHeartcolor(newcolor);
-  };
 
   // If a single fest is provided, render just that one
   if (fest) {
@@ -112,16 +102,16 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
           </div>
 
           <div className="ml-1 text-[16px] text-[#717171] font-urbanist font-[600]">
-            {fest.description?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
+            {fest.about?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
           </div>
 
           <div className="flex justify-between flex-wrap mt-4">
             <div className="flex flex-col ml-1 gap-1">
               <div className="flex items-center gap-1">
                 <Image src={LocationImage} alt="Location" width={9} height={20} />
-                <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                  {fest.location || 'TBA'}
-                </div>
+                                    <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
+                      {fest.venue || fest.city || 'TBA'}
+                    </div>
               </div>
               <div className="flex items-center gap-1">
                 <Image src={DateImage} alt="Date" width={9} height={20} />
@@ -139,7 +129,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
 
             <div className="flex flex-col text-right mr-2">
               <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                ₹{fest.price || 0}
+                ₹{fest.tickets?.[0]?.price || 0}
               </div>
               <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                 Participation fees
@@ -153,28 +143,12 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
             </button>
           </Link>
 
-          <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
-            {fest.categories?.[0] || 'General'}
-          </div>
+                        <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
+                {fest.type || 'General'}
+              </div>
 
-          <div
-            className="absolute top-2.5 right-4 w-[22px] h-[22px] p-[1px] rounded-full cursor-pointer"
-            onClick={() => handleClick(0)}
-          >
-            <svg
-              width="22"
-              height="21"
-              viewBox="0 0 22 21"
-              xmlns="http://www.w3.org/2000/svg"
-              className={`object-contain w-full h-full fill-current ${heartcolor[0]}`}
-            >
-              <path
-                d="M19.3115 2.50913C16.9773 0.0498337 14.2743 1.08705 12.6007 2.18391C11.655 2.80369 10.345 2.80369 9.39929 2.18392C7.72564 1.08706 5.02272 0.0498608 2.68853 2.50914C-2.85249 8.3471 6.64988 19.5967 11 19.5967C15.3502 19.5967 24.8525 8.3471 19.3115 2.50913Z"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+          <div className="absolute top-2.5 right-4">
+            <WishlistToggle festId={fest.id || fest._id || ''} size="sm" />
           </div>
         </div>
       </div>
@@ -289,7 +263,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
               </div>
 
               <div className="ml-1 text-[16px] text-[#717171]  font-urbanist font-[600]">
-                {fest.description?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
+                {fest.about?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
               </div>
 
               <div className="flex justify-between flex-wrap mt-4">
@@ -297,7 +271,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                   <div className="flex items-center gap-1">
                     <Image src={LocationImage} alt="Location" width={9} height={20} />
                     <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                      {fest.location || 'TBA'}
+                      {fest.venue || fest.city || 'TBA'}
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
@@ -315,9 +289,9 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                 </div>
 
                 <div className="flex flex-col text-right mr-2">
-                  <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                    ₹{fest.price || 0}
-                  </div>
+                                  <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
+                  ₹{fest.tickets?.[0]?.price || 0}
+                </div>
                   <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                     Participation fees
                   </div>
@@ -331,27 +305,11 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
               </Link>
 
               <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
-                {fest.categories?.[i] || 'General'}
+                {fest.type || 'General'}
               </div>
 
-              <div
-                className="absolute top-2.5 right-4 w-[22px] h-[22px] p-[1px] rounded-full cursor-pointer"
-                onClick={() => handleClick(i)}
-              >
-                <svg
-                  width="22"
-                  height="21"
-                  viewBox="0 0 22 21"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`object-contain w-full h-full fill-current ${heartcolor[i]}`}
-                >
-                  <path
-                    d="M19.3115 2.50913C16.9773 0.0498337 14.2743 1.08705 12.6007 2.18391C11.655 2.80369 10.345 2.80369 9.39929 2.18392C7.72564 1.08706 5.02272 0.0498608 2.68853 2.50914C-2.85249 8.3471 6.64988 19.5967 11 19.5967C15.3502 19.5967 24.8525 8.3471 19.3115 2.50913Z"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
+              <div className="absolute top-2.5 right-4">
+                <WishlistToggle festId={fest.id || fest._id || ''} size="sm" />
               </div>
             </div>
           </div>
