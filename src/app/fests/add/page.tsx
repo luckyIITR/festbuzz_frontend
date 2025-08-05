@@ -13,6 +13,13 @@ const steps = [
   "Add-ons",
 ];
 
+type SponsorType = {
+  image: File | null;
+  name: string;
+  title: string;
+  website: string;
+};
+
 export default function AddFestPage() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
@@ -27,13 +34,13 @@ export default function AddFestPage() {
     college: "",
     startDate: "",
     endDate: "",
-    festMode: "online", // Added for fest mode
-    rulebook: "", // Added for rulebook link
-    instagram: "", // Added for instagram link
-    website: "", // Added for website link
-    about: "", // Added for about fest
-    contact: "", // Added for contact number
-    email: "", // Added for email
+    festMode: "online",
+    rulebook: "",
+    instagram: "",
+    website: "",
+    about: "",
+    contact: "",
+    email: "",
     // Page 3 fields
     ticketName: "",
     feeType: "paid",
@@ -42,55 +49,85 @@ export default function AddFestPage() {
     ticketStartTime: "",
     ticketEndDate: "",
     ticketEndTime: "",
+    // Updated sponsors - start with one empty sponsor
     sponsors: [
       { image: null as File | null, name: '', title: '', website: '' },
-    ],
+    ] as SponsorType[],
+    // Updated questions - start with one empty question
     questions: [
       { question: '', type: 'Text' },
-    ],
+    ] as { question: string; type: string }[],
     aftermovie: '',
   });
-  const [newSponsor, setNewSponsor] = useState({ image: null as File | null, name: '', title: '', website: '' });
-  const [newQuestion, setNewQuestion] = useState({ question: '', type: 'Text' });
+
+  // Remove newQuestion state - no longer needed
 
   // Handlers
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleNext = () => setStep((s) => Math.min(s + 1, steps.length - 1));
   const handleBack = () => setStep((s) => Math.max(s - 1, 0));
 
-  // Sponsor handlers
-  const handleSponsorInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = e.target;
-    if (name === 'image' && files && files[0]) {
-      setNewSponsor((prev) => ({ ...prev, image: files[0] }));
-    } else {
-      setNewSponsor((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+  // New sponsor handlers
   const addSponsor = () => {
-    if (newSponsor.name || newSponsor.title || newSponsor.website || newSponsor.image) {
-      setForm((prev) => ({ ...prev, sponsors: [...prev.sponsors, newSponsor] }));
-      setNewSponsor({ image: null, name: '', title: '', website: '' });
-    }
+    setForm(prev => ({
+      ...prev,
+      sponsors: [...prev.sponsors, { name: '', title: '', website: '', image: null }]
+    }));
   };
 
-  // Question handlers
-  const handleQuestionInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setNewQuestion((prev) => ({ ...prev, [name]: value }));
+  const handleSponsorChange = (index: number, field: keyof SponsorType, value: string | File) => {
+    setForm(prev => ({
+      ...prev,
+      sponsors: prev.sponsors.map((sponsor, i) => 
+        i === index ? { ...sponsor, [field]: value } : sponsor
+      )
+    }));
   };
+
+  const deleteSponsor = (index: number) => {
+    setForm(prev => ({
+      ...prev,
+      sponsors: prev.sponsors.filter((_, i) => i !== index)
+    }));
+  };
+
+  // New question handlers
   const addQuestion = () => {
-    if (newQuestion.question) {
-      setForm((prev) => ({ ...prev, questions: [...prev.questions, newQuestion] }));
-      setNewQuestion({ question: '', type: 'Text' });
-    }
+    setForm(prev => ({
+      ...prev,
+      questions: [...prev.questions, { question: '', type: 'Text' }]
+    }));
+  };
+
+  const handleQuestionChange = (index: number, field: 'question' | 'type', value: string) => {
+    setForm(prev => ({
+      ...prev,
+      questions: prev.questions.map((question, i) => 
+        i === index ? { ...question, [field]: value } : question
+      )
+    }));
+  };
+
+  const deleteQuestion = (index: number) => {
+    setForm(prev => ({
+      ...prev,
+      questions: prev.questions.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission here
+    console.log('Form submitted:', form);
   };
 
   return (
@@ -112,19 +149,21 @@ export default function AddFestPage() {
           {step === 3 && (
             <Step4AddOns
               form={form}
-              newSponsor={newSponsor}
-              addSponsor={addSponsor}
-              newQuestion={newQuestion}
-              addQuestion={addQuestion}
               handleInput={handleInput}
-              handleSponsorInput={handleSponsorInput}
-              handleQuestionInput={handleQuestionInput}
-              handleSubmit={e => { e.preventDefault(); /* handle submit here */ }}
+              handleSubmit={handleSubmit}
               handleBack={handleBack}
+              // Sponsor props
+              addSponsor={addSponsor}
+              handleSponsorChange={handleSponsorChange}
+              deleteSponsor={deleteSponsor}
+              // Question props
+              addQuestion={addQuestion}
+              handleQuestionChange={handleQuestionChange}
+              deleteQuestion={deleteQuestion}
             />
           )}
         </div>
       </div>
     </div>
   );
-} 
+}

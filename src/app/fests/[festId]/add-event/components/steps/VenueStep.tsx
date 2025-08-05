@@ -8,7 +8,7 @@ interface VenueStepProps {
 
 export default function VenueStep({ eventMode, setEventMode }: VenueStepProps) {
   return (
-    <form className="max-w-2xl m-0 flex flex-col gap-6">
+    <form className="max-w-2xl m-0 flex flex-col gap-6  min-h-140">
       <div>
         <label className="block font-urbanist font-[600] text-[20px] mb-2">Event Mode</label>
         <div className="flex gap-4">
@@ -38,25 +38,27 @@ export default function VenueStep({ eventMode, setEventMode }: VenueStepProps) {
           </button>
         </div>
       </div>
-      
+
       <div>
         <label className="block font-urbanist font-[600] text-[20px] mb-2">Location</label>
-        <input 
-          type="text" 
-          placeholder="Name your event" 
-          className="w-full bg-[#252525] rounded-lg px-4 py-3 font-urbanist font-[600] text-white placeholder-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]" 
+        <input
+          type="text"
+          placeholder="Name your event"
+          className="w-full bg-[#252525] rounded-lg px-4 py-3 font-urbanist font-[600] text-white placeholder-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]"
         />
       </div>
-      
+
       <div>
         <label className="block font-urbanist font-[600] text-[20px] mb-2">Venue</label>
-        <select className="appearance-none w-full bg-[#252525] font-urbanist font-[600] rounded-lg px-4 py-3 pl-4 pr-10 text-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]">
+        {/* <select className="appearance-none w-full bg-[#252525] font-urbanist font-[600] rounded-lg px-4 py-3 pl-4 pr-10 text-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]">
           <option className="text-white" value="">Select event type</option>
           <option className="text-white" value="auditorium">Auditorium</option>
           <option className="text-white" value="hall">Hall</option>
           <option className="text-white" value="outdoor">Outdoor</option>
           <option className="text-white" value="other">Other</option>
-        </select>
+        </select> */}
+        <input className="w-full bg-[#252525] rounded-lg px-4 py-3 font-urbanist font-[600] text-white placeholder-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]" placeholder='Enter Venue' />
+
         <p className="font-urbanist font-[500] text-[15px] text-[#818181] mt-2">
           Venue Not Decide Yet? <span className="font-urbanist font-[500] text-[15px] text-[#CCDAFD] mt-2 underline cursor-pointer">No worries you can add it later</span>
         </p>
