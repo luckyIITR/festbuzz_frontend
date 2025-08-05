@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import LocationImage from '../../../public/assets/Location.png';
 import DateImage from '../../../public/assets/Calender.png';
-import { useFests } from '@/hooks/useFests';
+import { useFests } from '@/hooks/fest';
 import { Fest } from '@/types/fest';
 import WishlistToggle from './WishlistToggle';
 

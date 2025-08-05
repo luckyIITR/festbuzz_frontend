@@ -1,10 +1,7 @@
 'use client'
 import React, { useState } from 'react';
-import { useMyFests } from '@/hooks/useMyFests';
-import { useRecentlyViewedFests } from '@/hooks/useRecentlyViewedFests';
-import { useWishlistFests } from '@/hooks/useWishlistFests';
-import { useRegisteredFests } from '@/hooks/useRegisteredFests';
-import { useRecommendedFests } from '@/hooks/useRecommendedFests';
+import { useMyFests, useRecommendedFests } from '@/hooks/fest';
+import { useRecentlyViewed, useWishlist } from '@/hooks/user';
 import { Fest } from '@/types/fest';
 
 import GradientFestCard from '../components/GradientFestCard';
@@ -42,21 +39,9 @@ export default function MyFestPage() {
     isLoading: boolean;
     error: Error | string | null;
   };
-  const { data: recentlyViewed, isLoading: isLoadingRecently, error: errorRecently } = useRecentlyViewedFests() as {
-    data: Fest[] | undefined;
-    isLoading: boolean;
-    error: Error | string | null;
-  };
-  const { data: wishlist, isLoading: isLoadingWishlist, error: errorWishlist } = useWishlistFests() as {
-    data: Fest[] | undefined;
-    isLoading: boolean;
-    error: Error | string | null;
-  };
-  const { data: registered, isLoading: isLoadingRegistered, error: errorRegistered } = useRegisteredFests() as {
-    data: Fest[] | undefined;
-    isLoading: boolean;
-    error: Error | string | null;
-  };
+  const { data: recentlyViewedData, isLoading: isLoadingRecently, error: errorRecently } = useRecentlyViewed();
+  const { data: wishlistData, isLoading: isLoadingWishlist, error: errorWishlist } = useWishlist();
+  const { data: registered, isLoading: isLoadingRegistered, error: errorRegistered } = useMyFests();
   const { data: recommended, isLoading: isLoadingRecommended, error: errorRecommended } = useRecommendedFests() as {
     data: Fest[] | undefined;
     isLoading: boolean;
@@ -69,8 +54,9 @@ export default function MyFestPage() {
   const safePast: Fest[] = Array.isArray(myFests?.past) ? myFests!.past : [];
   const mainCards: Fest[] = activeTab === 0 ? safeUpcoming : activeTab === 1 ? safeOngoing : safePast;
 
-  const safeRecentlyViewed: Fest[] = Array.isArray(recentlyViewed) ? recentlyViewed : [];
-  const safeWishlist: Fest[] = Array.isArray(wishlist) ? wishlist : [];
+  // Extract fest data from API responses
+  const safeRecentlyViewed: Fest[] = recentlyViewedData?.data?.recentlyViewed?.map(item => item.festId) || [];
+  const safeWishlist: Fest[] = wishlistData?.data?.wishlist?.map(item => item.festId) || [];
   const safeRegistered: Fest[] = Array.isArray(registered) ? registered : [];
   const safeRecommended: Fest[] = Array.isArray(recommended) ? recommended : [];
 

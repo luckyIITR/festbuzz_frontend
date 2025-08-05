@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useFest } from '@/hooks/useFest';
+import { useFest } from '@/hooks/fest';
 import Step4AddOns from '../../../../add/Step4AddOns';
 import type { FormType } from '../../../../add/Step1BasicDetails';
 

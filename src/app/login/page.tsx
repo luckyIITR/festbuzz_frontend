@@ -1,6 +1,5 @@
 'use client';
-import { useLogin } from '@/hooks/useLogin';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import { useLogin, useGoogleAuth } from '@/hooks/auth';
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';

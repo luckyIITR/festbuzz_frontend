@@ -17,7 +17,7 @@
 //   BookOpen,
 //   Settings
 // } from 'lucide-react';
-// import { useProfile, useUpdateProfile } from '@/hooks/useProfile';
+// import { useProfile, useUpdateProfile } from '@/hooks/user';
 
 // interface ProfileFormData {
 //   name: string;
@@ -421,7 +421,7 @@
 
 //                   <div className="pt-4 border-t border-zinc-800">
 //                     <p className="text-sm text-gray-400">
-//                       Member since: {user.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'Recently joined'}
+//                       Member since: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently joined'}
 //                     </p>
 //                   </div>
 //                 </div>
@@ -454,7 +454,7 @@ import {
   BookOpen,
   Settings
 } from 'lucide-react';
-import { useProfile, useUpdateProfile } from '@/hooks/useProfile';
+import { useProfile, useUpdateProfile } from '@/hooks/user';
 
 interface ProfileFormData {
   name: string;
@@ -635,7 +635,7 @@ export default function ProfilePage() {
                       <Award className="text-blue-400" size={20} />
                       <div>
                         <p className="text-sm text-gray-400">Fests Registered</p>
-                        <p className="font-semibold">{user.totalFestsRegistered || 0}</p>
+                        <p className="font-semibold">0</p>
                       </div>
                     </div>
                   </div>
@@ -644,7 +644,7 @@ export default function ProfilePage() {
                       <BookOpen className="text-green-400" size={20} />
                       <div>
                         <p className="text-sm text-gray-400">Events Registered</p>
-                        <p className="font-semibold">{user.totalEventsRegistered || 0}</p>
+                        <p className="font-semibold">0</p>
                       </div>
                     </div>
                   </div>
@@ -653,7 +653,7 @@ export default function ProfilePage() {
                       <Settings className="text-yellow-400" size={20} />
                       <div>
                         <p className="text-sm text-gray-400">Total Spent</p>
-                        <p className="font-semibold">₹{(user.totalAmountPaid || 0).toLocaleString()}</p>
+                        <p className="font-semibold">₹0</p>
                       </div>
                     </div>
                   </div>
@@ -839,7 +839,7 @@ export default function ProfilePage() {
 
               <div className="pt-4 border-t border-zinc-800">
                 <p className="text-sm text-gray-400">
-                  Member since: {user.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'Recently joined'}
+                                        Member since: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently joined'}
                 </p>
               </div>
             </div>

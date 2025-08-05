@@ -2,7 +2,7 @@
 
 import CallToAction from '../components/CallToAction';
 import Image from 'next/image';
-import { useFests } from '@/hooks/useFests';
+import { useFests } from '@/hooks/fest';
 import FestCard from '../components/FestCard';
 import GradientFestCard from '../components/GradientFestCard';
 

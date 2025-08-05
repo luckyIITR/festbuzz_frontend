@@ -3,12 +3,11 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import SummaryCard from './SummaryCard';
 import EventRow from './EventRow';
-import { useEffect } from 'react';
 import Link from 'next/link';
-import { useFest } from '@/hooks/useFest';
-import { useFestEvents } from '@/hooks/useFestEvents';
-import { useRegistrationCount } from '@/hooks/useRegistration';
-import { Fest, Event } from '@/types/fest';
+import { useFest } from '@/hooks/fest';
+import { useFestEvents } from '@/hooks/events';
+import { useRegistrationCount } from '@/hooks/registration';
+import { Event } from '@/types/fest';
 
 const FestDashboard = () => {
   const params = useParams();
@@ -16,8 +15,11 @@ const FestDashboard = () => {
 
   // Use existing hooks to get real data
   const { data: fest, isLoading: festLoading, error: festError } = useFest(festId);
-  const { data: events, isLoading: eventsLoading, error: eventsError } = useFestEvents(festId);
+  const { data: eventsData, isLoading: eventsLoading, error: eventsError } = useFestEvents(festId);
   const { data: registrationCount, isLoading: registrationLoading } = useRegistrationCount(festId);
+  
+  // Extract events array from API response
+  const events = eventsData?.data || [];
 
   // Loading and error state
   const [searchQuery, setSearchQuery] = useState('');
@@ -272,13 +274,7 @@ const FestDashboard = () => {
               </div>
             ) : (
               filteredEvents.map((event: Event) => {
-                // Determine status based on dates
-                const now = new Date();
-                const startDate = new Date(event.startDate);
-                const endDate = new Date(event.endDate);
-                let status = 'Completed';
-                if (now < startDate) status = 'Upcoming';
-                else if (now >= startDate && now <= endDate) status = 'Ongoing';
+                // Status is calculated in EventRow component
 
                 return (
                   <EventRow

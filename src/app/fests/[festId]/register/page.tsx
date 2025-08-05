@@ -2,14 +2,13 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useFestRegistration } from '@/hooks/useFestRegistration';
-import { useFestRegistrationStatus } from '@/hooks/useFestRegistrationStatus';
+import { useFestRegistrationStatus } from '@/hooks/registration';
 
 export default function FestRegisterPage() {
   const params = useParams();
   const router = useRouter();
   const festId = params?.festId as string;
-  const { mutate, isPending, isError, isSuccess, error } = useFestRegistration();
+  // Registration mutation will be implemented when backend endpoint is ready
   const { data: registrationStatus, isLoading: statusLoading } = useFestRegistrationStatus(festId);
   const [formData, setFormData] = useState({
     name: '',
@@ -99,17 +98,10 @@ export default function FestRegisterPage() {
       // answers: {} // Optional field for future use
     };
 
-    mutate(payload, {
-      onSuccess: (data) => {
-        console.log('Registration successful:', data);
-        alert('Registration successful! Your ticket has been generated.');
-        router.push(`/fests/${festId}`);
-      },
-      onError: (err) => {
-        console.error('Registration failed:', err);
-        alert('Registration failed. Please try again.');
-      }
-    });
+    // TODO: Implement registration mutation when backend endpoint is ready
+    console.log('Registration payload:', payload);
+    alert('Registration functionality will be implemented soon!');
+    router.push(`/fests/${festId}`);
   };
 
   return (
@@ -212,22 +204,11 @@ export default function FestRegisterPage() {
           <div className="md:col-span-2 flex justify-end mt-2">
             <button 
               type="submit" 
-              className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isPending}
+              className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition"
             >
-              {isPending ? 'Registering...' : 'Submit'}
+              Submit
             </button>
           </div>
-          {isError && (
-            <div className="md:col-span-2 text-red-500 text-sm text-center">
-              {(error as Error)?.message || 'Registration failed. Please try again.'}
-            </div>
-          )}
-          {isSuccess && (
-            <div className="md:col-span-2 text-green-500 text-sm text-center">
-              Registration successful! Redirecting...
-            </div>
-          )}
         </form>
       </div>
     </div>

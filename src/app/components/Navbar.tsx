@@ -69,6 +69,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
+            <Link href="/login" className={`ml-2 px-5 py-1 font-[700] font-urbanist rounded-full bg-[#E1FF01] text-black  hover:bg-lime-300 transition  ${pathname === '/signup' ? 'text-[#E1FF01]' : 'text-black'}`}>Login</Link>
               <Link href="/signup" className={`ml-2 px-5 py-1 font-[700] font-urbanist rounded-full bg-[#E1FF01] text-black  hover:bg-lime-300 transition  ${pathname === '/signup' ? 'text-[#E1FF01]' : 'text-black'}`}>Sign up</Link>
             </>
           )}

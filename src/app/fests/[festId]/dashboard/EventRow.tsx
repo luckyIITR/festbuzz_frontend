@@ -1,6 +1,6 @@
 import React from 'react';
 import { Event } from '@/types/fest';
-import { useEventRegistrationCount } from '@/hooks/useEventRegistration';
+import { useEventRegistrationCount } from '@/hooks/events';
 
 interface EventRowProps {
   event: Event;

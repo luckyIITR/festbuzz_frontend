@@ -1,9 +1,9 @@
 'use client'
 import CallToAction from '@/app/components/CallToAction';
-import { useFest } from '@/hooks/useFest';
-import { useFestEventsByStatus } from '@/hooks/useEvents';
-import { useFestRegistrationStatus } from '@/hooks/useFestRegistrationStatus';
-import { useTrackFestView } from '@/hooks/useTrackFestView';
+import { useFest } from '@/hooks/fest';
+import { useFestEventsByStatus } from '@/hooks/events';
+import { useFestRegistrationStatus } from '@/hooks/registration';
+import { useTrackFestView } from '@/hooks/common';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,7 +43,7 @@ export default function FestDetailsPage() {
   const festId = params?.festId as string;
   const { data: fest, isLoading: festLoading, error: festError } = useFest(festId);
   const { data: eventsData, isLoading: eventsLoading, error: eventsError } = useFestEventsByStatus(festId, 'published');
-  const events = eventsData || [];
+  const events = eventsData?.data || [];
   const { data: registrationStatus, isLoading: statusLoading } = useFestRegistrationStatus(festId);
   
   // Track fest view for recently viewed functionality

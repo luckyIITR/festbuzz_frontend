@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useWishlistCheck, useToggleWishlist } from '@/hooks/useWishlist';
+import { useWishlistCheck, useToggleWishlist } from '@/hooks/user';
 
 interface WishlistToggleProps {
   festId: string;

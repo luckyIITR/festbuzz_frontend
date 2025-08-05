@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useFest } from '@/hooks/useFest';
+import { useFest } from '@/hooks/fest';
 import Step2AboutFest from '../../../../add/Step2AboutFest';
 import type { FormType } from '../../../../add/Step1BasicDetails';
 

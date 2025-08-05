@@ -1,6 +1,6 @@
 'use client'
 import CallToAction from '@/app/components/CallToAction';
-import { useEvent } from '@/hooks/useEvent';
+import { useEvent } from '@/hooks/events/useEvent';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';

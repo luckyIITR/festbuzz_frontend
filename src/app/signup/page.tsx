@@ -2,11 +2,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useSignup } from '@/hooks/useSignup';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import { useSignup, useGoogleAuth } from '@/hooks/auth';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
-import { useVerifyOtp } from '@/hooks/useVerifyOtp';
+import { useVerifyOtp } from '@/hooks/auth';
 import { GoogleLogin } from '@react-oauth/google';
 
 

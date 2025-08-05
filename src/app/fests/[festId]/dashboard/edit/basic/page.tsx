@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useFest } from '@/hooks/useFest';
+import { useFest } from '@/hooks/fest';
 import Step1BasicDetails from '../../../../add/Step1BasicDetails';
 
 export default function EditFestBasic() {

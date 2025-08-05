@@ -29,9 +29,13 @@ interface Fest {
   organizer: string;
   college: string;
   description: string;
+  about?: string;
+  venue?: string;
+  city?: string;
   startDate: string;
   endDate: string;
   status: 'upcoming' | 'ongoing' | 'completed' | 'draft';
+  type: string;
   totalEvents: number;
   totalRegistrations: number;
   totalRevenue: number;
@@ -55,6 +59,7 @@ const mockFests: Fest[] = [
     startDate: '2025-03-15',
     endDate: '2025-03-17',
     status: 'upcoming',
+    type: 'Technical',
     totalEvents: 12,
     totalRegistrations: 450,
     totalRevenue: 225000,
@@ -76,6 +81,7 @@ const mockFests: Fest[] = [
     startDate: '2025-04-10',
     endDate: '2025-04-12',
     status: 'upcoming',
+    type: 'Cultural',
     totalEvents: 8,
     totalRegistrations: 320,
     totalRevenue: 160000,
@@ -97,6 +103,7 @@ const mockFests: Fest[] = [
     startDate: '2025-02-20',
     endDate: '2025-02-22',
     status: 'completed',
+    type: 'Sports',
     totalEvents: 15,
     totalRegistrations: 600,
     totalRevenue: 300000,
@@ -117,6 +124,7 @@ const mockFests: Fest[] = [
     startDate: '2025-05-15',
     endDate: '2025-05-16',
     status: 'draft',
+    type: 'Innovation',
     totalEvents: 6,
     totalRegistrations: 0,
     totalRevenue: 0,

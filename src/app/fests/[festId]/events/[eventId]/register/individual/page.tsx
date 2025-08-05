@@ -1,5 +1,5 @@
 'use client';
-import { useRegisterEvent } from '@/hooks/useRegisterEvent';
+import { useRegisterEvent } from '@/hooks/registration';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';

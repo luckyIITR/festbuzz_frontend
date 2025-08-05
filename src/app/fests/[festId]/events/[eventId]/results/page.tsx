@@ -9,7 +9,7 @@ import clock from '../../../../../../../public/assets/Clock.png'
 import pinkdiamond from '../../../../../../../public/assets/PinkDiamond.png'
 import whiteDiamond from '../../../../../../../public/assets/WhiteDiamond.png'
 
-import { useEvent } from '@/hooks/useEvent';
+import { useEvent } from '@/hooks/events/useEvent';
 import Link from 'next/link';
 interface Sponsor {
   id?: string;

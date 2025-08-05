@@ -3,8 +3,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-import { useFests } from '@/hooks/useFests';
-import { useMultipleRegistrationCounts } from '@/hooks/useRegistration';
+import { useFests } from '@/hooks/fest';
+import { useMultipleRegistrationCounts } from '@/hooks/registration';
 import { Fest } from '@/types/fest';
 
 const Dashboard = () => {

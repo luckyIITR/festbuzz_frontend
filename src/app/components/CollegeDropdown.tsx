@@ -40,6 +40,7 @@ const CollegeDropdown: React.FC<Props> = ({ value, onChange, colleges }) => {
     index: number;
     key: string;
     style: React.CSSProperties;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parent: any;
   }) => (
     <CellMeasurer

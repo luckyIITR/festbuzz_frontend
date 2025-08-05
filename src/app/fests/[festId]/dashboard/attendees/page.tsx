@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useFestCandidates } from '@/hooks/useAttendees';
+import { useFestCandidates } from '@/hooks/user';
 import { Candidate } from '@/types/fest';
 
 const statusColor = {

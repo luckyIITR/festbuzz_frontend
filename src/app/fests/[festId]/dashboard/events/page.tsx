@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useFestEventsByStatus, usePublishEvent, useUnpublishEvent, useArchiveEvent } from '@/hooks/useEvents';
+import { useFestEventsByStatus, usePublishEvent, useUnpublishEvent, useArchiveEvent } from '@/hooks/events';
 import { Event } from '@/types/fest';
 import EventCard from '@/app/components/EventCard';
 
@@ -19,7 +19,7 @@ export default function EventsDashboardPage() {
   
   // Get events for this fest by status
   const { data: eventsData, isLoading, error } = useFestEventsByStatus(festId, tab);
-  const events = eventsData || [];
+  const events = eventsData?.data || [];
 
   // Mutation hooks
   const publishEvent = usePublishEvent();
