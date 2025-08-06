@@ -304,10 +304,19 @@ export default function AddOnsPage() {
                     <form className="max-w-2xl m-0 flex flex-col gap-6">
                         {judges.map((_, index) => (
                             <div key={index}>
-                                <label className="block font-urbanist font-[600] text-[20px] mb-2">
-                                    Enter Judge details {judges.length > 1 ? `- ${index + 1}` : ''}
-                                </label>
-
+                                <div className='flex justify-between w-full content-center'>
+                                    <label className="block font-urbanist font-[600] text-[20px] mb-2">
+                                        Enter Judge details {judges.length > 1 ? `- ${index + 1}` : ''}
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={() => removeJudge(index)}
+                                        className="text-red-500 text-xl font-bold hover:text-red-600 px-4 py-2 bg-[#252525] rounded-full"
+                                        title="Remove sponsor"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
                                 <div className="flex gap-4">
                                     <div className="flex flex-col">
                                         <label className="font-urbanist font-[700] text-[16px] text-[#A4A4A4]">Name</label>
