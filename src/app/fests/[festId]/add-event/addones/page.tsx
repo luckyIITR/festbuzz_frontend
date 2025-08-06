@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 type twofield = {
     input1: string;
     input3: string;
@@ -137,11 +138,23 @@ export default function AddOnsPage() {
         { name: '', mobile: '', about: '', email: '', photo: null }
     ]);
 
-    const handleChange = (index: number, field: keyof Judge, value: any) => {
+    const handleChange = (
+        index: number,
+        field: keyof Judge,
+        value: string | File | null
+    ) => {
         const updatedJudges = [...judges];
-        updatedJudges[index][field] = value;
+
+        if (field === 'photo' && (value instanceof File || value === null)) {
+            updatedJudges[index].photo = value;
+        } else if (typeof value === 'string' && field !== 'photo') {
+            updatedJudges[index][field] = value;
+        }
+
         setJudges(updatedJudges);
     };
+
+
 
     const addJudge = () => {
         setJudges([...judges, { name: '', mobile: '', about: '', email: '', photo: null }]);
@@ -243,7 +256,7 @@ export default function AddOnsPage() {
                                     <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-[#1A1A1A] overflow-hidden">
                                         <label className="cursor-pointer text-white text-xs text-center px-2 py-1 relative w-full h-full flex items-center justify-center">
                                             {sponsor.image ? (
-                                                <img src={URL.createObjectURL(sponsor.image)} alt="preview" className="w-full h-full object-cover" />
+                                                <Image src={URL.createObjectURL(sponsor.image)} alt="preview" className="w-full h-full object-cover" />
                                             ) : (
                                                 'Sponsor image'
                                             )}
@@ -323,6 +336,8 @@ export default function AddOnsPage() {
                                         <input
                                             className="w-80 pl-4 bg-[#252525] text-white placeholder-[#565656] py-2 rounded-lg font-urbanist text-[20px] font-[600]"
                                             placeholder="Enter name"
+                                            value={judges[index].name}
+                                            onChange={(e) => handleChange(index, 'name', e.target.value)}
                                         />
                                     </div>
                                     <div className="flex flex-col">
@@ -330,6 +345,8 @@ export default function AddOnsPage() {
                                         <input
                                             className="w-80 pl-4 bg-[#252525] text-white placeholder-[#565656] py-2 rounded-lg font-urbanist text-[20px] font-[600]"
                                             placeholder="Enter mobile number"
+                                            value={judges[index].mobile}
+                                            onChange={(e) => handleChange(index, 'mobile', e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -340,13 +357,16 @@ export default function AddOnsPage() {
                                         <input
                                             className="w-80 pl-4 bg-[#252525] text-white placeholder-[#565656] py-2 rounded-lg font-urbanist text-[20px] font-[600]"
                                             placeholder="Enter about"
+                                            value={judges[index].about}
+                                            onChange={(e) => handleChange(index, 'about', e.target.value)}
                                         />
                                     </div>
                                     <div className="flex flex-col">
                                         <label className="font-urbanist font-[700] text-[16px] text-[#A4A4A4]">E-mail</label>
                                         <input
                                             className="w-80 pl-4 bg-[#252525] text-white placeholder-[#565656] py-2 rounded-lg font-urbanist text-[20px] font-[600]"
-                                            placeholder="Enter email"
+                                            placeholder="Enter email" value={judges[index].email}
+                                            onChange={(e) => handleChange(index, 'email', e.target.value)}
                                         />
                                     </div>
                                 </div>

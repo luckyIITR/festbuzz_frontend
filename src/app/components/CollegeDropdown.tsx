@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useMemo } from 'react';
-import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from 'react-virtualized';
+import {
+  List,
+  CellMeasurer,
+  CellMeasurerCache,
+  AutoSizer,
+  ListRowProps,
+} from 'react-virtualized';
 
 interface Props {
   value: string;
@@ -36,12 +42,7 @@ const CollegeDropdown: React.FC<Props> = ({ value, onChange, colleges }) => {
     key,
     style,
     parent,
-  }: {
-    index: number;
-    key: string;
-    style: React.CSSProperties;
-    parent: any;
-  }) => (
+  }: ListRowProps) => (
     <CellMeasurer
       cache={cache}
       columnIndex={0}

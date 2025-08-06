@@ -1,6 +1,6 @@
 import React from "react";
 import StateDropdown from '../../components/StateDropdown' // adjust path accordingly
-import { useState, useEffect, useCallback } from "react";
+import {  useCallback } from "react";
 import useCollegeList from '../../../hooks/useCollegeList'
 import CollegeDropdown from '../../components/CollegeDropdown'
 export type FormType = {

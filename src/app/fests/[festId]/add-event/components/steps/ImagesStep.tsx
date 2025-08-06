@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Plus, Minus } from 'lucide-react'; // Optional icons for add/remove
+import { Plus } from 'lucide-react'; // Optional icons for add/remove
 
 export default function ImagesStep() {
   const [images, setImages] = useState<number[]>([0, 1, 2]);

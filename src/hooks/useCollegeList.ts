@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 
+type CollegeItem = {
+  Name: string;
+  [key: string]: unknown;
+};
+
 const useCollegeList = () => {
   const [collegeList, setCollegeList] = useState<string[]>([]);
 
@@ -10,7 +15,9 @@ const useCollegeList = () => {
           'https://raw.githubusercontent.com/ItsUjjwalGoel/College_List/main/College_List.json'
         );
         const data = await res.json();
-        const names = data['All institutes'].map((item: any) => item.Name);
+        const names = (data['All institutes'] as CollegeItem[]).map(
+          (item) => item.Name
+        );
         setCollegeList(names);
       } catch (err) {
         console.error("Failed to fetch college list", err);

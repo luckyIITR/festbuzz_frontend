@@ -68,6 +68,7 @@ export default function AddFestPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+
   const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -87,7 +88,7 @@ export default function AddFestPage() {
   const handleSponsorChange = (index: number, field: keyof SponsorType, value: string | File) => {
     setForm(prev => ({
       ...prev,
-      sponsors: prev.sponsors.map((sponsor, i) => 
+      sponsors: prev.sponsors.map((sponsor, i) =>
         i === index ? { ...sponsor, [field]: value } : sponsor
       )
     }));
@@ -111,7 +112,7 @@ export default function AddFestPage() {
   const handleQuestionChange = (index: number, field: 'question' | 'type', value: string) => {
     setForm(prev => ({
       ...prev,
-      questions: prev.questions.map((question, i) => 
+      questions: prev.questions.map((question, i) =>
         i === index ? { ...question, [field]: value } : question
       )
     }));
@@ -152,11 +153,9 @@ export default function AddFestPage() {
               handleInput={handleInput}
               handleSubmit={handleSubmit}
               handleBack={handleBack}
-              // Sponsor props
               addSponsor={addSponsor}
               handleSponsorChange={handleSponsorChange}
               deleteSponsor={deleteSponsor}
-              // Question props
               addQuestion={addQuestion}
               handleQuestionChange={handleQuestionChange}
               deleteQuestion={deleteQuestion}
