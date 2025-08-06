@@ -141,7 +141,6 @@ export default function EditFestAddOns() {
       setNewQuestion({ question: '', type: 'Text' });
     }
   };
-
   if (isLoading && !form) return <div className="text-center py-10 text-pink-400">Loading fest details...</div>;
 
   return (
@@ -153,9 +152,14 @@ export default function EditFestAddOns() {
           newSponsor={newSponsor}
           addSponsor={addSponsor}
           newQuestion={newQuestion}
-          addQuestion={addQuestion}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          handleInput={(e) => setForm((prev: any) => ({ ...prev, [e.target.name]: e.target.value }))}
+          addQuestion={addQuestion} handleInput={(e) => {
+            const { name, value } = e.target as HTMLInputElement;
+            setForm((prev: FormType) => ({
+              ...prev,
+              [name]: value,
+            }));
+          }}
+
           handleSponsorInput={handleSponsorInput}
           handleQuestionInput={handleQuestionInput}
           handleSubmit={handleSubmit}

@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function DetailsStep() {
   return (
-    <form className="max-w-2xl flex flex-col gap-6">
+    <form className="max-w-2xl flex flex-col gap-6 min-h-140">
       <div>
         <label className="block font-urbanist font-[600] text-[20px] mb-2">Rulebook link</label>
         <input 

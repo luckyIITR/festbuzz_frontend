@@ -23,9 +23,9 @@ const addOns = [
 ];
 
 const initialRewards = [
-  { rank: '1st', cash: '₹2000', coupon: '', goodies: '' },
-  { rank: '2nd', cash: '₹1000', coupon: '', goodies: '' },
-  { rank: '3rd', cash: '₹500', coupon: '', goodies: '' },
+  { rank: '1st', cash: '', coupon: '', goodies: '' },
+  { rank: '2nd', cash: '', coupon: '', goodies: '' },
+  { rank: '3rd', cash: '', coupon: '', goodies: '' },
 ];
 
 export default function CreateEventPage() {

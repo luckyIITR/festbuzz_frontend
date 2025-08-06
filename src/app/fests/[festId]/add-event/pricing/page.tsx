@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-
+import { useParams } from 'next/navigation';
 const steps = [
     { label: 'Basics' },
     { label: 'Venue' },
@@ -20,13 +20,15 @@ const addOns = [
 export default function PricingPage() {
 
     const router = useRouter();
+    const params=useParams().festId;
+
 
     const handleNext = () => {
         router.push('./addones');
 
     };
     const handleback = () => {
-        router.push('/event/');
+        router.push(`/fests/${params}/add-event/`);
     };
     const [visibility, setVisibility] = React.useState('open');
     return (
@@ -161,24 +163,27 @@ export default function PricingPage() {
                         </div>
                     </form >
 
-                    <div className="fixed bottom-8 right-8 z-50 ">
-                        <button
-                            type="button"
-                            className="bg-[#0050FF] text-[#E6FF4C] font-bold text-lg mr-4 px-12 py-3 rounded-full shadow-lg hover:bg-[#003bb3] transition-colors"
-                            onClick={handleback}
-                        >
-                            Back
-                        </button>
-                        <button
-                            type="button"
-                            className="bg-[#0050FF] text-[#E6FF4C] font-bold text-lg px-12 py-3 rounded-full shadow-lg hover:bg-[#003bb3] transition-colors"
-                            onClick={handleNext}
-                        >
-                            Submit
-                        </button>
 
-                    </div>
+
                 </main>
+
+            </div>
+            <div className="sticky bottom-0 py-4 px-8 flex justify-end gap-4 z-50">
+                <button
+                    type="button"
+                    className="bg-[#0050FF] text-[#E6FF4C] font-bold text-lg px-8 py-2 rounded-full shadow-lg hover:bg-[#003bb3] transition-colors"
+                    onClick={handleback}
+                >
+                    Back
+                </button>
+                <button
+                    type="button"
+                    className="bg-[#0050FF] text-[#E6FF4C] font-bold text-lg px-8 py-2 rounded-full shadow-lg hover:bg-[#003bb3] transition-colors"
+                    onClick={handleNext}
+                >
+                    Submit
+                </button>
+
             </div>
         </div>
     );

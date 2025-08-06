@@ -8,7 +8,7 @@ interface BasicDetailsStepProps {
 
 export default function BasicDetailsStep({ visibility, setVisibility }: BasicDetailsStepProps) {
   return (
-    <form className="w-6/12 flex flex-col gap-6">
+    <form className="w-6/12 flex flex-col gap-6  min-h-140">
       <div>
         <label className="block font-urbanist font-[600] text-[20px] mb-2">Event name</label>
         <input 
@@ -21,8 +21,8 @@ export default function BasicDetailsStep({ visibility, setVisibility }: BasicDet
       <div>
         <label className="block font-urbanist font-[600] text-[20px] mb-2">Event type</label>
         <div className="relative">
-          <select className="appearance-none w-full bg-[#252525] font-urbanist font-[600] rounded-lg px-4 py-3 pl-4 pr-10 text-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]">
-            <option className="text-white" value="">Select event type</option>
+          <select className="appearance-none w-full bg-[#252525] font-urbanist  rounded-lg px-4 py-3 pl-4 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]">
+            <option className="text-[#565656]" value="">Select event type</option>
             <option className="text-white" value="workshop">Workshop</option>
             <option className="text-white" value="competition">Competition</option>
             <option className="text-white" value="seminar">Seminar</option>
