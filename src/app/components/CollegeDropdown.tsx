@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useMemo } from 'react';
-import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from 'react-virtualized';
+import {
+  List,
+  CellMeasurer,
+  CellMeasurerCache,
+  AutoSizer,
+  ListRowProps,
+} from 'react-virtualized';
 
 interface Props {
   value: string;
