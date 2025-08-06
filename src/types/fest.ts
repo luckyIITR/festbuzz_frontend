@@ -23,30 +23,54 @@ export interface Judge {
 
 export interface Event {
   id: string;
+  festId: string;
   name: string;
-  description?: string;
-  festId?: string;
-  price?: number;
+  type: string;
+  visibility: string;
   startDate: string;
   endDate: string;
+  mode: string;
   location?: string;
-  image?: string;
-  bannerImage?: string;
-  category?: string;
-  maxParticipants?: number;
-  currentParticipants?: number;
+  venue?: string;
+  rulebookLink?: string;
+  description?: string;
+  imageUrls?: string[];
+  rewards?: {
+    rank: string;
+    cash: number;
+    coupon?: string;
+    goodies?: string;
+    description: string;
+  }[];
+  tickets?: {
+    name: string;
+    eventFeeType: string;
+    price: number;
+    availableFrom: string;
+    availableTill: string;
+    availableTime: string;
+    endTime: string;
+    maxQuantity: number;
+    currentQuantity: number;
+    description: string;
+  }[];
   isTeamEvent?: boolean;
   teamSize?: number;
-  rules?: string;
-  prizes?: string;
+  maxParticipants?: number;
   sponsors?: Sponsor[];
   judges?: Judge[];
-  // New status fields
   status?: 'draft' | 'published' | 'archived';
   publishedAt?: string; // ISO date string
   publishedBy?: string; // User ID
   draftVersion?: number;
   lastSavedAsDraft?: string; // ISO date string
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface EventResponse {
+  success: boolean;
+  data: Event;
 }
 
 export interface EventStatus {
@@ -273,6 +297,15 @@ export interface RecentlyViewedItem {
   festId: Fest;
 }
 
+// Updated interface for new recently viewed response
+export interface RecentlyViewedFest extends Fest {
+  viewedAt: string;
+  viewCount: number;
+  // The backend now returns complete Fest objects with all properties including:
+  // - tickets array with price information
+  // - all other Fest properties like festMode, about, contact, email, etc.
+}
+
 export interface PaginationInfo {
   currentPage: number;
   totalPages: number;
@@ -291,10 +324,8 @@ export interface WishlistResponse {
 
 export interface RecentlyViewedResponse {
   success: boolean;
-  data: {
-    recentlyViewed: RecentlyViewedItem[];
-    pagination: PaginationInfo;
-  };
+  data: RecentlyViewedFest[];
+  pagination: PaginationInfo;
 }
 
 export interface WishlistCheckResponse {

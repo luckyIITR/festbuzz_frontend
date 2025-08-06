@@ -478,6 +478,18 @@ export default function ProfilePage() {
     address: ''
   });
 
+  // Helper function to convert ISO date to YYYY-MM-DD format
+  const formatDateForInput = (dateString: string | undefined): string => {
+    if (!dateString) return '';
+    try {
+      const date = new Date(dateString);
+      return date.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '';
+    }
+  };
+
   // Update form data when user data is loaded
   useEffect(() => {
     if (user) {
@@ -486,7 +498,7 @@ export default function ProfilePage() {
         phone: user.phone || '',
         college: user.college || '',
         gender: user.gender || 'Male',
-        dateOfBirth: user.dateOfBirth || '',
+        dateOfBirth: formatDateForInput(user.dateOfBirth),
         address: user.address || ''
       });
     }
@@ -534,7 +546,7 @@ export default function ProfilePage() {
         phone: user.phone || '',
         college: user.college || '',
         gender: user.gender || 'Male',
-        dateOfBirth: user.dateOfBirth || '',
+        dateOfBirth: formatDateForInput(user.dateOfBirth),
         address: user.address || ''
       });
     }

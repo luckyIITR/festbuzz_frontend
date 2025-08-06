@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { apiFetch } from '../../lib/api';
 import { getToken } from '../../lib/token';
 
-interface RegistrationStatus {
+interface RegistrationStatusData {
   isRegistered: boolean;
   registration?: {
     id: string;
@@ -12,20 +12,28 @@ interface RegistrationStatus {
   };
 }
 
+interface RegistrationStatusResponse {
+  success: boolean;
+  message: string;
+  data: RegistrationStatusData;
+}
+
 export function useFestRegistrationStatus(festId: string) {
-  return useQuery<RegistrationStatus>({
+  return useQuery<RegistrationStatusData>({
     queryKey: ['fest-registration-status', festId],
-    queryFn: async (): Promise<RegistrationStatus> => {
+    queryFn: async (): Promise<RegistrationStatusData> => {
       const token = getToken();
       if (!token) {
         return { isRegistered: false };
       }
       
       try {
-        const response = await apiFetch<RegistrationStatus>(`/api/registration/fest/${festId}/status`, {
+        const response = await apiFetch<RegistrationStatusResponse>(`/api/registration/fest/${festId}/status`, {
           method: 'GET',
         }, token);
-        return response;
+        
+        // Return the data from the response
+        return response.data;
       } catch {
         // If user is not registered, API might return 404
         return { isRegistered: false };

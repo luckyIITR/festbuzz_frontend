@@ -2,14 +2,18 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useFestRegistrationStatus } from '@/hooks/registration';
+import { useFestRegistration } from '@/hooks/registration';
+import { useProfile } from '@/hooks/user';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function FestRegisterPage() {
   const params = useParams();
   const router = useRouter();
   const festId = params?.festId as string;
-  // Registration mutation will be implemented when backend endpoint is ready
-  const { data: registrationStatus, isLoading: statusLoading } = useFestRegistrationStatus(festId);
+  const { data: userProfile, isLoading: profileLoading } = useProfile();
+  const festRegistrationMutation = useFestRegistration();
+  const queryClient = useQueryClient();
+  
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -21,50 +25,49 @@ export default function FestRegisterPage() {
   });
 
   useEffect(() => {
-    // Get user data from localStorage
+    // Get user data from localStorage first
+    let userData = null;
     if (typeof window !== 'undefined') {
       const userStr = localStorage.getItem('user');
-      const userData = userStr ? JSON.parse(userStr) : null;
-      // Prefill form with user data
-      if (userData) {
-        setFormData(prev => ({
-          ...prev,
-          name: userData.name || ''
-        }));
+      userData = userStr ? JSON.parse(userStr) : null;
+    }
+
+    // Helper function to convert ISO date to YYYY-MM-DD format
+    const formatDateForInput = (dateString: string | undefined): string => {
+      if (!dateString) return '';
+      try {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
+      } catch (error) {
+        console.error('Error formatting date:', error);
+        return '';
       }
-    }
-  }, []);
+    };
 
-  // Check if user is already registered
-  const isRegistered = registrationStatus?.isRegistered || false;
+    // Prefill form with available data from both localStorage and profile hook
+    const availableData = {
+      name: userProfile?.name || userData?.name || '',
+      phone: userProfile?.phone || userData?.phone || '',
+      dateOfBirth: formatDateForInput(userProfile?.dateOfBirth) || formatDateForInput(userData?.dateOfBirth) || '',
+      gender: userProfile?.gender || userData?.gender || '',
+      city: userProfile?.city || userData?.city || '',
+      state: userProfile?.state || userData?.state || '',
+      instituteName: userProfile?.college || userData?.college || userData?.instituteName || ''
+    };
 
-  // If already registered, redirect to fest page
-  useEffect(() => {
-    if (!statusLoading && isRegistered) {
-      alert('You are already registered for this fest!');
-      router.push(`/fests/${festId}`);
-    }
-  }, [isRegistered, statusLoading, router, festId]);
+    setFormData(prev => ({
+      ...prev,
+      ...availableData
+    }));
+  }, [userProfile]); // Re-run when profile data is loaded
 
-  // Show loading while checking registration status
-  if (statusLoading) {
+  // Show loading while loading profile
+  if (profileLoading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="text-xl font-bold mb-4">Checking registration status...</div>
+          <div className="text-xl font-bold mb-4">Loading...</div>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
-        </div>
-      </div>
-    );
-  }
-
-  // If already registered, show message (will redirect)
-  if (isRegistered) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-xl font-bold mb-4">Already Registered!</div>
-          <div className="text-gray-400">Redirecting to fest page...</div>
         </div>
       </div>
     );
@@ -77,7 +80,7 @@ export default function FestRegisterPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate gender enum to match backend requirements
@@ -86,22 +89,47 @@ export default function FestRegisterPage() {
       return;
     }
 
-    // Prepare payload for backend
-    const payload = {
-      festId,
-      phone: formData.phone,
-      dateOfBirth: formData.dateOfBirth,
-      gender: formData.gender as 'Male' | 'Female' | 'Other',
-      city: formData.city,
-      state: formData.state,
-      instituteName: formData.instituteName,
-      // answers: {} // Optional field for future use
-    };
+    // Validate required fields
+    const requiredFields = ['phone', 'dateOfBirth', 'gender', 'city', 'state', 'instituteName'];
+    const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
+    
+    if (missingFields.length > 0) {
+      alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+      return;
+    }
 
-    // TODO: Implement registration mutation when backend endpoint is ready
-    console.log('Registration payload:', payload);
-    alert('Registration functionality will be implemented soon!');
-    router.push(`/fests/${festId}`);
+    try {
+      // Prepare payload for backend
+      const payload = {
+        festId,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
+        gender: formData.gender as 'Male' | 'Female' | 'Other',
+        city: formData.city,
+        state: formData.state,
+        instituteName: formData.instituteName,
+        answers: [] // Empty array for now, can be extended later
+      };
+
+      const result = await festRegistrationMutation.mutateAsync(payload);
+      
+      // Debug: Log the actual response
+      console.log('Registration response:', result);
+      
+      if (result.success) {
+        alert('Registration successful!');
+        
+        // Small delay to ensure the status is updated
+        setTimeout(() => {
+          router.push(`/fests/${festId}`);
+        }, 1000);
+      } else {
+        alert(`Registration failed: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Registration failed. Please try again.');
+    }
   };
 
   return (
@@ -204,9 +232,10 @@ export default function FestRegisterPage() {
           <div className="md:col-span-2 flex justify-end mt-2">
             <button 
               type="submit" 
-              className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition"
+              disabled={festRegistrationMutation.isPending}
+              className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition disabled:opacity-50"
             >
-              Submit
+              {festRegistrationMutation.isPending ? 'Registering...' : 'Submit'}
             </button>
           </div>
         </form>

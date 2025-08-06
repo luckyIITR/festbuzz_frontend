@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useMyFests, useRecommendedFests } from '@/hooks/fest';
 import { useRecentlyViewed, useWishlist } from '@/hooks/user';
+import { useRegisteredFests } from '@/hooks/registration';
 import { Fest } from '@/types/fest';
 
 import GradientFestCard from '../components/GradientFestCard';
@@ -41,7 +42,7 @@ export default function MyFestPage() {
   };
   const { data: recentlyViewedData, isLoading: isLoadingRecently, error: errorRecently } = useRecentlyViewed();
   const { data: wishlistData, isLoading: isLoadingWishlist, error: errorWishlist } = useWishlist();
-  const { data: registered, isLoading: isLoadingRegistered, error: errorRegistered } = useMyFests();
+  const { data: registeredFests, isLoading: isLoadingRegistered, error: errorRegistered } = useRegisteredFests();
   const { data: recommended, isLoading: isLoadingRecommended, error: errorRecommended } = useRecommendedFests() as {
     data: Fest[] | undefined;
     isLoading: boolean;
@@ -55,10 +56,11 @@ export default function MyFestPage() {
   const mainCards: Fest[] = activeTab === 0 ? safeUpcoming : activeTab === 1 ? safeOngoing : safePast;
 
   // Extract fest data from API responses
-  const safeRecentlyViewed: Fest[] = recentlyViewedData?.data?.recentlyViewed?.map(item => item.festId) || [];
+  const safeRecentlyViewed: Fest[] = recentlyViewedData?.data || [];
   const safeWishlist: Fest[] = wishlistData?.data?.wishlist?.map(item => item.festId) || [];
-  const safeRegistered: Fest[] = Array.isArray(registered) ? registered : [];
+  const safeRegistered: Fest[] = Array.isArray(registeredFests) ? registeredFests : [];
   const safeRecommended: Fest[] = Array.isArray(recommended) ? recommended : [];
+
 
   let secondaryCards: Fest[] = safeRecentlyViewed;
   let isLoadingSecondary = isLoadingRecently;
@@ -139,7 +141,11 @@ export default function MyFestPage() {
                 ) : null
               )}
               {secondaryCards.length === 0 && !isLoadingSecondary && !errorSecondary && (
-                <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">No fests found in this section.</div>
+                <div className="col-span-1 sm:col-span-2 md:col-span-3 text-center text-gray-400 py-12">
+                  {activeSecondaryTab === 0 && "No recently viewed fests."}
+                  {activeSecondaryTab === 1 && "No fests in your wishlist."}
+                  {activeSecondaryTab === 2 && "You haven't registered for any fests yet."}
+                </div>
               )}
               {secondaryCards.map((card: Fest, idx: number) => (
                   <GradientFestCard key={card.id || idx} fest={card} />

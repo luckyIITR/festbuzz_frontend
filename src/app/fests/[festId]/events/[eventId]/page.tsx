@@ -12,6 +12,7 @@ interface Sponsor {
   name?: string;
   logo?: string;
   image?: string;
+  website?: string;
 }
 
 interface Judge {
@@ -20,6 +21,8 @@ interface Judge {
   name?: string;
   photo?: string;
   bio?: string;
+  mobile?: string;
+  email?: string;
 }
 
 export default function EventDetailsPage() {
@@ -43,17 +46,21 @@ export default function EventDetailsPage() {
     return `${startFormatted}-${endFormatted}`;
   };
 
+  // Get the first ticket price or default to 0
+  const ticketPrice = event.tickets?.[0]?.price || 0;
+  const firstImage = event.imageUrls?.[0] || 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80';
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
       <div className="max-w-5xl mx-auto mt-8 bg-zinc-900 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-lg">
-        <Image src={event.bannerImage || event.image || 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80'} alt={event.name} width={900} height={400} className="w-full md:w-1/2 h-64 md:h-auto object-cover object-center" />
+        <Image src={firstImage} alt={event.name} width={900} height={400} className="w-full md:w-1/2 h-64 md:h-auto object-cover object-center" />
         <div className="flex-1 p-6 flex flex-col justify-between">
           <div>
-            <span className="inline-block bg-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full mb-4">{event.category || 'Event'}</span>
+            <span className="inline-block bg-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full mb-4">{event.type || 'Event'}</span>
             <h1 className="text-2xl md:text-4xl font-extrabold mb-2">{event.name}</h1>
             <div className="flex items-center gap-3 text-gray-400 text-xs mb-2">
-              <span>🏫 {event.location || 'TBA'}</span>
+              <span>🏫 {event.venue || event.location || 'TBA'}</span>
               <span>•</span>
               <span>📅 {event.startDate && event.endDate ? formatDateRange(event.startDate, event.endDate) : 'Date TBA'}</span>
               {event.startDate && (
@@ -66,7 +73,7 @@ export default function EventDetailsPage() {
           </div>
           <div className="flex flex-col md:items-end md:justify-end gap-3 mt-4 md:mt-0">
             <div className="text-right">
-              <span className="text-2xl font-bold text-lime-300">₹{event.price}</span>
+              <span className="text-2xl font-bold text-lime-300">₹{ticketPrice}</span>
               <div className="text-xs text-gray-300">{event.isTeamEvent ? 'Team fee' : 'Individual fee'}</div>
             </div>
             <button
@@ -115,8 +122,9 @@ export default function EventDetailsPage() {
           </div>
           <div className="text-gray-300 text-sm mb-4">
             <span className="font-bold">Date and Time:</span> {event.startDate && event.endDate ? formatDateRange(event.startDate, event.endDate) : 'TBA'}<br />
-            <span className="font-bold">Location:</span> {event.location || 'TBA'}<br />
-            <span className="font-bold">Prizes:</span> {event.prizes || 'TBA'}
+            <span className="font-bold">Location:</span> {event.venue || event.location || 'TBA'}<br />
+            <span className="font-bold">Mode:</span> {event.mode || 'TBA'}<br />
+            <span className="font-bold">Max Participants:</span> {event.maxParticipants || 'Unlimited'}
           </div>
           <div className="text-gray-300 text-sm mb-4">
             <span className="font-bold">Description:</span> {event.description || 'No description available'}
@@ -124,23 +132,29 @@ export default function EventDetailsPage() {
           <button className="bg-zinc-800 text-white px-6 py-2 rounded-full mt-2">Read more</button>
         </section>
 
-        {/* Rules & Code of Conduct */}
+        {/* Rewards Section */}
         <section>
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-block w-4 h-4 bg-pink-500 rounded-full animate-pulse" />
-            <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">RULES & CODE OF CONDUCT</h2>
+            <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">REWARDS & PRIZES</h2>
           </div>
-          <ul className="text-gray-300 text-sm mb-6 list-disc list-inside space-y-2">
-            {event.rules
-              ? event.rules.split('\n').map((rule: string, i: number) => <li key={i}>{rule}</li>)
-              : [
-                  'Teams must consist of 2-4 members.',
-                  'All code must be written during the event.',
-                  'Projects must be submitted by the deadline.',
-                  'Respectful behavior is expected at all times.',
-                ].map((rule, i) => <li key={i}>{rule}</li>)}
-          </ul>
-          <button className="bg-zinc-700 text-white px-6 py-2 rounded-full">Download</button>
+          {event.rewards && event.rewards.length > 0 ? (
+            <div className="space-y-3">
+              {event.rewards.map((reward, index) => (
+                <div key={index} className="bg-zinc-800 rounded-lg p-4">
+                  <div className="font-bold text-yellow-400">{reward.rank}</div>
+                  <div className="text-gray-300 text-sm">
+                    <div>Cash Prize: ₹{reward.cash.toLocaleString()}</div>
+                    {reward.goodies && <div>Goodies: {reward.goodies}</div>}
+                    {reward.coupon && <div>Coupon: {reward.coupon}</div>}
+                    <div className="mt-2">{reward.description}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-gray-400 text-sm">Rewards information will be announced soon.</div>
+          )}
         </section>
       </div>
 
@@ -152,8 +166,8 @@ export default function EventDetailsPage() {
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4">
           {Array.isArray(event.sponsors) && event.sponsors.length > 0 ? (
-            event.sponsors.map((sponsor: Sponsor) => (
-              <div key={sponsor.id || sponsor._id} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
+            event.sponsors.map((sponsor: Sponsor, index: number) => (
+              <div key={sponsor.id || sponsor._id || index} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[100px] h-[100px] shadow-md">
                 <Image src={sponsor.logo || sponsor.image || 'https://via.placeholder.com/80x64'} alt={sponsor.name || 'Sponsor'} width={80} height={64} className="max-h-16 max-w-[80px] object-contain" />
               </div>
             ))
@@ -178,8 +192,8 @@ export default function EventDetailsPage() {
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4">
           {Array.isArray(event.judges) && event.judges.length > 0 ? (
-            event.judges.map((judge: Judge) => (
-              <div key={judge.id || judge._id} className="bg-white rounded-xl p-3 flex items-center justify-center min-w-[150px] h-[150px] shadow-md">
+            event.judges.map((judge: Judge, index: number) => (
+              <div key={judge.id || judge._id || index} className="bg-white rounded-xl p-3 flex flex-col items-center justify-center min-w-[150px] h-[150px] shadow-md">
                 <Image src={judge.photo || 'https://via.placeholder.com/100x100'} alt={judge.name || 'Judge'} width={100} height={100} className="max-h-20 max-w-[100px] object-contain rounded-full" />
                 <div className="text-center mt-2">
                   <div className="font-bold text-black">{judge.name}</div>

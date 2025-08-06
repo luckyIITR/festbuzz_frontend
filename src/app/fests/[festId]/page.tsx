@@ -2,7 +2,7 @@
 import CallToAction from '@/app/components/CallToAction';
 import { useFest } from '@/hooks/fest';
 import { useFestEventsByStatus } from '@/hooks/events';
-import { useFestRegistrationStatus } from '@/hooks/registration';
+import { useFestRegistrationStatus, useFestUnregistration } from '@/hooks/registration';
 import { useTrackFestView } from '@/hooks/common';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
@@ -10,11 +10,14 @@ import Link from 'next/link';
 import { Event } from '@/types/fest';
 import { useRef, useState, useEffect } from 'react';
 import EventCard from '@/app/components/EventCard';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function FestDetailsPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [showUnregisterConfirm, setShowUnregisterConfirm] = useState(false);
+  
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = true;
@@ -45,9 +48,33 @@ export default function FestDetailsPage() {
   const { data: eventsData, isLoading: eventsLoading, error: eventsError } = useFestEventsByStatus(festId, 'published');
   const events = eventsData?.data || [];
   const { data: registrationStatus, isLoading: statusLoading } = useFestRegistrationStatus(festId);
+  const unregisterMutation = useFestUnregistration();
+  const queryClient = useQueryClient();
   
   // Track fest view for recently viewed functionality
   useTrackFestView(festId);
+
+  const handleUnregister = async () => {
+    try {
+      const result = await unregisterMutation.mutateAsync(festId);
+      if (result.success) {
+        alert(`Successfully unregistered from ${result.data.festName}`);
+        setShowUnregisterConfirm(false);
+        
+        // The query invalidation in the hook should handle the UI update
+        // If it doesn't work immediately, we can force a refetch
+        setTimeout(() => {
+          // Force refetch registration status if needed
+          queryClient.refetchQueries({ queryKey: ['fest-registration-status', festId] });
+        }, 500);
+      } else {
+        alert(`Unregistration failed: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Unregistration error:', error);
+      alert('Failed to unregister. Please try again.');
+    }
+  };
 
   if (festLoading) return <div>Loading...</div>;
   if (festError) return <div>Error loading fest details</div>;
@@ -109,9 +136,18 @@ export default function FestDetailsPage() {
               </button>
             ) : isRegistered ? (
               <div className="flex flex-col items-end gap-2">
-                <button className="bg-green-500 text-white px-6 py-2 rounded-full font-bold cursor-not-allowed" disabled>
-                  ✓ Registered
-                </button>
+                <div className="flex gap-2">
+                  <button className="bg-green-500 text-white px-6 py-2 rounded-full font-bold cursor-not-allowed" disabled>
+                    ✓ Registered
+                  </button>
+                  <button 
+                    onClick={() => setShowUnregisterConfirm(true)}
+                    disabled={unregisterMutation.isPending}
+                    className="bg-red-500 text-white px-4 py-2 rounded-full font-bold hover:bg-red-600 transition disabled:opacity-50"
+                  >
+                    {unregisterMutation.isPending ? 'Unregistering...' : 'Unregister'}
+                  </button>
+                </div>
                 <span className="text-xs text-green-400">Ticket: {registrationStatus?.registration?.ticket || 'N/A'}</span>
               </div>
             ) : (
@@ -124,6 +160,34 @@ export default function FestDetailsPage() {
           </div>
         </div>
       </div>
+
+      {/* Unregister Confirmation Modal */}
+      {showUnregisterConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-zinc-900 rounded-xl p-6 max-w-md mx-4">
+            <h3 className="text-xl font-bold text-white mb-4">Confirm Unregistration</h3>
+            <p className="text-gray-300 mb-6">
+              Are you sure you want to unregister from <span className="font-semibold text-yellow-300">{fest.name}</span>? 
+              This will also unregister you from all events in this fest.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowUnregisterConfirm(false)}
+                className="flex-1 px-4 py-2 bg-zinc-700 text-white rounded-lg hover:bg-zinc-600 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUnregister}
+                disabled={unregisterMutation.isPending}
+                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition disabled:opacity-50"
+              >
+                {unregisterMutation.isPending ? 'Unregistering...' : 'Unregister'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Fest Details */}
@@ -300,8 +364,17 @@ export default function FestDetailsPage() {
             Checking registration...
           </button>
         ) : isRegistered ? (
-          <div className="inline-block px-8 py-3 rounded-full bg-green-500 text-white font-bold text-lg shadow-lg">
-            ✓ Already Registered
+          <div className="flex flex-col items-center gap-4">
+            <div className="inline-block px-8 py-3 rounded-full bg-green-500 text-white font-bold text-lg shadow-lg">
+              ✓ Already Registered
+            </div>
+            <button 
+              onClick={() => setShowUnregisterConfirm(true)}
+              disabled={unregisterMutation.isPending}
+              className="inline-block px-6 py-2 rounded-full bg-red-500 text-white font-bold text-base shadow-lg hover:bg-red-600 transition disabled:opacity-50"
+            >
+              {unregisterMutation.isPending ? 'Unregistering...' : 'Unregister from Fest'}
+            </button>
           </div>
         ) : (
           <Link href={`/fests/${festId}/register`} className="inline-block px-8 py-3 rounded-full bg-blue-500 text-white font-bold text-lg shadow-lg hover:bg-blue-600 transition">
