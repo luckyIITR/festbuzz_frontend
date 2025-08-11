@@ -206,7 +206,7 @@ export default function AddOnsPage() {
                         <div className='min-h-80'>
                             {Inputfield.map((pair, index) => (
                                 <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-4 min-w-0 items-stretch sm:items-center min-h-15 mb-4 sm:mb-0">
-                                    <input
+                                    <input   
                                         type="text"
                                         placeholder="Write here"
                                         value={pair.input1}
