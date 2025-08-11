@@ -122,21 +122,21 @@ const Pages = () => {
           </div>
         </div>
         <div className="font-urbanist font-[700] text-[16px] mt-10">Current team member</div>
- <div className="flex flex-col gap-2 mt-5">
-        {team.map((member, index) => (
-         <div key={index} className="flex gap-2  ">
-            <input
-              className="px-6 py-4 bg-[#2C2C2C] w-80 font-urbanist text-[16px] rounded-xl font-semibold text-[#FFFFF] placeholder:text-[#CFCFCF]"
-              placeholder="Name"
-              readOnly={!isEditing}
-              value={member.input1}
-              onChange={(e) => handleEdit(index, e.target.value)}
-            />
+        <div className="flex flex-col gap-2 mt-5">
+          {team.map((member, index) => (
+            <div key={index} className="flex gap-2  ">
+              <input
+                className="px-6 py-4 bg-[#2C2C2C] w-80 font-urbanist text-[16px] rounded-xl font-semibold text-[#FFFFF] placeholder:text-[#CFCFCF]"
+                placeholder="Name"
+                readOnly={!isEditing}
+                value={member.input1}
+                onChange={(e) => handleEdit(index, e.target.value)}
+              />
 
-            <button className=" text-[#FFFFFF]" onClick={() => handleDelete(index)}>❌</button>
-       </div>
-        ))}
-   </div>
+              <button className=" text-[#FFFFFF]" onClick={() => handleDelete(index)}>❌</button>
+            </div>
+          ))}
+        </div>
         <button className="w-40 h-10 bg-[#252525] text-[#565656] mt-5 rounded-xl font-urbanist text-[16px] font-[600]"
           onClick={handleadd}> Add member +</button>
       </div>
