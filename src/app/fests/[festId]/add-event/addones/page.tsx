@@ -187,33 +187,36 @@ export default function AddOnsPage() {
         switch (currentStep) {
             case 0:
                 return (
-                    <form className="w-6/12 flex flex-col gap-6">
-                        <label className="block font-urbanist font-[600] text-[16px] text-[#818181]">
+                    <form className="w-full max-w-6xl mx-auto px-4 sm:px-6 flex flex-col gap-6">
+                        <label className="block font-urbanist font-[600] text-sm sm:text-[16px] text-[#818181]">
                             Create Form for extra information you require from participant
                         </label>
-                        <label className="block font-urbanist font-[600]  text-[20px] -mb-2">Enter question here</label>
+                        <div className='flex justify-between'>
+                            <label className="block font-urbanist font-[600] text-lg sm:text-[20px] -mb-2">Enter question here</label>
 
-                        <button
-                            type="button"
-                            className="rounded-full  absolute top-34  right-10 px-4 py-2  bg-[#252525] flex items-center justify-center text-[#565656] text-xl shadow-md  transition-all "
-                            onClick={handlesubmit}
-                        >
-                            +
-                        </button>
+                            <button
+                                type="button"
+                                className="rounded-full  px-3 sm:px-4 py-2 bg-[#252525] flex items-center justify-center text-[#565656] text-lg sm:text-xl shadow-md transition-all z-10"
+                                onClick={handlesubmit}
+                            >
+                                +
+                            </button>
+                        </div>
+
                         <div className='min-h-80'>
                             {Inputfield.map((pair, index) => (
-                                <div key={index} className="    flex gap-4 min-w-250 items-center min-h-15">
-                                    <input
+                                <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-4 min-w-0 items-stretch sm:items-center min-h-15 mb-4 sm:mb-0">
+                                    <input   
                                         type="text"
                                         placeholder="Write here"
                                         value={pair.input1}
                                         onChange={e => handledit(index, 'input1', e.target.value)}
-                                        className="w-full bg-[#252525] rounded-lg px-4 py-3 font-urbanist font-[600] text-white placeholder-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C]"
+                                        className="flex-1 bg-[#252525] rounded-lg px-3 sm:px-4 py-3 font-urbanist font-[600] text-white placeholder-[#565656] focus:outline-none focus:ring-2 focus:ring-[#E6FF4C] text-sm sm:text-base"
                                     />
                                     <select
                                         value={pair.select}
                                         onChange={e => handledit(index, 'select', e.target.value)}
-                                        className="w-40 bg-[#252525] rounded-lg text-white px-4 py-3 font-urbanist  text-[18px]"
+                                        className="w-full sm:w-40 bg-[#252525] rounded-lg text-white px-3 sm:px-4 py-3 font-urbanist text-sm sm:text-[18px]"
                                     >
                                         <option value="">Input Type</option>
                                         <option value="text">Text</option>
@@ -225,7 +228,7 @@ export default function AddOnsPage() {
                                     </select>
                                     <button
                                         onClick={() => deletebtn(index)}
-                                        className=" text-red-500 text-xl font-bold hover:text-red-600 bg-[#252525] px-4 py-2 rounded-full"
+                                        className="text-red-500 text-xl font-bold hover:text-red-600 bg-[#252525] px-3 sm:px-4 py-2 rounded-full self-center sm:self-auto"
                                         title="Remove row"
                                     >
                                         ×
@@ -233,32 +236,33 @@ export default function AddOnsPage() {
                                 </div>
                             ))}
                         </div>
-                        <div className='flex justify-between  content-center items-center flex-wrap w-300'>
-                            <label className="block font-urbanist font-[600]  text-[20px] -mb-2">Add sponsors</label>
-                            <div className='h-full flex content-center flex-wrap'>
+
+                        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 w-full'>
+                            <label className="block font-urbanist font-[600] text-lg sm:text-[20px]">Add sponsors</label>
+                            <div className='flex justify-center sm:justify-end w-full sm:w-auto'>
                                 <button
                                     type="button"
                                     onClick={addSponsor}
-                                    className="px-4 py-2 rounded-full bg-[#252525] flex items-center justify-center text-[#565656] text-xl shadow-md  transition-all"
+                                    className="px-4 py-2 rounded-full bg-[#252525] flex items-center justify-center text-[#565656] text-xl shadow-md transition-all"
                                 >
                                     +
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap gap-6 w-300">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 w-full">
                             {sponsors.map((sponsor, index) => (
                                 <div
                                     key={index}
-                                    className="w-[320px] h-[180px] bg-[#252525] backdrop-blur-md rounded-[15px] p-2 flex gap-2  shadow-md"
+                                    className="w-full max-w-[320px] mx-auto sm:mx-0 h-[180px] bg-[#252525] backdrop-blur-md rounded-[15px] p-2 flex gap-2 shadow-md relative"
                                 >
                                     {/* Left: Image Upload */}
-                                    <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-[#1A1A1A] overflow-hidden">
+                                    <div className="w-[120px] h-full flex items-center justify-center rounded-[10px] bg-[#1A1A1A] overflow-hidden flex-shrink-0">
                                         <label className="cursor-pointer text-white text-xs text-center px-2 py-1 relative w-full h-full flex items-center justify-center">
                                             {sponsor.image ? (
                                                 <Image src={URL.createObjectURL(sponsor.image)} alt="preview" className="w-full h-full object-cover" />
                                             ) : (
-                                                'Sponsor image'
+                                                <span className="text-center leading-tight">Sponsor image</span>
                                             )}
                                             <input
                                                 type="file"
@@ -273,23 +277,23 @@ export default function AddOnsPage() {
                                     </div>
 
                                     {/* Right: Text Fields */}
-                                    <div className="flex-1 h-full flex flex-col justify-between gap-1">
+                                    <div className="flex-1 h-full flex flex-col justify-between gap-1 min-w-0 pr-6">
                                         <input
                                             value={sponsor.name}
                                             onChange={(e) => handleSponsorChange(index, 'name', e.target.value)}
-                                            className="h-[40px] bg-[#1A1A1A] rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                                            className="h-[40px] bg-[#1A1A1A] rounded-[10px] px-2 py-1 text-white text-xs shadow-sm w-full"
                                             placeholder="Sponsor name"
                                         />
                                         <input
                                             value={sponsor.title}
                                             onChange={(e) => handleSponsorChange(index, 'title', e.target.value)}
-                                            className="h-[40px] bg-[#1A1A1A] rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                                            className="h-[40px] bg-[#1A1A1A] rounded-[10px] px-2 py-1 text-white text-xs shadow-sm w-full"
                                             placeholder="Sponsor title"
                                         />
                                         <input
                                             value={sponsor.website}
                                             onChange={(e) => handleSponsorChange(index, 'website', e.target.value)}
-                                            className="h-[40px] bg-[#1A1A1A] rounded-[10px] px-2 py-1 text-white text-xs shadow-sm"
+                                            className="h-[40px] bg-[#1A1A1A] rounded-[10px] px-2 py-1 text-white text-xs shadow-sm w-full"
                                             placeholder="Sponsor website"
                                         />
                                     </div>
@@ -297,18 +301,14 @@ export default function AddOnsPage() {
                                     <button
                                         type="button"
                                         onClick={() => deleteSponsor(index)}
-                                        className="text-red-500 text-xl font-bold hover:text-red-600 px-2"
+                                        className="absolute top-2 right-2 text-red-500 text-xl font-bold hover:text-red-600 bg-[#1A1A1A] rounded-full w-8 h-8 flex items-center justify-center"
                                         title="Remove sponsor"
                                     >
                                         ×
                                     </button>
                                 </div>
                             ))}
-
-                            {/* Add Sponsor Button */}
-
                         </div>
-
                     </form>
 
                 );
