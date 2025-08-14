@@ -251,7 +251,7 @@ function ReviewStep({
   onConfirm,
   isLoading
 }: {
-  event: any;
+  event: { name: string; venue?: string; location?: string; startDate?: string; endDate?: string };
   formData: RegistrationFormData;
   onConfirm: () => void;
   isLoading: boolean;
@@ -341,7 +341,7 @@ function ReviewStep({
   );
 }
 
-function SuccessStep({ event }: { event: any }) {
+function SuccessStep({ event }: { event: { name: string; festId?: string } }) {
   return (
     <div className="text-center space-y-6">
       <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto">

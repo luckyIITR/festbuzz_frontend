@@ -18,7 +18,7 @@ export function useCreateTeam() {
         token
       );
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ['event', variables.eventId] });
       queryClient.invalidateQueries({ queryKey: ['teams'] });
@@ -45,7 +45,7 @@ export function useJoinTeam() {
         token
       );
     },
-    onSuccess: (data, variables) => {
+    onSuccess: () => {
       // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({ queryKey: ['teams'] });
       queryClient.invalidateQueries({ queryKey: ['user', 'registrations'] });

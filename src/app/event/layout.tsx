@@ -1,8 +1,7 @@
 'use-client'
 import React, { ReactNode } from 'react'
 import Sidebar from './sidebar'
-import Image from 'next/image'
-import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
+
 const ProfileLayout = ({ children }: { children: ReactNode }) => {
 
     return (

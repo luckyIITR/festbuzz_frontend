@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 import LocationImage from '../../../public/assets/Location.png';
 import DateImage from '../../../public/assets/Calender.png';
@@ -67,8 +66,8 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
                 />
                 <div className="relative z-10">
                     <Image
-                        src={event.bannerImage || '/assets/CardImage.png'}
-                        alt="Fest"
+                        src={event.imageUrls?.[0] || '/assets/CardImage.png'}
+                        alt="Event"
                         width={284}
                         height={160}
                         className="w-full h-[160px] object-cover rounded-[10px]"
@@ -139,7 +138,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
 
                         <div className="flex flex-col text-right mr-2">
                             <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                                ₹{event.price || 0}
+                                ₹{event.tickets?.[0]?.price || 0}
                             </div>
                             <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                                 Participation fees
@@ -155,7 +154,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
 
 
                     <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
-                        {event.category?.[0] || 'General'}
+                        {event.type || 'General'}
                     </div>
 
                     <div
@@ -225,7 +224,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
                         {/* Card content */}
                         <div className="relative z-10">
                             <Image
-                                src={event.bannerImage || '/assets/CardImage.png'}
+                                src={event.imageUrls?.[0] || '/assets/CardImage.png'}
                                 alt="Event"
                                 width={284} // match card width
                                 height={160}
@@ -317,7 +316,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
 
                                 <div className="flex flex-col text-right mr-2">
                                     <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                                        ₹{event.price || 0}
+                                        ₹{event.tickets?.[0]?.price || 0}
                                     </div>
                                     <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                                         Participation fees

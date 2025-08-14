@@ -139,7 +139,6 @@ export default function AddOnsPage() {
     ]);
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [visibility, setVisibility] = useState('open');
     const handleChange = (
         index: number,
         field: keyof Judge,

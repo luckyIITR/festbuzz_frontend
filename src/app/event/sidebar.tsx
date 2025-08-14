@@ -8,15 +8,15 @@ import Man from '../../../public/assets/Profileman.png';
 import Logout from '../../../public/assets/settings.png';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { logout } = useAuth();
 
-  function handleLogout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.reload();
-  }
+  const handleLogoutClick = () => {
+    logout();
+  };
 
   const items = [
     {
@@ -54,7 +54,7 @@ const Sidebar = () => {
       label: 'Settings',
       icon: Logout,
       href: `/event/settings`,
-      onClick: undefined,
+      onClick: handleLogoutClick,
     },
   ];
 

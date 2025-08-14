@@ -42,7 +42,7 @@ export default function TeamChoiceStep({
               onChange={() => setIsTeamLeader(true)}
               className="mr-2 text-pink-500"
             />
-            <span className="text-white">Yes, I'm creating a new team</span>
+            <span className="text-white">Yes, I&apos;m creating a new team</span>
           </label>
           <label className="flex items-center cursor-pointer">
             <input
@@ -51,7 +51,7 @@ export default function TeamChoiceStep({
               onChange={() => setIsTeamLeader(false)}
               className="mr-2 text-pink-500"
             />
-            <span className="text-white">No, I'm joining an existing team</span>
+            <span className="text-white">No, I&apos;m joining an existing team</span>
           </label>
         </div>
       </div>

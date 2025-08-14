@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiFetch } from '../../lib/api';
 import { getToken } from '../../lib/token';
-import { Fest } from '../../types/fest';
+
 
 interface ApiFest {
   _id?: string;
@@ -29,9 +29,9 @@ interface ApiFest {
   organizerLogo?: string;
   bannerImage?: string;
   galleryImages?: string[];
-  sponsors?: any[];
+  sponsors?: import('@/types/fest').Sponsor[];
   events?: string[];
-  tickets?: any[];
+  tickets?: import('@/types/fest').Ticket[];
   createdAt?: string;
   updatedAt?: string;
 }

@@ -1,6 +1,6 @@
 'use client';
-import { Divide } from 'lucide-react';
 import React, { useState } from 'react';
+
 
 interface Step {
   label: string;

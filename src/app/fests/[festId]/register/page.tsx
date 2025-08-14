@@ -4,15 +4,14 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useFestRegistration } from '@/hooks/registration';
 import { useProfile } from '@/hooks/user';
-import { useQueryClient } from '@tanstack/react-query';
 
 export default function FestRegisterPage() {
   const params = useParams();
   const router = useRouter();
   const festId = params?.festId as string;
   const { data: userProfile, isLoading: profileLoading } = useProfile();
-  const festRegistrationMutation = useFestRegistration();
-  const queryClient = useQueryClient();
+
+  const { mutate: registerForFest, isPending: isRegistering } = useFestRegistration();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -46,13 +45,13 @@ export default function FestRegisterPage() {
 
     // Prefill form with available data from both localStorage and profile hook
     const availableData = {
-      name: userProfile?.name || userData?.name || '',
-      phone: userProfile?.phone || userData?.phone || '',
-      dateOfBirth: formatDateForInput(userProfile?.dateOfBirth) || formatDateForInput(userData?.dateOfBirth) || '',
-      gender: userProfile?.gender || userData?.gender || '',
-      city: userProfile?.city || userData?.city || '',
-      state: userProfile?.state || userData?.state || '',
-      instituteName: userProfile?.college || userData?.college || userData?.instituteName || ''
+      name: userProfile?.data?.name || userData?.name || '',
+      phone: userProfile?.data?.phone || userData?.phone || '',
+      dateOfBirth: formatDateForInput(userProfile?.data?.dateOfBirth) || formatDateForInput(userData?.dateOfBirth) || '',
+      gender: userProfile?.data?.gender || userData?.gender || '',
+      city: userProfile?.data?.city || userData?.city || '',
+      state: userProfile?.data?.state || userData?.state || '',
+      instituteName: userProfile?.data?.college || userData?.college || userData?.instituteName || ''
     };
 
     setFormData(prev => ({
@@ -111,21 +110,20 @@ export default function FestRegisterPage() {
         answers: [] // Empty array for now, can be extended later
       };
 
-      const result = await festRegistrationMutation.mutateAsync(payload);
-      
-      // Debug: Log the actual response
-      console.log('Registration response:', result);
-      
-      if (result.success) {
-        alert('Registration successful!');
-        
-        // Small delay to ensure the status is updated
-        setTimeout(() => {
-          router.push(`/fests/${festId}`);
-        }, 1000);
-      } else {
-        alert(`Registration failed: ${result.message}`);
-      }
+      registerForFest(payload, {
+        onSuccess: () => {
+          alert('Registration successful!');
+          
+          // Small delay to ensure the status is updated
+          setTimeout(() => {
+            router.push(`/fests/${festId}`);
+          }, 1000);
+        },
+        onError: (error) => {
+          console.error('Registration error:', error);
+          alert('Registration failed. Please try again.');
+        }
+      });
     } catch (error) {
       console.error('Registration error:', error);
       alert('Registration failed. Please try again.');
@@ -232,10 +230,10 @@ export default function FestRegisterPage() {
           <div className="md:col-span-2 flex justify-end mt-2">
             <button 
               type="submit" 
-              disabled={festRegistrationMutation.isPending}
+              disabled={isRegistering}
               className="px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition disabled:opacity-50"
             >
-              {festRegistrationMutation.isPending ? 'Registering...' : 'Submit'}
+              {isRegistering ? 'Registering...' : 'Submit'}
             </button>
           </div>
         </form>

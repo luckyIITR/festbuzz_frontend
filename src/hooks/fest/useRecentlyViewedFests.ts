@@ -11,7 +11,7 @@ export function useRecentlyViewedFests() {
       if (!token) throw new Error('No authentication token found');
       const response = await apiFetch('/api/recently-viewed', {}, token) as RecentlyViewedResponse;
       // Extract fest data from recently viewed items
-      return response.data.recentlyViewed.map(item => item.festId);
+      return response.data;
     },
     enabled: !!getToken(),
   });

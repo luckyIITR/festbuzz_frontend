@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 
-type CollegeItem = {
-  Name: string;
-  [key: string]: unknown;
-};
 
 const useCollegeList = () => {
   const [collegeList, setCollegeList] = useState<string[]>([]);

@@ -80,8 +80,8 @@ const EventRow: React.FC<EventRowProps> = ({ event, getCategoryColor, getStatusC
       </div>
       {/* Category */}
       <div>
-        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(event.category || 'Technical')}`}>
-          {event.category || 'Technical'}
+        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(event.type || 'Technical')}`}>
+          {event.type || 'Technical'}
         </span>
       </div>
       {/* Status */}
@@ -121,11 +121,11 @@ const EventRow: React.FC<EventRowProps> = ({ event, getCategoryColor, getStatusC
           </div>
         ) : (
           <div>
-            <p className="font-bold">{event.currentParticipants || 0}/{event.maxParticipants || 0}</p>
+            <p className="font-bold">0/{event.maxParticipants || 0}</p>
             <div className="w-full bg-gray-600 rounded-full h-2 mt-1">
               <div 
                 className="bg-yellow-500 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${getProgressPercentage(event.currentParticipants || 0, event.maxParticipants || 1)}%` }}
+                style={{ width: `${getProgressPercentage(0, event.maxParticipants || 1)}%` }}
               ></div>
             </div>
           </div>
@@ -133,7 +133,7 @@ const EventRow: React.FC<EventRowProps> = ({ event, getCategoryColor, getStatusC
       </div>
       {/* Price */}
       <div>
-        <p className="font-bold">₹{event.price || 0}</p>
+        <p className="font-bold">₹{event.tickets?.[0]?.price || 0}</p>
         <p className="text-sm text-gray-400">Entry fee</p>
       </div>
       {/* Action */}

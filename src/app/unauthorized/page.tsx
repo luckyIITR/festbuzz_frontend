@@ -28,8 +28,8 @@ export default function UnauthorizedPage() {
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             Access Denied
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            You don't have permission to access this page.
+          <p className="text-gray-400 text-center mb-8">
+            You don&apos;t have permission to access this page
           </p>
           {user && (
             <p className="mt-2 text-sm text-gray-500">

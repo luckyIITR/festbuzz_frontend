@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, LoginResponse, VerifyResponse } from '@/types/user';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { User } from '@/types/user';
 import { getToken } from '@/lib/token';
 
 interface AuthContextType {

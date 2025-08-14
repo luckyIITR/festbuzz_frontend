@@ -28,9 +28,9 @@ interface ApiFest {
   organizerLogo?: string;
   bannerImage?: string;
   galleryImages?: string[];
-  sponsors?: any[];
-  events?: any[]; // Now an array of objects or empty array
-  tickets?: any[];
+  sponsors?: import('@/types/fest').Sponsor[];
+  events?: unknown[]; // Now an array of objects or empty array
+  tickets?: import('@/types/fest').Ticket[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -58,7 +58,7 @@ export function useFest(festId: string) {
         ...fest,
         id: fest.id || fest._id || '',
         createdBy: fest.createdBy || '', // Handle null case by converting to empty string
-        events: Array.isArray(fest.events) ? fest.events.map((event: any) => event._id || event.id || '').filter(Boolean) : [], // Convert events to array of IDs
+        events: Array.isArray(fest.events) ? fest.events.map((event: unknown) => (event as { _id?: string; id?: string })._id || (event as { _id?: string; id?: string }).id || '').filter(Boolean) : [], // Convert events to array of IDs
       };
     },
     enabled: !!festId,

@@ -33,6 +33,23 @@ export function useFestEvents(festId: string) {
       return (events as ApiEvent[]).map((event: ApiEvent) => ({
         ...event,
         id: event.id || event._id || '', // prefer id, fallback to _id
+        festId: festId, // Add the festId
+        type: event.category || 'General', // Map category to type
+        visibility: 'public', // Default visibility
+        mode: 'offline', // Default mode
+        imageUrls: event.image ? [event.image] : [], // Map image to imageUrls array
+        tickets: event.price ? [{ // Create a ticket from price
+          name: 'Entry',
+          eventFeeType: 'paid',
+          price: event.price,
+          availableFrom: event.startDate,
+          availableTill: event.endDate,
+          availableTime: '00:00',
+          endTime: '23:59',
+          maxQuantity: event.maxParticipants || 100,
+          currentQuantity: event.currentParticipants || 0,
+          description: 'Event entry ticket'
+        }] : []
       }));
     },
     enabled: !!festId,

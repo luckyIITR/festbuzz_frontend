@@ -25,7 +25,7 @@ export default function TeamRegistrationFlow() {
   });
   const [isTeamLeader, setIsTeamLeader] = useState(true);
   const [teamCode, setTeamCode] = useState('');
-  const [createdTeam, setCreatedTeam] = useState<any>(null);
+  const [createdTeam, setCreatedTeam] = useState<{ id: string; name: string; code: string } | null>(null);
 
   // Steps for team registration
   const steps: RegistrationStep[] = [
@@ -76,7 +76,11 @@ export default function TeamRegistrationFlow() {
         teamName: teamData.teamName,
         description: teamData.description
       });
-      setCreatedTeam(result.data.team);
+      setCreatedTeam({
+        id: result.data.team.id,
+        name: result.data.team.teamName,
+        code: result.data.team.teamCode
+      });
       handleNextStep();
     } catch (error) {
       console.error('Team creation failed:', error);
@@ -226,7 +230,7 @@ function TeamDetailsStep({
 }: {
   teamData: TeamFormData;
   setTeamData: (data: TeamFormData) => void;
-  createdTeam: any;
+  createdTeam: { id: string; name: string; code: string } | null;
   onNext: () => void;
 }) {
   return (
@@ -237,9 +241,9 @@ function TeamDetailsStep({
         <div className="bg-green-900 border border-green-700 rounded-lg p-4 mb-6">
           <h3 className="text-green-400 font-semibold mb-2">Team Created Successfully!</h3>
           <div className="text-sm text-green-300">
-            <p><strong>Team Name:</strong> {createdTeam.teamName}</p>
-            <p><strong>Team Code:</strong> {createdTeam.teamCode}</p>
-            <p><strong>Available Slots:</strong> {createdTeam.availableSlots}</p>
+            <p><strong>Team Name:</strong> {createdTeam.name}</p>
+            <p><strong>Team Code:</strong> {createdTeam.code}</p>
+            <p><strong>Available Slots:</strong> N/A</p>
           </div>
         </div>
       )}
@@ -409,7 +413,7 @@ function ReviewStep({
   onConfirm,
   isLoading
 }: {
-  event: any;
+  event: { name: string; venue?: string; location?: string; startDate?: string; endDate?: string };
   teamData: TeamFormData;
   onConfirm: () => void;
   isLoading: boolean;
@@ -495,7 +499,7 @@ function ReviewStep({
   );
 }
 
-function SuccessStep({ event }: { event: any }) {
+function SuccessStep({ event }: { event: { name: string; festId?: string } }) {
   return (
     <div className="text-center space-y-6">
       <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto">

@@ -11,7 +11,7 @@ export function useWishlistFests() {
       if (!token) throw new Error('No authentication token found');
       const response = await apiFetch('/api/wishlist', {}, token) as WishlistResponse;
       // Extract fest data from wishlist items
-      return response.data.wishlist.map(item => item.festId);
+      return response.data.map(item => item.festId);
     },
     enabled: !!getToken(),
   });

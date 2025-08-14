@@ -6,7 +6,6 @@ import {
   CellMeasurer,
   CellMeasurerCache,
   AutoSizer,
-  ListRowProps,
 } from 'react-virtualized';
 
 interface Props {

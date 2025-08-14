@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Plus } from 'lucide-react'; 
 
 
-const page = () => {
+export default function Page() {
+
     const [images, setImages] = useState<number[]>([0, 1, 2]);
 
     const addImageSlot = () => {
@@ -57,6 +58,3 @@ const page = () => {
         </div>
     )
 }
-
-
-export default page
