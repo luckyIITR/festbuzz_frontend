@@ -52,7 +52,7 @@ export default function CreateEventPage() {
       <Header />
       
       {/* Main Content */}
-      <div className="flex-1 flex flex-row">
+      <div className="flex-1 flex flex-row  ">
         <StepIndicator 
           steps={steps} 
           currentStep={currentStep} 
@@ -60,7 +60,7 @@ export default function CreateEventPage() {
         />
         
         {/* Form Section */}
-        <main className="flex-1 flex flex-col p-10 relative">
+        <main className="flex-1 flex flex-col p-10 relative md:w-full">
           <StepForms
             currentStep={currentStep}
             visibility={visibility}
