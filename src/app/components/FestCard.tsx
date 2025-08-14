@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFests } from '@/hooks/fest';
@@ -19,7 +19,16 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
 
   // Use prop fests if provided, otherwise use fetched fests
   const fests = propFests || fetchedFests;
-
+  const [user, setUser] = useState();
+  useEffect(() => {
+    function syncUser() {
+      const userStr = localStorage.getItem('user');
+      setUser(userStr ? JSON.parse(userStr) : null);
+    }
+    syncUser();
+    window.addEventListener('userChanged', syncUser);
+    return () => window.removeEventListener('userChanged', syncUser);
+  }, []);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   // If a single fest is provided, render just that one
@@ -109,9 +118,9 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
             <div className="flex flex-col ml-1 gap-1">
               <div className="flex items-center gap-1">
                 <Image src={LocationImage} alt="Location" width={9} height={20} />
-                                    <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
-                      {fest.venue || fest.city || 'TBA'}
-                    </div>
+                <div className="font-urbanist font-[700] text-[#888888] text-[13px]">
+                  {fest.venue || fest.city || 'TBA'}
+                </div>
               </div>
               <div className="flex items-center gap-1">
                 <Image src={DateImage} alt="Date" width={9} height={20} />
@@ -143,9 +152,9 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
             </button>
           </Link>
 
-                        <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
-                {fest.type || 'General'}
-              </div>
+          <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
+            {fest.type || 'General'}
+          </div>
 
           <div className="absolute top-2.5 right-4">
             <WishlistToggle festId={fest.id || fest._id || ''} size="sm" />
@@ -289,9 +298,9 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
                 </div>
 
                 <div className="flex flex-col text-right mr-2">
-                                  <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
-                  ₹{fest.tickets?.[0]?.price || 0}
-                </div>
+                  <div className="font-urbanist font-[800] text-[#FD3EB5] text-[22px]">
+                    ₹{fest.tickets?.[0]?.price || 0}
+                  </div>
                   <div className="font-urbanist font-[600] text-[#727272] text-[10px]">
                     Participation fees
                   </div>
@@ -307,10 +316,10 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
               <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
                 {fest.type || 'General'}
               </div>
-
-              <div className="absolute top-2.5 right-4">
+              {user ? (<div className="absolute top-2.5 right-4">
                 <WishlistToggle festId={fest.id || fest._id || ''} size="sm" />
-              </div>
+              </div>) : (<div></div>)}
+
             </div>
           </div>
         );
