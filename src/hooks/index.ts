@@ -14,4 +14,7 @@ export * from './registration';
 export * from './user';
 
 // Common hooks
-export * from './common'; 
+export * from './common';
+
+// Permission hooks
+export { usePermissions } from './usePermissions'; 

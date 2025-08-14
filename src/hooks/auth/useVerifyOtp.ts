@@ -1,32 +1,22 @@
 import { useMutation } from '@tanstack/react-query';
 import { apiFetch } from '../../lib/api';
 import { setToken } from '../../lib/token';
+import { VerifyResponse } from '../../types/user';
 
 interface VerifyOtpPayload {
   email: string;
   otp: string;
 }
 
-interface VerifyOtpResponse {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role?: string;
-  };
-  token?: string;
-}
-
 export function useVerifyOtp() {
   return useMutation({
     mutationFn: (payload: VerifyOtpPayload) =>
-      apiFetch('/api/auth/verify-otp', {
+      apiFetch<VerifyResponse>('/api/auth/verify-otp', {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
-    onSuccess: (data: unknown) => {
-      const verifyData = data as VerifyOtpResponse;
-      if (verifyData?.token) setToken(verifyData.token);
+    onSuccess: (data: VerifyResponse) => {
+      if (data?.data?.token) setToken(data.data.token);
     },
   });
 } 

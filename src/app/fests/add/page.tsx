@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { RouteGuard } from "../../../components/RouteGuard";
 import ProgressBar from "./ProgressBar";
 import Step1BasicDetails from "./Step1BasicDetails";
 import Step2AboutFest from "./Step2AboutFest";
@@ -20,7 +21,7 @@ type SponsorType = {
   website: string;
 };
 
-export default function AddFestPage() {
+function AddFestPageContent() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     logo: null as File | null,
@@ -164,5 +165,13 @@ export default function AddFestPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AddFestPage() {
+  return (
+    <RouteGuard requiredPermissions={['create_fests']}>
+      <AddFestPageContent />
+    </RouteGuard>
   );
 }

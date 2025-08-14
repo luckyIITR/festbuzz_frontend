@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import { ReactNode } from 'react';
 import QueryProvider from './QueryProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from '../contexts/AuthContext';
 const urbanist = Urbanist({
   subsets: ['latin'],
   display: 'swap',
@@ -38,11 +39,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${urbanist.variable} ${dmSans.variable} antialiased`}>
 
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
-          <QueryProvider>
-            <Navbar />
-            {children}
-            <Footer />
-          </QueryProvider>
+          <AuthProvider>
+            <QueryProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </QueryProvider>
+          </AuthProvider>
         </GoogleOAuthProvider>
       </body>
     </html>

@@ -21,7 +21,7 @@ interface ApiFest {
   about?: string;
   contact?: string;
   email?: string;
-  createdBy: string;
+  createdBy: string | null; // Now can be null or string
   isRegistrationOpen: boolean;
   logo?: string;
   heroImage?: string;
@@ -29,21 +29,39 @@ interface ApiFest {
   bannerImage?: string;
   galleryImages?: string[];
   sponsors?: Sponsor[];
-  events?: string[];
+  events?: string[]; // Array of event IDs as strings
   tickets?: Ticket[];
   createdAt?: string;
   updatedAt?: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data: ApiFest[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 }
 
 export function useFests() {
   return useQuery<Fest[]>({
     queryKey: ['fests'],
     queryFn: async () => {
-      const fests = await apiFetch('/api/fests');
-      // Map _id to id if needed
-      return (fests as ApiFest[]).map((fest: ApiFest) => ({
+      const response = await apiFetch<ApiResponse>('/api/fests');
+      
+      if (!response.success) {
+        throw new Error('Failed to fetch fests');
+      }
+
+      // Map _id to id and handle createdBy (can be null now)
+      return response.data.map((fest: ApiFest) => ({
         ...fest,
-        id: fest.id || fest._id || '', // prefer id, fallback to _id
+        id: fest.id || fest._id || '',
+        createdBy: fest.createdBy || '', // Handle null case by converting to empty string
       }));
     },
   });

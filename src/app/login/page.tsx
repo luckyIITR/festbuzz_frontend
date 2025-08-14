@@ -6,16 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
-
-interface LoginResponse {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role?: string;
-  };
-  token?: string;
-}
+import { LoginResponse } from '@/types/user';
 
 const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
@@ -39,10 +30,9 @@ export default function LoginPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     mutate({ email, password }, {
-      onSuccess: (data: unknown) => {
-        const loginData = data as LoginResponse;
-        if (loginData?.user) {
-          localStorage.setItem('user', JSON.stringify(loginData.user));
+      onSuccess: (data: LoginResponse) => {
+        if (data?.data?.user) {
+          localStorage.setItem('user', JSON.stringify(data.data.user));
           window.dispatchEvent(new Event('userChanged'));
           setShowSuccess(true);
           setTimeout(() => {

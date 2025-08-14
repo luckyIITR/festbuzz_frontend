@@ -1,33 +1,18 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role?: string;
-}
+import { useAuth } from '../../contexts/AuthContext';
+import { usePermissions } from '../../hooks/usePermissions';
 
 const Navbar = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    function syncUser() {
-      const userStr = localStorage.getItem('user');
-      setUser(userStr ? JSON.parse(userStr) : null);
-    }
-    syncUser();
-    window.addEventListener('userChanged', syncUser);
-    return () => window.removeEventListener('userChanged', syncUser);
-  }, []);
+  const { user, logout } = useAuth();
+  const { canManageUsers } = usePermissions();
 
   function handleLogout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    logout();
     window.location.reload();
   }
 
@@ -57,7 +42,9 @@ const Navbar = () => {
           {user && (
             <>
               <Link href="/myfest" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/myfest' ? 'text-[#E1FF01]' : 'text-white'}`}>My Fest</Link>
-              <Link href="/dashboard" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`}>Dashboard</Link>
+              {canManageUsers && (
+                <Link href="/dashboard" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`}>Dashboard</Link>
+              )}
             </>
           )}
           <Link href="/about" className={` hover:text-white/80 font-[600] font-urbanist ${pathname === '/about' ? 'text-[#E1FF01]' : 'text-white'}`}>Campus Ambassador</Link>
@@ -111,7 +98,9 @@ const Navbar = () => {
               {user ? (
                 <>
                   <Link href="/myfest" className={`font-urbanist ${pathname === '/myfest' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>My Fest</Link>
-                  <Link href="/dashboard" className={`font-urbanist${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`}onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+                  {canManageUsers && (
+                    <Link href="/dashboard" className={`font-urbanist ${pathname === '/dashboard' ? 'text-[#E1FF01]' : 'text-white'}`} onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+                  )}
                   <Link href="/profile" className="px-3 py-1 -ml-2 rounded-full bg-zinc-900 text-white font-urbanist hover:bg-zinc-800 transition uppercase" onClick={() => setMobileMenuOpen(false)}>{user?.name || 'Profile'}</Link>
                   <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="px-3 py-1 text-left -ml-2 rounded-full bg-pink-500 text-white font-urbanist font-bold hover:bg-pink-400 transition">Logout</button>
 

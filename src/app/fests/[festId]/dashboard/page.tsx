@@ -8,8 +8,9 @@ import { useFest } from '@/hooks/fest';
 import { useFestEvents } from '@/hooks/events';
 import { useRegistrationCount } from '@/hooks/registration';
 import { Event } from '@/types/fest';
+import { RouteGuard } from '../../../../components/RouteGuard';
 
-const FestDashboard = () => {
+function FestDashboardContent() {
   const params = useParams();
   const festId = params.festId as string;
 
@@ -73,7 +74,7 @@ const FestDashboard = () => {
     },
     { 
       label: 'Total revenue', 
-      value: events ? `₹${events.reduce((total, event) => total + (event.price || 0), 0)}` : '₹0', 
+      value: events ? `₹${events.reduce((total, event) => total + (event.tickets?.[0]?.price || 0), 0)}` : '₹0', 
       icon: '💰' 
     }
   ];
@@ -84,7 +85,7 @@ const FestDashboard = () => {
                          event.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          event.location?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = categoryFilter === 'All categories' || event.category === categoryFilter;
+    const matchesCategory = categoryFilter === 'All categories' || event.type === categoryFilter;
     
     // Determine status based on dates
     const now = new Date();
@@ -304,4 +305,10 @@ const FestDashboard = () => {
   );
 };
 
-export default FestDashboard; 
+export default function FestDashboard() {
+  return (
+    <RouteGuard requiredPermissions={['view_participants']}>
+      <FestDashboardContent />
+    </RouteGuard>
+  );
+} 

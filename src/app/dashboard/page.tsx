@@ -6,8 +6,9 @@ import pinkdiamond from '../../../public/assets/PinkDiamond.png'
 import { useFests } from '@/hooks/fest';
 import { useMultipleRegistrationCounts } from '@/hooks/registration';
 import { Fest } from '@/types/fest';
+import { RouteGuard } from '../../components/RouteGuard';
 
-const Dashboard = () => {
+function DashboardContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All categories');
   const [statusFilter, setStatusFilter] = useState('All status');
@@ -312,6 +313,12 @@ const Dashboard = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Dashboard; 
+export default function Dashboard() {
+  return (
+    <RouteGuard requiredPermissions={['manage_users']}>
+      <DashboardContent />
+    </RouteGuard>
+  );
+} 

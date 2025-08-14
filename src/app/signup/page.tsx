@@ -7,17 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useVerifyOtp } from '@/hooks/auth';
 import { GoogleLogin } from '@react-oauth/google';
-
-
-interface VerifyResponse {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role?: string;
-  };
-  token?: string;
-}
+import { VerifyResponse } from '@/types/user';
 
 // const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
@@ -85,9 +75,8 @@ export default function RegisterPage() {
       return;
     }
     verifyOtp({ email, otp }, {
-      onSuccess: (data: unknown) => {
-        const verifyData = data as VerifyResponse;
-        if (verifyData?.user) localStorage.setItem('user', JSON.stringify(verifyData.user));
+      onSuccess: (data: VerifyResponse) => {
+        if (data?.data?.user) localStorage.setItem('user', JSON.stringify(data.data.user));
         window.dispatchEvent(new Event('userChanged'));
         setShowVerifySuccess(true);
         setTimeout(() => {

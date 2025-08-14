@@ -57,8 +57,8 @@ export default function MyFestPage() {
 
   // Extract fest data from API responses
   const safeRecentlyViewed: Fest[] = recentlyViewedData?.data || [];
-  const safeWishlist: Fest[] = wishlistData?.data?.wishlist?.map(item => item.festId) || [];
-  const safeRegistered: Fest[] = Array.isArray(registeredFests) ? registeredFests : [];
+  const safeWishlist: Fest[] = wishlistData?.data?.map(item => item.festId) || [];
+  const safeRegistered: Fest[] = registeredFests?.data || [];
   const safeRecommended: Fest[] = Array.isArray(recommended) ? recommended : [];
 
 

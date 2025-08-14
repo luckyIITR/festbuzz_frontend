@@ -147,11 +147,11 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
                         </div>
                     </div>
 
-                    <Link href={`/fests/${event.festId}/events/${event.id}`}>
+                    {/* <Link href={`/fests/${event.festId}/events/${event.id}`}> */}
                         <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-white text-[#FFFFFF] transition cursor-pointer font-urbanist font-[700]">
                             View Info   
                         </button>
-                    </Link>
+                    {/* </Link> */}
 
 
                     <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
@@ -325,11 +325,11 @@ const EventCard: React.FC<EventCardProps> = ({ event, events: propEvents }) => {
                                 </div>
                             </div>
 
-                            <Link href={`/fests/${event.festId}/events/${event.id}`}>
+                            {/* <Link href={`/fests/${event.festId}/events/${event.id}`}> */}
                                 <button className="mt-3 h-8 rounded-xl mx-1 bg-[#FD3EB5] w-full hover:ring-2 hover:ring-[#FD3EB5]  transition cursor-pointer text-[#FFFFFF] font-urbanist font-[700]">
                                     View Info
                                 </button>
-                            </Link>
+                            {/* </Link> */}
 
                             <div className="absolute w-20 h-8  bg-gradient-to-r from-[#1e1e1e] to-[#473340] top-0 left-0 rounded-tl-[10px] rounded-br-[10px] text-center pt-1 font-urbanist text-[14px] font-[700] text-[#FD3EB5]">
                                 {'General'}

@@ -60,11 +60,11 @@ export function useFestEventsByStatus(festId: string, status: 'draft' | 'publish
   return useQuery<{ success: boolean; data: Event[] }>({
     queryKey: ['events', 'fest', festId, 'status', status],
     queryFn: async () => {
-      const token = getToken();
-      if (!token) throw new Error('No authentication token found');
-      return await apiFetch(`/api/events?festId=${festId}&status=${status}`, {}, token);
+      // const token = getToken();
+      // if (!token) throw new Error('No authentication token found');
+      return await apiFetch(`/api/events?festId=${festId}&status=${status}`, {});
     },
-    enabled: !!getToken() && !!festId,
+    enabled: !!festId,
   });
 }
 

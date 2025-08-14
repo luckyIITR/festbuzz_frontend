@@ -3,6 +3,9 @@ import { apiFetch } from '../../lib/api';
 import { getToken } from '../../lib/token';
 
 interface ProfileData {
+  success: boolean;
+  message: string;
+  data: {
   _id?: string;
   name: string;
   email: string;
@@ -29,8 +32,9 @@ interface ProfileData {
   profilePhoto?: string;
   isVerified?: boolean;
   // Timestamps
-  createdAt?: string; // ISO date string
-  updatedAt?: string; // ISO date string
+    createdAt?: string; // ISO date string
+    updatedAt?: string; // ISO date string
+  }
 }
 
 interface UpdateProfilePayload {
@@ -49,8 +53,9 @@ interface UpdateProfilePayload {
 }
 
 interface UpdateProfileResponse {
-  msg: string;
-  user: ProfileData;
+  success: boolean;
+  message: string;
+  data: ProfileData;
 }
 
 export function useProfile() {
@@ -95,7 +100,7 @@ export function useUpdateProfile() {
     onSuccess: (data: UpdateProfileResponse) => {
       // Update localStorage with the user data from the response
       if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('user', JSON.stringify(data.data));
       }
       
       // Invalidate and refetch the profile query to get fresh data from backend

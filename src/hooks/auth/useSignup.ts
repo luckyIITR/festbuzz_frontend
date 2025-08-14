@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { apiFetch } from '../../lib/api';
 import { setToken } from '../../lib/token';
+import { LoginResponse } from '../../types/user';
 
 interface SignupPayload {
   name: string;
@@ -8,28 +9,17 @@ interface SignupPayload {
   password: string;
 }
 
-interface SignupResponse {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role?: string;
-  };
-  token?: string;
-}
-
 export function useSignup() {
   return useMutation({
     mutationFn: (payload: SignupPayload) =>
-      apiFetch('/api/auth/signup', {
+      apiFetch<LoginResponse>('/api/auth/signup', {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
-    onSuccess: (data: unknown) => {
-      const signupData = data as SignupResponse;
-      if (signupData?.token) setToken(signupData.token);
-      if (signupData?.user) {
-        localStorage.setItem('user', JSON.stringify(signupData.user));
+    onSuccess: (data: LoginResponse) => {
+      if (data?.data?.token) setToken(data.data.token);
+      if (data?.data?.user) {
+        localStorage.setItem('user', JSON.stringify(data.data.user));
         window.dispatchEvent(new Event('userChanged'));
       }
     },

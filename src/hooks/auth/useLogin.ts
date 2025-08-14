@@ -1,33 +1,28 @@
 import { useMutation } from '@tanstack/react-query';
 import { apiFetch } from '../../lib/api';
 import { setToken } from '../../lib/token';
+import { LoginResponse } from '../../types/user';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface LoginPayload {
   email: string;
   password: string;
 }
 
-interface LoginResponse {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role?: string;
-  };
-  token?: string;
-}
-
 export function useLogin() {
+  const { login } = useAuth();
+  
   return useMutation({
     mutationFn: (payload: LoginPayload) =>
-      apiFetch('/api/auth/login', {
+      apiFetch<LoginResponse>('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
-    onSuccess: (data: unknown) => {
-      const loginData = data as LoginResponse;
-      if (loginData?.token) setToken(loginData.token);
-      if (loginData?.user) localStorage.setItem('user', JSON.stringify(loginData.user));
+    onSuccess: (data: LoginResponse) => {
+      if (data?.data?.token) setToken(data.data.token);
+      if (data?.data?.user) {
+        login(data.data.user, data.data.token);
+      }
     },
   });
 } 

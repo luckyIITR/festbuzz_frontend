@@ -254,6 +254,7 @@ export interface RegistrationBreakdown {
 export interface RegistrationCount {
   festId: string;
   festName: string;
+  count: number;
   totalRegistrations: number;
   confirmedCount: number;
   pendingCount: number;
@@ -275,6 +276,7 @@ export interface RegistrationStats {
 
 export interface RegistrationCountResponse {
   success: boolean;
+  message: string;
   data: RegistrationCount;
 }
 
@@ -316,10 +318,8 @@ export interface PaginationInfo {
 
 export interface WishlistResponse {
   success: boolean;
-  data: {
-    wishlist: WishlistItem[];
-    pagination: PaginationInfo;
-  };
+  data: WishlistItem[];
+  pagination: PaginationInfo;
 }
 
 export interface RecentlyViewedResponse {
