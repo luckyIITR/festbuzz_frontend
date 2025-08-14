@@ -17,7 +17,7 @@ export default function FestDetailsPage() {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showUnregisterConfirm, setShowUnregisterConfirm] = useState(false);
-  
+  const [isReadMoreExpanded, setIsReadMoreExpanded] = useState(false);
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = true;
@@ -41,6 +41,9 @@ export default function FestDetailsPage() {
       setIsMuted(videoRef.current.muted);
     }
   };
+  const toggleReadMore = () => {
+    setIsReadMoreExpanded(!isReadMoreExpanded);
+  };
 
   const params = useParams();
   const festId = params?.festId as string;
@@ -50,7 +53,7 @@ export default function FestDetailsPage() {
   const { data: registrationStatus, isLoading: statusLoading } = useFestRegistrationStatus(festId);
   const unregisterMutation = useFestUnregistration();
   const queryClient = useQueryClient();
-  
+
   // Track fest view for recently viewed functionality
   useTrackFestView(festId);
 
@@ -60,7 +63,7 @@ export default function FestDetailsPage() {
       if (result.success) {
         alert(`Successfully unregistered from ${result.data.festName}`);
         setShowUnregisterConfirm(false);
-        
+
         // The query invalidation in the hook should handle the UI update
         // If it doesn't work immediately, we can force a refetch
         setTimeout(() => {
@@ -91,7 +94,16 @@ export default function FestDetailsPage() {
 
   const isRegistered = registrationStatus?.isRegistered || false;
   const isLoadingStatus = statusLoading;
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return { text, needsTruncation: false };
+    return {
+      text: text.substring(0, maxLength) + '...',
+      needsTruncation: true
+    };
+  };
 
+  const aboutText = fest.about || 'No description available';
+  const { text: truncatedAbout, needsTruncation } = truncateText(aboutText, 100);
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
@@ -127,7 +139,7 @@ export default function FestDetailsPage() {
           </div>
           <div className="flex flex-col items-start md:items-end gap-3 mt-6 md:mt-0">
             <div className="text-left md:text-right">
-                              <span className="text-2xl font-bold text-white">₹{fest.tickets?.[0]?.price || 0}</span>
+              <span className="text-2xl font-bold text-white">₹{fest.tickets?.[0]?.price || 0}</span>
               <div className="text-xs text-gray-300">Individual fee</div>
             </div>
             {isLoadingStatus ? (
@@ -140,7 +152,7 @@ export default function FestDetailsPage() {
                   <button className="bg-green-500 text-white px-6 py-2 rounded-full font-bold cursor-not-allowed" disabled>
                     ✓ Registered
                   </button>
-                  <button 
+                  <button
                     onClick={() => setShowUnregisterConfirm(true)}
                     disabled={unregisterMutation.isPending}
                     className="bg-red-500 text-white px-4 py-2 rounded-full font-bold hover:bg-red-600 transition disabled:opacity-50"
@@ -167,7 +179,7 @@ export default function FestDetailsPage() {
           <div className="bg-zinc-900 rounded-xl p-6 max-w-md mx-4">
             <h3 className="text-xl font-bold text-white mb-4">Confirm Unregistration</h3>
             <p className="text-gray-300 mb-6">
-              Are you sure you want to unregister from <span className="font-semibold text-yellow-300">{fest.name}</span>? 
+              Are you sure you want to unregister from <span className="font-semibold text-yellow-300">{fest.name}</span>?
               This will also unregister you from all events in this fest.
             </p>
             <div className="flex gap-3">
@@ -207,9 +219,19 @@ export default function FestDetailsPage() {
             <span className="font-bold">College:</span> {fest.college || 'Not specified'}
           </div>
           <div className="text-gray-300 text-sm mb-4">
-            <span className="font-bold">About:</span> {fest.about || 'No description available'}
+            <span className="font-bold">About:</span>
+            <div className="mt-1">
+              {isReadMoreExpanded ? aboutText : truncatedAbout}
+            </div>
           </div>
-          <button className="bg-zinc-900 text-white px-6 py-2 rounded-full mt-2">Read more</button>
+          {needsTruncation && (
+            <button
+              onClick={toggleReadMore}
+              className="bg-zinc-900 text-white px-6 py-2 rounded-full mt-2 hover:bg-zinc-800 transition"
+            >
+              {isReadMoreExpanded ? 'Read less' : 'Read more'}
+            </button>
+          )}
         </section>
 
         {/* Peek in the Past */}
@@ -368,7 +390,7 @@ export default function FestDetailsPage() {
             <div className="inline-block px-8 py-3 rounded-full bg-green-500 text-white font-bold text-lg shadow-lg">
               ✓ Already Registered
             </div>
-            <button 
+            <button
               onClick={() => setShowUnregisterConfirm(true)}
               disabled={unregisterMutation.isPending}
               className="inline-block px-6 py-2 rounded-full bg-red-500 text-white font-bold text-base shadow-lg hover:bg-red-600 transition disabled:opacity-50"
