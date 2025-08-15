@@ -36,7 +36,7 @@ export default function RewardsStep({ rewards, setRewards }: RewardsStepProps) {
       <label className="block text-lg font-semibold mb-4 text-pink-500">Rewards</label>
 
       {/* Table Scroll Wrapper */}
-      <div className="rounded-2xl overflow-x-auto w-[320] md:w-full">
+      <div className="rounded-2xl overflow-x-auto w-[85vw] md:w-full">
         {/* This inner wrapper ensures scroll only happens if needed */}
         <div className="min-w-[600px]  "> 
           <div className="flex flex-col gap-2">
