@@ -2,7 +2,7 @@
 import CallToAction from '@/app/components/CallToAction';
 import { useEvent } from '@/hooks/events/useEvent';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import {  useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -32,6 +32,17 @@ export default function EventDetailsPage() {
   const eventId = params?.eventId as string;
   const { data: event, isLoading, error } = useEvent(festId, eventId);
   const [showModal, setShowModal] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
+  const handleClick = () => {
+    if (!event) return;
+
+    if (event.isTeamEvent) {
+      router.push(`/fests/${festId}/events/${eventId}/register/team`);
+    } else {
+      router.push(`/fests/${festId}/events/${eventId}/register/individual`);
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading event details</div>;
@@ -49,6 +60,13 @@ export default function EventDetailsPage() {
   // Get the first ticket price or default to 0
   const ticketPrice = event.tickets?.[0]?.price || 0;
   const firstImage = event.imageUrls?.[0] || 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=900&q=80';
+
+  // Description logic
+  const description = event.description || 'No description available';
+  const shouldTruncate = description.length > 100;
+  const displayDescription = shouldTruncate && !isDescriptionExpanded 
+    ? description.substring(0, 100) + '...' 
+    : description;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -78,7 +96,7 @@ export default function EventDetailsPage() {
             </div>
             <button
               className="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition"
-              onClick={() => setShowModal(true)}
+              onClick={handleClick}
             >
               Participate now ↗
             </button>
@@ -127,9 +145,16 @@ export default function EventDetailsPage() {
             <span className="font-bold">Max Participants:</span> {event.maxParticipants || 'Unlimited'}
           </div>
           <div className="text-gray-300 text-sm mb-4">
-            <span className="font-bold">Description:</span> {event.description || 'No description available'}
+            <span className="font-bold">Description:</span> {displayDescription}
           </div>
-          <button className="bg-zinc-800 text-white px-6 py-2 rounded-full mt-2">Read more</button>
+          {shouldTruncate && (
+            <button 
+              className="bg-zinc-800 text-white px-6 py-2 rounded-full mt-2"
+              onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+            >
+              {isDescriptionExpanded ? 'Read less' : 'Read more'}
+            </button>
+          )}
         </section>
 
         {/* Rewards Section */}
@@ -225,4 +250,4 @@ export default function EventDetailsPage() {
       <CallToAction />
     </div>
   );
-} 
+}

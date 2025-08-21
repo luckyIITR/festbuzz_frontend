@@ -16,7 +16,10 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const [selected, setSelected] = useState("Organiser");
   const router = useRouter();
+
 
   useEffect(() => {
     if (isSuccess) {
@@ -82,14 +85,41 @@ export default function LoginPage() {
             locale="en"
             context="signin"
           />
-        </div>
-        <div className="flex items-center w-full my-4">
-          <div className="flex-1 h-px bg-zinc-700" />
-          <span className="mx-3 text-zinc-400 text-sm">OR</span>
-          <div className="flex-1 h-px bg-zinc-700" />
-        </div>
-        <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit}>
-          <div>
+
+          <div className="flex items-center w-full my-4">
+            <div className="flex-1 h-px bg-zinc-700" />
+            <span className="mx-3 text-zinc-400 text-sm">OR</span>
+            <div className="flex-1 h-px bg-zinc-700" />
+          </div>
+          <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit}>
+
+            <div className="flex justify-end gap-6">
+              <label className="inline-flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="toggle"
+                  value="Organiser"
+                  checked={selected === "Organiser"}
+                  onChange={(e) => setSelected(e.target.value)}
+                  className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
+                />
+                <span className="">Organiser</span>
+              </label>
+
+              <label className="inline-flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="toggle"
+                  value="Participant"
+                  checked={selected === "Participant"}
+                  onChange={(e) => setSelected(e.target.value)}
+                  className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
+                />
+                <span className="">Participant</span>
+              </label>
+
+            </div>
+
             <label className="block font-semibold mb-1">Email</label>
             <input
               type="email"
@@ -100,44 +130,46 @@ export default function LoginPage() {
               autoComplete="email"
               required
             />
+            <div>
+              <label className="block font-semibold mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                autoComplete="current-password"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition mt-2"
+              disabled={isPending}
+            >
+              {isPending ? 'Logging in...' : 'Login'}
+            </button>
+            {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Login failed'}</div>}
+            {isGoogleError && <div className="text-red-500 text-sm">{(googleError as Error)?.message || 'Google login failed'}</div>}
+            {isSuccess && <div className="text-green-500 text-sm">Login successful!</div>}
+          </form>
+          <div className="mt-6 text-center text-gray-400 text-sm">
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className="text-pink-400 hover:underline font-bold">Register</Link>
           </div>
-          <div>
-            <label className="block font-semibold mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400"
-              autoComplete="current-password"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition mt-2"
-            disabled={isPending}
-          >
-            {isPending ? 'Logging in...' : 'Login'}
-          </button>
-          {isError && <div className="text-red-500 text-sm">{(error as Error)?.message || 'Login failed'}</div>}
-          {isGoogleError && <div className="text-red-500 text-sm">{(googleError as Error)?.message || 'Google login failed'}</div>}
-          {isSuccess && <div className="text-green-500 text-sm">Login successful!</div>}
-        </form>
-        <div className="mt-6 text-center text-gray-400 text-sm">
-          Don&apos;t have an account?{' '}
-          <Link href="/signup" className="text-pink-400 hover:underline font-bold">Register</Link>
-        </div>
-        {showSuccess && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 rounded-3xl z-20 animate-fade-in">
-            <svg className="w-20 h-20 text-lime-400 mb-4 animate-pop" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 13l3 3 7-7" />
-            </svg>
-            <div className="text-2xl font-bold text-lime-300 mb-2">Login Successful!</div>
-          </div>
-        )}
-      </div>
+          {
+            showSuccess && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 rounded-3xl z-20 animate-fade-in">
+                <svg className="w-20 h-20 text-lime-400 mb-4 animate-pop" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 13l3 3 7-7" />
+                </svg>
+                <div className="text-2xl font-bold text-lime-300 mb-2">Login Successful!</div>
+              </div>
+            )
+          }
+        </div >
+      </div >
     </div>
   );
 } 

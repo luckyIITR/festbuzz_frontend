@@ -19,7 +19,7 @@ const urbanist = Urbanist({
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '700'], // Add desired weights
+  weight: ['400', '500', '700','800'], // Add desired weights
   style: ['normal'],
   variable: '--font-dm-sans', // Optional CSS variable name
   display: 'swap',
