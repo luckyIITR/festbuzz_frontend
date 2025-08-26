@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { LoginResponse } from '@/types/user';
 
-const festLogo = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Fest_logo_example.png';
 
 export default function LoginPage() {
   const { mutate, isPending, isError, isSuccess, error } = useLogin();
@@ -57,40 +56,46 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center relative">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center relative -top-20 -mb-20 pt-20">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80"
+          src="/assets/HomePageImage.png"
           alt="Festival Crowd"
           width={1500}
-          height={800}
+          height={1000}
           className="w-full h-full object-cover object-center opacity-60"
         />
+
       </div>
       {/* Login Card */}
-      <div className="relative z-10 w-full max-w-md bg-zinc-900 bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 flex flex-col items-center">
-        <Image src={festLogo} alt="FestBuzz Logo" width={70} height={70} className="mb-4 rounded-full border-2 border-yellow-400 bg-black object-contain" />
-        <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-pink-500 text-center">Login to FestBuzz</h1>
-        {/* Google Login */}
-        <div className="w-full mb-4">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            useOneTap
-            theme="filled_black"
-            size="large"
-            text="signin_with"
-            shape="rectangular"
-            locale="en"
-            context="signin"
-          />
+      <div className="relative z-10 w-full  max-w-md bg-[#1E1E1E] bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 flex flex-col items-center">
+        <h1 className="text-3xl md:text-4xl   mb-8 font-clash text-[#E1FF01] text-center"><span className='font-[700]'>Login</span> <span className='font-[500]'>to Festbuzz</span></h1>
+        {/* Google Login - Only show for Participant */}
+        {selected === "Participant" && (
+          <>
+            <div className="w-full mb-4">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                useOneTap
+                theme="filled_black"
+                size="large"
+                text="signin_with"
+                shape="circle"
+                locale="en"
+                context="signin"
+              />
+            </div>
 
-          <div className="flex items-center w-full my-4">
-            <div className="flex-1 h-px bg-zinc-700" />
-            <span className="mx-3 text-zinc-400 text-sm">OR</span>
-            <div className="flex-1 h-px bg-zinc-700" />
-          </div>
+            <div className="flex items-center w-full my-4">
+              <div className="flex-1 h-px  bg-[#2D2D2D] " />
+              <span className="mx-3 text-[#FFFFFF] text-sm font-urbanist">OR</span>
+              <div className="flex-1 h-px  bg-[#2D2D2D] " />
+            </div>
+          </>
+        )}
+        <div className="w-full mb-4">
           <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit}>
 
             <div className="flex justify-end gap-6">
@@ -103,7 +108,7 @@ export default function LoginPage() {
                   onChange={(e) => setSelected(e.target.value)}
                   className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
                 />
-                <span className="">Organiser</span>
+                <span className=" font-urbanist font-[700]">Organiser</span>
               </label>
 
               <label className="inline-flex items-center gap-2 cursor-pointer">
@@ -115,23 +120,24 @@ export default function LoginPage() {
                   onChange={(e) => setSelected(e.target.value)}
                   className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
                 />
-                <span className="">Participant</span>
+                <span className=" font-urbanist font-[700]">Participant</span>
               </label>
 
             </div>
-
-            <label className="block font-semibold mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400"
-              autoComplete="email"
-              required
-            />
             <div>
-              <label className="block font-semibold mb-1">Password</label>
+              <label className="block mb-1  font-urbanist font-[700]">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="w-full rounded-lg bg-zinc-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                autoComplete="email"
+                required
+              />
+            </div>
+            <div>
+              <label className="block font-urbanist font-[700] mb-1">Password</label>
               <input
                 type="password"
                 value={password}
@@ -144,7 +150,7 @@ export default function LoginPage() {
             </div>
             <button
               type="submit"
-              className="w-full px-10 py-3 rounded-full bg-blue-600 text-white font-bold text-lg shadow-lg hover:bg-blue-700 transition mt-2"
+              className="w-full px-10 py-3 rounded-full bg-[#0248F7] text-[#E1FF01] font-bold text-lg shadow-lg hover:bg-blue-700 transition mt-2"
               disabled={isPending}
             >
               {isPending ? 'Logging in...' : 'Login'}
@@ -153,9 +159,9 @@ export default function LoginPage() {
             {isGoogleError && <div className="text-red-500 text-sm">{(googleError as Error)?.message || 'Google login failed'}</div>}
             {isSuccess && <div className="text-green-500 text-sm">Login successful!</div>}
           </form>
-          <div className="mt-6 text-center text-gray-400 text-sm">
+          <div className="mt-6 text-center  text-[#8D8D8D] font-urbanist font-[700] ">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-pink-400 hover:underline font-bold">Register</Link>
+            <Link href="/signup" className="text-white hover:underline font-bold">Register</Link>
           </div>
           {
             showSuccess && (
@@ -172,4 +178,4 @@ export default function LoginPage() {
       </div >
     </div>
   );
-} 
+}
