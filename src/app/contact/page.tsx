@@ -8,7 +8,7 @@ import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import CallToAction from '../components/CallToAction'
 const page = () => {
     return (
-        <div className='min-h-screen p-6'>
+        <div className='min-h-screen p-6 text-white'>
             <div className='flex items-center gap-2 flex-wrap  '>
                 <Image src={pinkdiamond} alt='' className='w-6 h-6' />
                 <div className='font-clash font-[600] text-3xl uppercase '>Reach out to us</div>

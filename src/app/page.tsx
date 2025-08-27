@@ -12,6 +12,7 @@ import RectangleFirst from '../../public/assets/Rectangleimageforcard1.png'
 import RectangleSecond from '../../public/assets/RectangleImageforcard2.png'
 import RectangleThird from '../../public/assets/Rectangleimageforcard3.png'
 import PinkDiamond from '../../public/assets/PinkDiamond.png'
+import Star from '../../public/assets/star.png'
 import whiteDiamond from '../../public/assets/WhiteDiamond.png'
 export default function Home() {
   // Remove mobileMenuOpen and navbar code
@@ -58,9 +59,50 @@ export default function Home() {
           Get started right now! <span className="ml-2 text-[20px]">↗</span>
         </a>
       </main>
+      <section className='realtive z-10 w-full px-5 py-10 bg-black '>
+        <div className='flex content-center items-center flex-wrap w-full justify-center mb-20'>
+          <Image alt='pinkdiamond' src={PinkDiamond} className='' />
+          <div className='font-clash text-white text-6xl uppercase'>Discover Discounts</div>
+        </div>
+        <div className='flex justify-center content-center items-center flex-wrap '>
+          <div className="grid grid-cols-4 gap-15" >
+            {[1, 2, 3, 4].map((value: number, index: number) => (
+              <div className='bg-[#1A1A1A] rounded-2xl relative' key={index} >
+                <div className='absolute -top-10 z-10 -left-10'>
+                  <div className='relative'>
+                    <Image src={Star} alt='star' className='' />
+                    <div className='absolute top-7 left-7  z-20  flex justify-center content-center items-center flex-wrap text-[#0248F7] font-urbanist font-[800] text-2xl w-20 h-10'>
+                      5%
+                      OFF
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Image alt='' width={300} height={150} src={SecondCard} className='rounded-t-xl' />
+                </div>
+                <div>
+                  <div className='font-urbanist font-[600] text-[#E1FF01] w-65 m-auto text-xl mb-3 mt-3'>
+                    Unlock 5% OFF on tickets at THOMBUS 2025
+                  </div>
+                  <div className=' text-[#5E5E5E] font-urbanist font-[600] w-65 m-auto  mb-2 '>
+                    Available for the first 100 students
+                  </div>
+                  <div className='m-auto w-65'>
+                    <button className='bg-[#0248F7] text-center w-full rounded-2xl py-1 mb-5'>
+                      View Offer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+
+          </div>
+        </div>
+      </section>
 
       {/* Brand Statement Section */}
-      <section className="relative z-10 w-full flex flex-col items-center justify-center text-center px-4 py-10 md:py-10">
+      <section className="relative z-10 w-full flex flex-col items-center justify-center text-center px-4 py-10 md:py-10 bg-black">
         <p className="text-base md:text-xl font-medium text-white max-w-3xl mx-auto">
           At <span className="font-extrabold text-lime-300">FEST</span><span className="text-white font-extrabold">✦</span><span className="font-extrabold text-pink-400">BUZZ</span>
           <span className="ml-2 italic font-semibold text-white">we <span className="italic">unite all stakeholders</span></span><br />
@@ -159,44 +201,44 @@ export default function Home() {
         </div>
       </section>
       <section className='bg-black pt-30'>
-              <div className='flex content-center items-center flex-wrap w-full justify-center'>
-                <Image alt='pinkdiamond' src={PinkDiamond} className='' />
-                <div className='font-clash text-white text-6xl uppercase'>our partners</div>
-              </div>
-              <div className='flex content-center items-center flex-wrap w-full justify-around mt-40'>
-                <Image alt='Patner_1' src="/assets/patner01.png" width={150} height={70} className='' />
-                <Image alt='Patner_2' src="/assets/patner02.png" width={150} height={70} className='' />
-                <Image alt='Patner_3' src="/assets/patner03.png" width={150} height={70} className='' />
-      
-              </div>
-              <div className='flex w-full md:justify-around content-center flex-wrap mt-62 md:gap-4 justify-center  '>
-                <div className='flex justify-center content-center flex-wrap gap-1 '>
-                  <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
-                  <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-                  <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-                </div>
-                <div className='flex justify-center content-center flex-wrap gap-1 '>
-                  <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
-                  <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-                  <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-                </div>
-                <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
-                  <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
-                  <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-                  <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-                </div>
-                <div className='flex justify-center content-center flex-wrap gap-1  md:w-auto w-0 overflow-hidden'>
-                  <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 w-5 h-5 ' alt='' />
-                  <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-                  <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-                </div>
-                <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
-                  <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 ' alt='' />
-                  <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-                  <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-                </div>
-              </div>
-            </section>
+        <div className='flex content-center items-center flex-wrap w-full justify-center'>
+          <Image alt='pinkdiamond' src={PinkDiamond} className='' />
+          <div className='font-clash text-white text-6xl uppercase'>our partners</div>
+        </div>
+        <div className='flex content-center items-center flex-wrap w-full justify-around mt-40'>
+          <Image alt='Patner_1' src="/assets/patner01.png" width={150} height={70} className='' />
+          <Image alt='Patner_2' src="/assets/patner02.png" width={150} height={70} className='' />
+          <Image alt='Patner_3' src="/assets/patner03.png" width={150} height={70} className='' />
+
+        </div>
+        <div className='flex w-full md:justify-around content-center flex-wrap mt-62 md:gap-4 justify-center  '>
+          <div className='flex justify-center content-center flex-wrap gap-1 '>
+            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+          </div>
+          <div className='flex justify-center content-center flex-wrap gap-1 '>
+            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+          </div>
+          <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
+            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+          </div>
+          <div className='flex justify-center content-center flex-wrap gap-1  md:w-auto w-0 overflow-hidden'>
+            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 w-5 h-5 ' alt='' />
+            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+          </div>
+          <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
+            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 ' alt='' />
+            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+          </div>
+        </div>
+      </section>
 
       {/* Call-to-Action Section */}
       <CallToAction />
