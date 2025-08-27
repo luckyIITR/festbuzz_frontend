@@ -6,7 +6,7 @@ import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import CallToAction from '../components/CallToAction'
 const page = () => {
     return (
-        <div className=' min-h-screen overflow-hidden bg-[#101010]'>
+        <div className=' min-h-screen overflow-hidden bg-[#101010] text-white'>
             <div className='flex justify-center flex-wrap content-center w-full mt-10'>
                 <Image src={diamond} className='md:h-30 object-cover md:w-30 h-15 w-15' alt='' />
                 <div className='flex flex-col h-30  flex-wrap '>
