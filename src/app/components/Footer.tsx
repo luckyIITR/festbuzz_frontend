@@ -67,7 +67,7 @@ const Footer = () => (
       </div>
     </div>
     <div className="text-center text-xs text-gray-400 mt-6">
-      Copyright© MoonMantra Services Pvt. Ltd. 2023<br />
+      Maxhilaration Ventures (09MCLPS8373K1ZB)<br />
       All rights reserved
     </div>
   </footer>
