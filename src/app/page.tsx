@@ -59,7 +59,7 @@ export default function Home() {
           Get started right now! <span className="ml-2 text-[20px]">↗</span>
         </a>
       </main>
-      <section className='realtive z-10 w-full px-5 py-10 bg-black '>
+{/*       <section className='realtive z-10 w-full px-5 py-10 bg-black '>
         <div className='flex content-center items-center flex-wrap w-full justify-center mb-20'>
           <Image alt='pinkdiamond' src={PinkDiamond} className='' />
           <div className='font-clash text-white text-6xl uppercase'>Discover Discounts</div>
@@ -99,7 +99,7 @@ export default function Home() {
 
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Brand Statement Section */}
       <section className="relative z-10 w-full flex flex-col items-center justify-center text-center px-4 py-10 md:py-10 bg-black">
