@@ -10,8 +10,8 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const { canManageUsers } = usePermissions();
-
-  function handleLogout() {
+ 
+  function handleLogout()  {
     logout();
     window.location.reload();
   }
