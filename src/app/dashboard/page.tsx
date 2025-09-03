@@ -3,21 +3,73 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-import { useFests } from '@/hooks/fest';
+import { useUserFestivals } from '@/hooks/team';
+import { useFests, usePublishFest, useUnpublishFest, useArchiveFest } from '@/hooks/fest';
 import { useMultipleRegistrationCounts } from '@/hooks/registration';
-import { Fest } from '@/types/fest';
+import { UserFestival } from '@/types/team';
 import { RouteGuard } from '../../components/RouteGuard';
+import { useAuth } from '@/contexts/AuthContext';
 
 function DashboardContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All categories');
   const [statusFilter, setStatusFilter] = useState('All status');
+  const { user } = useAuth();
+  const [publishError, setPublishError] = useState<string | null>(null);
+  const [archiveError, setArchiveError] = useState<string | null>(null);
 
-  // Use the useFests hook to get real data
-  const { data: fests, isLoading, error } = useFests();
+  // Check if user is superadmin or admin - they can view all festivals
+  const isSuperAdmin = user?.role === 'superadmin' || user?.role === 'admin';
   
+  // Use different data sources based on user role
+  const { data: userFestivals, isLoading: isLoadingUserFests, error: userFestsError } = useUserFestivals(user?.id || '', 1, 100);
+  const { data: allFests, isLoading: isLoadingAllFests, error: allFestsError } = useFests();
+  
+  // Determine which data to use
+  const isLoading = isSuperAdmin ? isLoadingAllFests : isLoadingUserFests;
+  const error = isSuperAdmin ? allFestsError : userFestsError;
+  
+  // Extract fest data based on user role
+  const fests = isSuperAdmin 
+    ? allFests || []
+    : userFestivals?.data?.map((userFest: UserFestival) => userFest.festId) || [];
+  
+  // Publish / Unpublish mutations (superadmin/admin only)
+  const publishFest = usePublishFest();
+  const unpublishFest = useUnpublishFest();
+  const archiveFest = useArchiveFest();
+
+  const handleTogglePublish = (fest: any) => {
+    if (!isSuperAdmin) return;
+    if (!fest?._id && !fest?.id) return;
+    if (fest.status === 'archived') return; // archived cannot be toggled
+    const festId = fest.id || fest._id;
+    setPublishError(null);
+    const isPublished = fest.status === 'published';
+    if (isPublished) {
+      unpublishFest.mutate(festId, {
+        onError: (err: any) => setPublishError(err?.message || 'Failed to unpublish fest'),
+      });
+    } else {
+      publishFest.mutate(festId, {
+        onError: (err: any) => setPublishError(err?.message || 'Failed to publish fest'),
+      });
+    }
+  };
+
+  const handleArchive = (fest: any) => {
+    if (!isSuperAdmin) return;
+    if (!fest?._id && !fest?.id) return;
+    if (fest.status === 'archived') return;
+    const festId = fest.id || fest._id;
+    setArchiveError(null);
+    archiveFest.mutate(festId, {
+      onError: (err: any) => setArchiveError(err?.message || 'Failed to archive fest'),
+    });
+  };
+
   // Get registration counts for all fests
-  const festIds = fests?.map(fest => fest.id || fest._id || '').filter(Boolean) || [];
+  const festIds = fests?.map((fest: any) => fest._id || '').filter(Boolean) || [];
   const { data: registrationCounts, isLoading: isLoadingRegistrations } = useMultipleRegistrationCounts(festIds);
 
   // Calculate summary stats from real data
@@ -29,17 +81,17 @@ function DashboardContent() {
     },
     { 
       label: 'Active fests', 
-      value: fests ? fests.filter(fest => fest.isRegistrationOpen).length.toString() : '0', 
+      value: fests ? fests.filter((fest: any) => fest.isRegistrationOpen).length.toString() : '0', 
       icon: '🔥' 
     },
     { 
       label: 'Total registrations', 
-      value: registrationCounts ? registrationCounts.reduce((total, reg) => total + reg.totalRegistrations, 0).toString() : '0', 
+      value: registrationCounts ? registrationCounts.reduce((total: number, reg: any) => total + reg.totalRegistrations, 0).toString() : '0', 
       icon: '👥' 
     },
     { 
       label: 'Total revenue', 
-      value: fests ? fests.reduce((total, fest) => total + (fest.tickets?.[0]?.price || 0), 0).toString() : '0', 
+      value: fests ? fests.reduce((total: number, fest: any) => total + (fest.tickets?.[0]?.price || 0), 0).toString() : '0', 
       icon: '💰' 
     }
   ];
@@ -55,7 +107,7 @@ function DashboardContent() {
   };
 
   // Filter fests based on search and filters
-  const filteredFests = fests?.filter((fest: Fest) => {
+  const filteredFests = fests?.filter((fest: any) => {
     const matchesSearch = fest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          fest.college.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          fest.venue?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -75,6 +127,13 @@ function DashboardContent() {
     
     return matchesSearch && matchesCategory && matchesStatus;
   }) || [];
+
+  // Show archived fests at the end
+  const tableFests = [...filteredFests].sort((a: any, b: any) => {
+    const aArchived = a.status === 'archived' ? 1 : 0;
+    const bArchived = b.status === 'archived' ? 1 : 0;
+    return aArchived - bArchived;
+  });
 
   if (isLoading) {
     return (
@@ -119,7 +178,12 @@ function DashboardContent() {
               Create New Fest
             </Link>
           </div>
-          <p className="text-gray-400">Manage all fests and their events</p>
+          <p className="text-gray-400">
+            {isSuperAdmin 
+              ? "Manage all festivals and their events" 
+              : "Manage your assigned festivals and their events"
+            }
+          </p>
         </div>
 
         {/* Search and Filters */}
@@ -180,8 +244,9 @@ function DashboardContent() {
         <div className="overflow-x-auto">
           <div className="bg-[#1B1B1B] rounded-lg min-w-[700px]">
             {/* Table Header */}
-            <div className="bg-[#313131] px-6 py-4 grid grid-cols-5 gap-4 font-semibold text-xs sm:text-sm">
+            <div className="bg-[#313131] px-6 py-4 grid grid-cols-6 gap-4 font-semibold text-xs sm:text-sm">
               <div>Fest details</div>
+              <div>Your Role</div>
               <div>Status</div>
               <div>Events</div>
               <div>Registrations</div>
@@ -192,10 +257,16 @@ function DashboardContent() {
             <div className="divide-y divide-gray-700 text-xs sm:text-sm">
               {filteredFests.length === 0 ? (
                 <div className="px-6 py-12 text-center text-gray-400">
-                  No fests found matching your criteria
+                  {isSuperAdmin 
+                    ? (allFests?.length === 0 ? "No festivals exist yet" : "No fests found matching your criteria")
+                    : (userFestivals?.data?.length === 0 ? 
+                        "You haven't been assigned to any festivals yet" : 
+                        "No fests found matching your criteria"
+                      )
+                  }
                 </div>
               ) : (
-                filteredFests.map((fest: Fest) => {
+                tableFests.map((fest: any) => {
                   // Determine status based on dates
                   const now = new Date();
                   const startDate = new Date(fest.startDate);
@@ -213,9 +284,18 @@ function DashboardContent() {
 
                   // Get registration count for this fest
                   const registrationCount = getRegistrationCount(fest.id || fest._id || '');
+                  
+                  // Get user's role in this festival
+                  const userFestival = userFestivals?.data?.find((uf: UserFestival) => uf.festId._id === fest._id);
+                  const userRole = isSuperAdmin 
+                    ? (userFestival?.role || 'System Admin') 
+                    : (userFestival?.role || 'No role');
 
                   return (
-                    <div key={fest.id || fest._id} className="px-6 py-6 grid grid-cols-5 gap-4 items-center">
+                    <div
+                      key={fest.id || fest._id}
+                      className={`px-6 py-6 grid grid-cols-6 gap-4 items-center ${fest.status === 'archived' ? 'opacity-60' : ''}`}
+                    >
                       {/* Fest Details */}
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
@@ -242,6 +322,25 @@ function DashboardContent() {
                         </div>
                       </div>
 
+                      {/* Your Role */}
+                      <div>
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          userRole === 'System Admin' 
+                            ? 'bg-red-600 text-white' 
+                            : userRole === 'festival head' 
+                            ? 'bg-purple-600 text-white' 
+                            : userRole === 'event manager'
+                            ? 'bg-blue-600 text-white'
+                            : userRole === 'event coordinator'
+                            ? 'bg-green-600 text-white'
+                            : userRole === 'event volunteer'
+                            ? 'bg-orange-600 text-white'
+                            : 'bg-gray-600 text-white'
+                        }`}>
+                          {userRole}
+                        </span>
+                      </div>
+
                       {/* Status */}
                       <div>
                         <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -254,6 +353,7 @@ function DashboardContent() {
                           {status}
                         </span>
                       </div>
+
 
                       {/* Events */}
                       <div>
@@ -291,7 +391,7 @@ function DashboardContent() {
                       {/* Action */}
                       <div className="space-y-2">
                         <Link href={`/fests/${fest.id || fest._id}/dashboard`} className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
-                          Manage Events
+                          Manage Fest
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
                           </svg>
@@ -302,6 +402,38 @@ function DashboardContent() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                           </svg>
                         </Link>
+                        {isSuperAdmin && (
+                          <div className="pt-1">
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleTogglePublish(fest)}
+                                disabled={publishFest.isPending || unpublishFest.isPending || fest.status === 'archived'}
+                                className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                                  fest.status === 'published' ? 'bg-green-600 hover:bg-green-500 text-white' : 'bg-gray-600 hover:bg-gray-500 text-white'
+                                } disabled:opacity-60`}
+                                title={fest.status === 'published' ? 'Unpublish fest' : 'Publish fest'}
+                              >
+                                {fest.status === 'published' ? 'Unpublish' : 'Publish'}
+                              </button>
+                              <button
+                                onClick={() => handleArchive(fest)}
+                                disabled={archiveFest.isPending || fest.status === 'archived'}
+                                className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                                  fest.status === 'archived' ? 'bg-yellow-700 text-white' : 'bg-yellow-600 hover:bg-yellow-500 text-black'
+                                } disabled:opacity-60`}
+                                title={fest.status === 'archived' ? 'Archived' : 'Archive fest'}
+                              >
+                                {fest.status === 'archived' ? 'Archived' : 'Archive'}
+                              </button>
+                            </div>
+                            {(publishError || archiveError) && (
+                              <div className="mt-1 text-[11px] text-red-400">{publishError || archiveError}</div>
+                            )}
+                          </div>
+                        )}
+                        {!isSuperAdmin && fest.status === 'draft' && (
+                          <div className="text-[11px] text-gray-400 mt-1">Drafts are not visible in Explore/My Fest</div>
+                        )}
                       </div>
                     </div>
                   );
@@ -317,7 +449,7 @@ function DashboardContent() {
 
 export default function Dashboard() {
   return (
-    <RouteGuard requiredPermissions={['manage_users']}>
+    <RouteGuard requiredPermissions={['manage_fests', 'create_fests']}>
       <DashboardContent />
     </RouteGuard>
   );

@@ -6,7 +6,7 @@ import Step1BasicDetails from "./Step1BasicDetails";
 import Step2AboutFest from "./Step2AboutFest";
 import Step3Tickets from "./Step3Tickets";
 import Step4AddOns from "./Step4AddOns";
-import { useAddFest, FestivalFormData, FestivalTicket, FestivalSponsor } from "@/hooks/fest/useAddFest";
+import { useAddFestMutation, CreateFestRequest } from "@/hooks/fest";
 
 const steps = [
   "Basic details",
@@ -24,7 +24,7 @@ type SponsorType = {
 
 function AddFestPageContent() {
   const [step, setStep] = useState(0);
-  const { addFestival, error, isSuccess, reset } = useAddFest();
+  const { mutate: addFestival, isPending, error, isSuccess, reset } = useAddFestMutation();
 
   const [form, setForm] = useState({
     logo: null as File | null,
@@ -79,7 +79,7 @@ function AddFestPageContent() {
   };
 
   // Transform form data to API format
-  const transformFormData = async (formData: typeof form): Promise<FestivalFormData> => {
+  const transformFormData = async (formData: typeof form): Promise<CreateFestRequest> => {
     // Upload files and get URLs
     let logoUrl = '';
     let heroImageUrl = '';
@@ -100,7 +100,7 @@ function AddFestPageContent() {
     }
 
     // Transform sponsors
-    const sponsors: FestivalSponsor[] = await Promise.all(
+    const sponsors = await Promise.all(
       formData.sponsors
         .filter(sponsor => sponsor.name.trim() !== '')
         .map(async (sponsor) => ({
@@ -111,7 +111,7 @@ function AddFestPageContent() {
     );
 
     // Transform tickets
-    const tickets: FestivalTicket[] = [];
+    const tickets = [];
     if (formData.ticketName.trim() !== '') {
       const availableFrom = formData.ticketStartDate && formData.ticketStartTime
         ? `${formData.ticketStartDate}T${formData.ticketStartTime}:00`
@@ -226,15 +226,8 @@ function AddFestPageContent() {
       // Transform form data to API format
       const apiData = await transformFormData(form);
 
-      // Submit to API
-      const result = await addFestival(apiData);
-
-      if (result) {
-        // Success! Handle redirect or success message
-        console.log('Festival created successfully:', result);
-        // You might want to redirect to the festival page or show success message
-        // router.push(`/festivals/${result.id}`);
-      }
+      // Submit to API using React Query mutation
+      addFestival(apiData);
     } catch (err) {
       console.error('Error creating festival:', err);
     }
@@ -252,45 +245,53 @@ function AddFestPageContent() {
             <h2 className="text-2xl font-bold text-white mb-2">Festival Created!</h2>
             <p className="text-gray-300">Your festival has been successfully created and is now live.</p>
           </div>
-          <button
-            onClick={() => {
-              reset();
-              setStep(0);
-              setForm({
-                logo: null,
-                photos: [],
-                festType: "",
-                festName: "",
-                visibility: "public",
-                state: "",
-                city: "",
-                venue: "",
-                college: "",
-                startDate: "",
-                endDate: "",
-                festMode: "online",
-                rulebook: "",
-                instagram: "",
-                website: "",
-                about: "",
-                contact: "",
-                email: "",
-                ticketName: "",
-                feeType: "paid",
-                ticketPrice: "",
-                ticketStartDate: "",
-                ticketStartTime: "",
-                ticketEndDate: "",
-                ticketEndTime: "",
-                sponsors: [{ image: null, name: '', title: '', website: '' }],
-                questions: [{ question: '', type: 'Text' }],
-                aftermovie: '',
-              });
-            }}
-            className="bg-[#0248F7] text-[#E1FF01] font-bold px-8 py-3 rounded-full text-lg shadow-xl hover:scale-105 transition-all duration-300"
-          >
-            Create Another Festival
-          </button>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => {
+                reset();
+                setStep(0);
+                setForm({
+                  logo: null,
+                  photos: [],
+                  festType: "",
+                  festName: "",
+                  visibility: "public",
+                  state: "",
+                  city: "",
+                  venue: "",
+                  college: "",
+                  startDate: "",
+                  endDate: "",
+                  festMode: "online",
+                  rulebook: "",
+                  instagram: "",
+                  website: "",
+                  about: "",
+                  contact: "",
+                  email: "",
+                  ticketName: "",
+                  feeType: "paid",
+                  ticketPrice: "",
+                  ticketStartDate: "",
+                  ticketStartTime: "",
+                  ticketEndDate: "",
+                  ticketEndTime: "",
+                  sponsors: [{ image: null, name: '', title: '', website: '' }],
+                  questions: [{ question: '', type: 'Text' }],
+                  aftermovie: '',
+                });
+              }}
+              className="bg-[#0248F7] text-[#E1FF01] font-bold px-8 py-3 rounded-full text-lg shadow-xl hover:scale-105 transition-all duration-300"
+            >
+              Create Another Festival
+            </button>
+            <button
+              onClick={() => window.location.href = '/fests'}
+              className="bg-white/10 text-white font-bold px-8 py-3 rounded-full text-lg shadow-xl hover:bg-white/20 transition-all duration-300"
+            >
+              View All Fests
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -305,7 +306,7 @@ function AddFestPageContent() {
         {/* Error Message */}
         {error && (
           <div className="w-full mb-4 p-4 bg-red-500/20 border border-red-500 rounded-xl text-red-300 text-center">
-            {error}
+            {error.message || 'An error occurred while creating the festival'}
           </div>
         )}
 
@@ -337,6 +338,7 @@ function AddFestPageContent() {
               handleInput={handleInput}
               handleSubmit={handleSubmit}
               handleBack={handleBack}
+              isPending={isPending}
               addSponsor={addSponsor}
               handleSponsorChange={handleSponsorChange}
               deleteSponsor={deleteSponsor}

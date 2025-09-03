@@ -17,4 +17,8 @@ export * from './user';
 export * from './common';
 
 // Permission hooks
-export { usePermissions } from './usePermissions'; 
+export { usePermissions } from './usePermissions';
+export { useFestPermissions } from './useFestPermissions';
+
+// Team hooks
+export * from './team'; 

@@ -59,6 +59,9 @@ export interface FestivalResponse {
   festMode: string;
   createdBy: string;
   isRegistrationOpen: boolean;
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string;
+  publishedBy?: string;
   createdAt: string;
   updatedAt: string;
 }

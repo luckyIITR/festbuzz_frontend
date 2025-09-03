@@ -19,6 +19,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
 
   // Use prop fests if provided, otherwise use fetched fests
   const fests = propFests || fetchedFests;
+  const publishedFests = fests?.filter((f) => f.status === 'published');
   const [user, setUser] = useState();
   useEffect(() => {
     function syncUser() {
@@ -170,7 +171,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-      {fests?.map((fest, i) => {
+      {publishedFests?.map((fest, i) => {
         const isHovering = hoverIndex === i;
         const truncated = fest.name.length > 27 ? fest.name.slice(0, 25) + ' ...' : fest.name;
         const displayName = isHovering ? fest.name : truncated;

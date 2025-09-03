@@ -1,11 +1,16 @@
+// User-level roles (system-wide)
 export type UserRole = 
   | 'superadmin'
   | 'admin'
-  | 'festival_head'
-  | 'event_manager'
-  | 'event_coordinator'
-  | 'event_volunteer'
+  | 'organizer'
   | 'participant';
+
+// Fest-specific roles (within a festival)
+export type FestRole = 
+  | 'festival head'
+  | 'event manager'
+  | 'event coordinator'
+  | 'event volunteer';
 
 export interface User {
   id: string;
@@ -52,7 +57,7 @@ export type Permission =
   | 'view_participants'
   | 'manage_users';
 
-// Permission matrix mapping roles to permissions
+// Permission matrix mapping user-level roles to permissions
 export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   superadmin: [
     'create_fests',
@@ -80,7 +85,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'view_participants',
     'manage_users'
   ],
-  festival_head: [
+  organizer: [
+    'create_fests',
     'manage_fests',
     'create_events',
     'modify_events',
@@ -91,24 +97,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'view_event_details',
     'view_participants',
     'manage_users'
-  ],
-  event_manager: [
-    'create_events',
-    'modify_events',
-    'manage_events',
-    'assign_event_roles',
-    'send_certificates',
-    'publish_results',
-    'view_event_details',
-    'view_participants',
-    'manage_users'
-  ],
-  event_coordinator: [
-    'view_event_details',
-    'view_participants'
-  ],
-  event_volunteer: [
-    'view_participants'
   ],
   participant: []
 };

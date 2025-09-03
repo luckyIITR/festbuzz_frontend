@@ -16,7 +16,7 @@ interface FestCardProps {
 
 const GradientFestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
     const { data: fetchedFests, isLoading, error } = useFests()
-    const fests = fetchedFests || propFests
+    const fests = (fetchedFests || propFests)?.filter((f) => f.status === 'published')
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
     if (isLoading) return <div className="text-white">Loading...</div>;

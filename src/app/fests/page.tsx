@@ -7,7 +7,7 @@ import FestCard from '../components/FestCard';
 import GradientFestCard from '../components/GradientFestCard';
 
 export default function FestsPage() {
-  const { isLoading, error } = useFests();
+  const { data: allFests, isLoading, error } = useFests();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading fests</div>;
@@ -20,8 +20,14 @@ export default function FestsPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
         <div className="relative z-10 flex flex-col items-center w-full pb-6">
           <div className="flex flex-col items-center mt-8">
-            <button className="bg-zinc-900 text-white px-6 py-2 rounded-full mb-2">Manage your fest with us now!</button>
-            <button className="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Host now ↗</button>
+            <div className="flex gap-4">
+              <button 
+                onClick={() => window.location.href = '/fests/add'}
+                className="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition"
+              >
+                Manage your fest with us now!
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -52,7 +58,7 @@ export default function FestsPage() {
               </aside>
 
               <div className='flex justify-center'>
-                <FestCard /></div>
+                <FestCard fests={allFests?.filter(f => f.status === 'published')} /></div>
             </div>
           </section>
 

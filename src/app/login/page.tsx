@@ -72,8 +72,8 @@ export default function LoginPage() {
       <div className="relative z-10 w-full  max-w-md bg-[#1E1E1E] bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 flex flex-col items-center">
         <h1 className="text-3xl md:text-4xl   mb-8 font-clash text-[#E1FF01] text-center"><span className='font-[700]'>Login</span> <span className='font-[500]'>to Festbuzz</span></h1>
         {/* Google Login - Only show for Participant */}
-        {selected === "Participant" && (
-          <>
+         
+          
             <div className="w-full mb-4">
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
@@ -93,37 +93,12 @@ export default function LoginPage() {
               <span className="mx-3 text-[#FFFFFF] text-sm font-urbanist">OR</span>
               <div className="flex-1 h-px  bg-[#2D2D2D] " />
             </div>
-          </>
-        )}
+          
+        
         <div className="w-full mb-4">
           <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit}>
 
-            <div className="flex justify-end gap-6">
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="toggle"
-                  value="Organiser"
-                  checked={selected === "Organiser"}
-                  onChange={(e) => setSelected(e.target.value)}
-                  className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
-                />
-                <span className=" font-urbanist font-[700]">Organiser</span>
-              </label>
-
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="toggle"
-                  value="Participant"
-                  checked={selected === "Participant"}
-                  onChange={(e) => setSelected(e.target.value)}
-                  className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
-                />
-                <span className=" font-urbanist font-[700]">Participant</span>
-              </label>
-
-            </div>
+           
             <div>
               <label className="block mb-1  font-urbanist font-[700]">Email</label>
               <input

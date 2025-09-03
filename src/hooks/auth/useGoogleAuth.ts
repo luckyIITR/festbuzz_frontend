@@ -8,6 +8,7 @@ import { useAuth } from '../../contexts/AuthContext';
 interface GoogleAuthPayload {
   accessToken: string;
   idToken?: string;
+  role: 'organizer' | 'participant';
 }
 
 export function useGoogleAuth() {

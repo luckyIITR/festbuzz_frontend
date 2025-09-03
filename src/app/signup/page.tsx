@@ -28,16 +28,22 @@ export default function RegisterPage() {
   const [verifyErrorMsg, setVerifyErrorMsg] = useState<string | null>(null);
   const [showVerifySuccess, setShowVerifySuccess] = useState(false);
 
-  const [selected, setSelected] = useState("Organiser");
+  const [selected, setSelected] = useState("Participant");
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirm) return;
-    mutate({ name, email, password });
+    
+    // Map UI selection to backend role values
+    const role = selected === "Organiser" ? "organizer" : "participant";
+    
+    mutate({ name, email, password, role });
   }
 
   function handleGoogleSuccess(credentialResponse: { credential?: string }) {
     if (credentialResponse.credential) {
-      googleAuth({ accessToken: credentialResponse.credential });
+      // Map UI selection to backend role values
+      const role = selected === "Organiser" ? "organizer" : "participant";
+      googleAuth({ accessToken: credentialResponse.credential, role });
     }
   }
 
@@ -110,6 +116,36 @@ export default function RegisterPage() {
       <div className="relative z-10 w-full max-w-md bg-zinc-900 bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 mx-2 my-12 flex flex-col items-center">
 
         <h1 className="text-3xl md:text-4xl   mb-8 font-clash text-[#E1FF01] text-center"><span className='font-[700]'>Sign up</span> <span className='font-[500]'>to Festbuzz</span></h1>
+        
+        {/* Role Selection */}
+        <div className="w-full mb-6">
+          <div className="flex justify-center gap-6">
+            <label className="inline-flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="toggle"
+                value="Participant"
+                checked={selected === "Participant"}
+                onChange={(e) => setSelected(e.target.value)}
+                className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
+              />
+              <span className="font-urbanist font-[700]">Participant</span>
+            </label>
+            <label className="inline-flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="toggle"
+                value="Organiser"
+                checked={selected === "Organiser"}
+                onChange={(e) => setSelected(e.target.value)}
+                className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
+              />
+              <span className="font-urbanist font-[700]">Organiser</span>
+            </label>
+          </div>
+         
+        </div>
+
         {/* Google Signup - Only show for Participant */}
         {selected === "Participant" && (
           <>
@@ -136,32 +172,6 @@ export default function RegisterPage() {
         )}
         <form className="w-full flex flex-col gap-5" onSubmit={handleSubmit}>
           <div>
-            <div className="flex justify-end gap-6">
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="toggle"
-                  value="Organiser"
-                  checked={selected === "Organiser"}
-                  onChange={(e) => setSelected(e.target.value)}
-                  className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
-                />
-                <span className=" font-urbanist font-[700]">Organiser</span>
-              </label>
-
-              <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="toggle"
-                  value="Participant"
-                  checked={selected === "Participant"}
-                  onChange={(e) => setSelected(e.target.value)}
-                  className="peer w-4 h-4 accent-pink-500 focus:ring-pink-500 border-gray-300"
-                />
-                <span className=" font-urbanist font-[700]">Participant</span>
-              </label>
-
-            </div>
             <label className="block font-[700] mb-1 font-urbanist">Username</label>
             <input
               type="text"

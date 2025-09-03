@@ -24,6 +24,7 @@ interface Step4AddOnsProps {
   handleInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit?: ((e: React.FormEvent<HTMLFormElement>) => void) | (() => void);
   handleBack: () => void;
+  isPending?: boolean;
   
   // For array-based approach (AddFestPage)
   addSponsor?: () => void;
@@ -45,6 +46,7 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
   handleInput,
   handleSubmit,
   handleBack,
+  isPending = false,
   
   // Array-based props
   addSponsor,
@@ -344,6 +346,7 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
         {handleSubmit ? (
           <button
             type="button"
+            disabled={isPending}
             onClick={(e) => {
               e.preventDefault();
               // Check if handleSubmit expects an event parameter
@@ -362,9 +365,9 @@ const Step4AddOns: React.FC<Step4AddOnsProps> = ({
                 (handleSubmit as () => void)();
               }
             }}
-            className="flex-1 py-3 px-6  bg-pink-500 border border-white/20 text-white font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300"
+            className="flex-1 py-3 px-6 bg-pink-500 border border-white/20 text-white font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit
+            {isPending ? 'Creating Festival...' : 'Submit'}
           </button>
         ) : (
           <button

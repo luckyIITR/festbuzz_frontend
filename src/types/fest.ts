@@ -108,6 +108,9 @@ export interface Fest {
   email?: string;
   createdBy: string; // ObjectId as string
   isRegistrationOpen: boolean;
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string; // ISO date string
+  publishedBy?: string; // ObjectId as string
   logo?: string;
   heroImage?: string;
   organizerLogo?: string;

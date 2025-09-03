@@ -23,6 +23,9 @@ interface ApiFest {
   email?: string;
   createdBy: string | null; // Now can be null or string
   isRegistrationOpen: boolean;
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string;
+  publishedBy?: string;
   logo?: string;
   heroImage?: string;
   organizerLogo?: string;

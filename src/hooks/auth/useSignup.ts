@@ -7,6 +7,7 @@ interface SignupPayload {
   name: string;
   email: string;
   password: string;
+  role: 'organizer' | 'participant';
 }
 
 export function useSignup() {
