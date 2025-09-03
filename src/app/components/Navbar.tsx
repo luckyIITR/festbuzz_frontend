@@ -11,7 +11,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const { canManageUsers } = usePermissions();
  
-  function handleLogout()  {
+  function handleLogout() {
     logout();
     window.location.reload();
   }
