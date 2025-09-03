@@ -117,7 +117,7 @@ export default function Home() {
       <section className="relative z-10 w-full bg-black pb-0 px-4 md:px-8 lg:px-20">
         {/* Section Title */}
         <div className="flex items-center gap-3 pt-10 md:pt-10 justify-center">
-          <span className="inline-block w-6 h-6 bg-pink-500 rounded-full animate-pulse" />
+       <Image alt='pinkdiamond' src={PinkDiamond} className='' />
           <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight">
             <span className="font-extrabold">WE OFFER YOU TO</span>
           </h2>
