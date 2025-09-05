@@ -3,14 +3,22 @@
 import CallToAction from '../components/CallToAction';
 import Image from 'next/image';
 import { useFests } from '@/hooks/fest';
+import Link from 'next/link';
 import FestCard from '../components/FestCard';
+import { useFestEventsByStatus } from '@/hooks/events';
 import GradientFestCard from '../components/GradientFestCard';
 import banner from '../../../public/assets/bannerimage.png'
+import { Event } from '@/types/fest';
 import PinkDiamond from '../../../public/assets/PinkDiamond.png'
+import EventCard from '@/app/components/EventCard';
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 export default function FestsPage() {
-  const { isLoading, error } = useFests();
 
+
+  const festId = "6890dc2da7420e7039bc4b81";
+  const { isLoading, error } = useFests();
+  const { data: eventsData, isLoading: eventsLoading, error: eventsError } = useFestEventsByStatus(festId, 'published');
+  const events = eventsData?.data || [];
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading fests</div>;
 
@@ -96,6 +104,29 @@ export default function FestsPage() {
             </div>
             <div className='flex justify-center'>
               <GradientFestCard />
+            </div>
+          </section>
+          <section>
+            <div className="flex items-center gap-2 mb-4">
+              <Image alt='pinkdiamond' src={PinkDiamond} className='h-10 w-10' />
+              <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">Trending Events</h2>
+            </div>
+            <div className='flex  gap-5'>
+              {eventsLoading ? (
+                <div>Loading events...</div>
+              ) : eventsError ? (
+                <div>Error loading events</div>
+              ) : events && events.length > 0 ? (
+                events.map((event: Event) => (
+                  <Link key={event.id} href={`/fests/${festId}/events/${event.id}`} className=" rounded-2xl overflow-hidden shadow-lg flex  relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
+                    <EventCard event={event} />
+                  </Link>
+                ))
+              ) : (
+                <div className="col-span-full text-center text-gray-400 py-8">
+                  No events available for this fest
+                </div>
+              )}
             </div>
           </section>
         </div>
