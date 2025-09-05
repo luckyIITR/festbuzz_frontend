@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-import fb from '../../../public/assets/fb.png'
+import fb from '../../../public/assets/gmailicon.webp'
 import insta from '../../../public/assets/Insta.png'
 import linkedin from '../../../public/assets/linkedin.png'
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import CallToAction from '../components/CallToAction'
-
+import Link from 'next/link'
 import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,7 +20,7 @@ const ABSTRACT_API_KEY = process.env.NEXT_PUBLIC_ABSTRACT_API_KEY;
 // Debug logging to check environment variables
 console.log("Environment variables check:", {
     SERVICE_ID: SERVICE_ID ? "Set" : "Missing",
-    TEMPLATE_ID: TEMPLATE_ID ? "Set" : "Missing", 
+    TEMPLATE_ID: TEMPLATE_ID ? "Set" : "Missing",
     PUBLIC_KEY: PUBLIC_KEY ? "Set" : "Missing",
     ABSTRACT_API_KEY: ABSTRACT_API_KEY ? "Set" : "Missing"
 });
@@ -139,12 +139,12 @@ const ContactPage: React.FC = () => {
 
             setEmailError("");
             setIsVerifyingEmail(true);
-            
+
             // Clear previous timeout
             if ((window as unknown as { emailVerificationTimeout?: NodeJS.Timeout }).emailVerificationTimeout) {
                 clearTimeout((window as unknown as { emailVerificationTimeout?: NodeJS.Timeout }).emailVerificationTimeout);
             }
-            
+
             (window as unknown as { emailVerificationTimeout?: NodeJS.Timeout }).emailVerificationTimeout = setTimeout(async () => {
                 const verification = await verifyEmailExists(value);
                 setIsVerifyingEmail(false);
@@ -256,9 +256,10 @@ const ContactPage: React.FC = () => {
             <div className='font-urbanist font-[600] text-[#969696] text-center mx-auto '>thefestbuzzgmail.com</div>
 
             <div className='flex justify-between w-40 content-center mt-10 mx-auto'>
-                <Image src={fb} alt='' className='w-6 h-6' />
-                <Image src={insta} alt='' className='w-6 h-6' />
-                <Image src={linkedin} alt='' className='w-6 h-6' />
+
+                <Link href={'mailto:partner@festbuzz.in'}>   <Image src={fb} alt='' className='w-6 h-6' /></Link>
+                <Link href={'https://www.instagram.com/festbuzz.in/'} target='_blank'>  <Image src={insta} alt='' className='w-6 h-6' /></Link>
+                <Link href={'https://www.linkedin.com/company/festbuzz/'} target='_blank'>  <Image src={linkedin} alt='' className='w-6 h-6' /></Link>
             </div>
 
             <div className='flex items-center gap-2 flex-wrap mt-10 justify-center'>
@@ -267,27 +268,27 @@ const ContactPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleSubmit} className='md:w-120 w-85 mb-40 text-center mx-auto '>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     name="name"
                     value={form.name}
                     onChange={handlechange}
                     onKeyDown={alphaKeyFilter}
                     onPaste={pasteFilter}
-                    placeholder='Your full name' 
-                    className='mt-4 bg-[#1D1D1D] w-full h-14 rounded-2xl pl-5 font-urbanist text-[white] placeholder:text-[#565656]' 
+                    placeholder='Your full name'
+                    className='mt-4 bg-[#1D1D1D] w-full h-14 rounded-2xl pl-5 font-urbanist text-[white] placeholder:text-[#565656]'
                 />
                 {formErrors.name && (
                     <div className='text-red-500 text-sm mt-1 font-urbanist'>{formErrors.name}</div>
                 )}
-                
-                <input 
-                    type="email" 
+
+                <input
+                    type="email"
                     name="email"
                     value={form.email}
                     onChange={handlechange}
-                    placeholder='Your email' 
-                    className='mt-4 bg-[#1D1D1D] w-full h-14 rounded-2xl pl-5 font-urbanist text-[white] placeholder:text-[#565656]' 
+                    placeholder='Your email'
+                    className='mt-4 bg-[#1D1D1D] w-full h-14 rounded-2xl pl-5 font-urbanist text-[white] placeholder:text-[#565656]'
                 />
                 {(formErrors.email || emailError) && (
                     <div className='text-red-500 text-sm mt-1 font-urbanist'>{formErrors.email || emailError}</div>
@@ -295,27 +296,27 @@ const ContactPage: React.FC = () => {
                 {isVerifyingEmail && (
                     <div className='text-yellow-500 text-sm mt-1 font-urbanist'>Verifying email...</div>
                 )}
-                
-                <input 
-                    type="text" 
+
+                <input
+                    type="text"
                     name="message"
                     value={form.message}
                     onChange={handlechange}
-                    placeholder='Your message' 
-                    className='mt-4 bg-[#1D1D1D] w-full h-40 rounded-2xl pl-5 font-urbanist text-[white] placeholder:text-[#565656]' 
+                    placeholder='Your message'
+                    className='mt-4 bg-[#1D1D1D] w-full h-40 rounded-2xl pl-5 font-urbanist text-[white] placeholder:text-[#565656]'
                 />
                 {formErrors.message && (
                     <div className='text-red-500 text-sm mt-1 font-urbanist'>{formErrors.message}</div>
                 )}
-                
+
                 {formErrors.config && (
                     <div className='text-red-500 text-sm mt-2 font-urbanist'>{formErrors.config}</div>
                 )}
-                
-                <button 
+
+                <button
                     type="submit"
                     disabled={isSubmitting || isVerifyingEmail}
-                    className='mt-4 bg-[#0248F7] px-6 py-2 font-[700] text-center rounded-2xl font-urbanist text-[#E1FF01] disabled:opacity-50 disabled:cursor-not-allowed' 
+                    className='mt-4 bg-[#0248F7] px-6 py-2 font-[700] text-center rounded-2xl font-urbanist text-[#E1FF01] disabled:opacity-50 disabled:cursor-not-allowed'
                 >
                     {isSubmitting ? "Sending..." : "Send ↗"}
                 </button>

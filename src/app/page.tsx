@@ -59,7 +59,7 @@ export default function Home() {
           Get started right now! <span className="ml-2 text-[20px]">↗</span>
         </a>
       </main>
-       {/* <section className='realtive z-10 w-full px-5 py-10 bg-black '>
+      {/* <section className='realtive z-10 w-full px-5 py-10 bg-black '>
         <div className='flex content-center items-center flex-wrap w-full justify-center mb-20'>
           <Image alt='pinkdiamond' src={PinkDiamond} className='' />
           <div className='font-clash text-white text-6xl uppercase'>Discover Discounts</div>
@@ -117,7 +117,7 @@ export default function Home() {
       <section className="relative z-10 w-full bg-black pb-0 px-4 md:px-8 lg:px-20">
         {/* Section Title */}
         <div className="flex items-center gap-3 pt-10 md:pt-10 justify-center">
-       <Image alt='pinkdiamond' src={PinkDiamond} className='' />
+          <Image alt='pinkdiamond' src={PinkDiamond} className='' />
           <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight">
             <span className="font-extrabold">WE OFFER YOU TO</span>
           </h2>
@@ -128,15 +128,17 @@ export default function Home() {
           {/* 01 Host & Manage */}
           <div className="relative flex flex-col md:flex-row items-stretch bg-[#E1FF01] min-h-[260px] overflow-hidden rounded-2xl mb-6 px-4 md:px-8">
             <div className="flex-1 p-6 md:p-10 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl md:text-2xl font-extrabold text-blue-700 mb-1">01 Host & Manage</h3>
-                <p className="text-sm md:text-base text-gray-700 mb-2">For organizing team</p>
-                <p className="text-gray-800 text-sm md:text-base mb-4 max-w-md">
-                  All-in-one event hosting with easy registrations, smooth coordination, fair judging, clear communication, and quick certificate delivery.
-                </p>
+              <div className='h-full'>
+                <h3 className="text-xl md:text-5xl font-clash font-[700] text-[#0248F7] mb-1">01 Host & Manage</h3>
+                <div className='w-full h-5/7  flex flex-col justify-between mt-4'>
+                  <p className="text-xl font-[700] text-[#434C00]  mb-2 font-urbanist">For organizing team</p>
+                  <p className="text-[#434C00] font-[600] text-lg md:text-lg mb-4 max-w-sm ">
+                    All-in-one event hosting with easy registrations, smooth coordination, fair judging, clear communication, and quick certificate delivery.
+                  </p>
+                </div>
               </div>
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition text-sm md:text-base w-fit">
-                List your fest <span>↗</span>
+              <a href="#" className="inline-flex items-center ">
+                <span className='bg-[#0248F7] px-8 py-2 rounded-full  text-[#E1FF01] font-[800] font-urbanist shadow hover:bg-blue-700 transition text-lg w-fit'> List your fest</span><span className='rounded-full text-lg bg-[#0248F7] px-3 py-2 font-urbanist font-[800]  text-[#E1FF01]'>↗</span>
               </a>
             </div>
             <div className="relative flex-1 min-h-[180px] md:min-h-0">
@@ -158,18 +160,21 @@ export default function Home() {
                 <Image src={RectangleSecond} alt="Rectangle" width={600} height={160} className="relative w-full h-full object-cover " />
               </div>
             </div>
-            <div className="flex-1 p-6 md:p-10 flex flex-col justify-between order-1 md:order-2">
-              <div>
-                <h3 className="text-xl md:text-2xl font-extrabold text-[#E1FF01] mb-1">02 Explore & Enjoy</h3>
-                <p className="text-sm md:text-base text-white mb-2">For college students</p>
-                <p className="text-white text-sm md:text-base mb-4 max-w-md">
-                  Discover and join exciting fests<br />
-                  Enjoy exclusive event discounts<br />
-                  Collect rewards and goodies
-                </p>
+            <div className="flex-1 p-6 md:p-10 flex flex-col justify-between order-1 md:order-2 ">
+              <div className='h-full'>
+
+                <h3 className="text-xl md:text-5xl font-clash font-[700] text-[#E1FF01] mb-1">02 Explore & Enjoy</h3>
+                <div className='w-full h-5/7  flex flex-col justify-between mt-4'>
+                  <p className="  text-white mb-2 text-xl font-[700]  font-urbanist">For college students</p>
+                  <p className="text-white font-[600] text-lg md:text-lg mb-4 max-w-sm ">
+                    Discover and join exciting fests<br />
+                    Enjoy exclusive event discounts<br />
+                    Collect rewards and goodies
+                  </p>
+                </div>
               </div>
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E1FF01] text-black font-semibold shadow hover:bg-lime-100 transition text-sm md:text-base w-fit">
-                Sign up now <span>↗</span>
+              <a href="#" className="inline-flex items-center ">
+                <span className='text-black px-8 py-2 rounded-full  bg-[#E1FF01] font-[800] font-urbanist shadow hover:bg-blue-700 transition text-lg w-fit'> Sign up now</span><span className='rounded-full  px-3 py-2 text-lg text-black font-urbanist font-[800] bg-[#E1FF01]'>↗</span>
               </a>
             </div>
           </div>
@@ -177,72 +182,75 @@ export default function Home() {
           {/* 03 Engage & Reach */}
           <div className="relative flex flex-col md:flex-row items-stretch bg-[#0248F7] min-h-[260px] overflow-hidden rounded-2xl mb-6 px-4 md:px-8">
             <div className="flex-1 p-6 md:p-10 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl md:text-2xl font-extrabold text-[#E1FF01] mb-1">03 Engage & Reach</h3>
-                <p className="text-sm md:text-base text-white mb-2">For brands</p>
-                <p className="text-white text-sm md:text-base mb-4 max-w-md">
-                  Showcase your products effectively<br />
-                  Connect with your audience interactively<br />
-                  Extend your reach to a broader audience
-                </p>
+              <div className='h-full'>
+                <h3 className="text-xl md:text-5xl font-clash font-[700] text-[#E1FF01] mb-1">03 Engage & Reach</h3>
+                <div className='w-full h-5/7  flex flex-col justify-between mt-4'>
+                  <p className=" text-white mb-2 text-xl font-[700]  font-urbanist">For brands</p>
+                  <p className="text-white font-[600] text-lg md:text-lg mb-4 max-w-sm ">
+                    Showcase your products effectively<br />
+                    Connect with your audience interactively<br />
+                    Extend your reach to a broader audience
+                  </p>
+                </div>
               </div>
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E1FF01] text-black font-semibold shadow hover:bg-lime-100 transition text-sm md:text-base w-fit">
-                Partner with us <span>↗</span>
+              <a href="#" className="inline-flex items-center ">
+                <span className='text-black px-8 py-2 rounded-full  bg-[#E1FF01] font-[800] font-urbanist shadow hover:bg-blue-700 transition text-lg   w-fit'> Partner with us</span><span className='rounded-full text-black px-3 py-2 text-lg font-urbanist font-[800]  bg-[#E1FF01]'>↗</span>
               </a>
+
+          </div>
+          <div className="relative flex-1 min-h-[180px] md:min-h-0">
+            <Image src={Firstcard} alt="Team" width={600} height={160} className="w-full h-full object-cover object-center" />
+            {/* Decorative squares */}
+            <div className="absolute top-0 w-[39.7vw] h-[59vh]">
+              <Image src={RectangleThird} alt="Rectangle" width={600} height={160} className="relative w-full h-full object-cover " />
             </div>
-            <div className="relative flex-1 min-h-[180px] md:min-h-0">
-              <Image src={Firstcard} alt="Team" width={600} height={160} className="w-full h-full object-cover object-center" />
-              {/* Decorative squares */}
-              <div className="absolute top-0 w-[39.7vw] h-[59vh]">
-                <Image src={RectangleThird} alt="Rectangle" width={600} height={160} className="relative w-full h-full object-cover " />
-              </div>
-            </div>
           </div>
         </div>
-      </section>
-      <section className='bg-black pt-30'>
-        <div className='flex content-center items-center flex-wrap w-full justify-center'>
-          <Image alt='pinkdiamond' src={PinkDiamond} className='' />
-          <div className='font-clash text-white text-6xl uppercase'>our partners</div>
-        </div>
-        <div className='flex content-center items-center flex-wrap w-full justify-around mt-40'>
-          <Image alt='Patner_1' src="/assets/patner01.png" width={150} height={70} className='' />
-          <Image alt='Patner_2' src="/assets/patner02.png" width={150} height={70} className='' />
-          <Image alt='Patner_3' src="/assets/patner03.png" width={150} height={70} className='' />
-
-        </div>
-        <div className='flex w-full md:justify-around content-center flex-wrap mt-62 md:gap-4 justify-center  '>
-          <div className='flex justify-center content-center flex-wrap gap-1 '>
-            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
-            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-          </div>
-          <div className='flex justify-center content-center flex-wrap gap-1 '>
-            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
-            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-          </div>
-          <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
-            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
-            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-          </div>
-          <div className='flex justify-center content-center flex-wrap gap-1  md:w-auto w-0 overflow-hidden'>
-            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 w-5 h-5 ' alt='' />
-            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-          </div>
-          <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
-            <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 ' alt='' />
-            <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
-            <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call-to-Action Section */}
-      <CallToAction />
-
     </div>
+      </section >
+    <section className='bg-black pt-30'>
+      <div className='flex content-center items-center flex-wrap w-full justify-center'>
+        <Image alt='pinkdiamond' src={PinkDiamond} className='' />
+        <div className='font-clash text-white text-6xl uppercase'>our partners</div>
+      </div>
+      <div className='flex content-center items-center flex-wrap w-full justify-around mt-40'>
+        <Image alt='Patner_1' src="/assets/patner01.png" width={150} height={70} className='' />
+        <Image alt='Patner_2' src="/assets/patner02.png" width={150} height={70} className='' />
+        <Image alt='Patner_3' src="/assets/patner03.png" width={150} height={70} className='' />
+
+      </div>
+      <div className='flex w-full md:justify-around content-center flex-wrap mt-62 md:gap-4 justify-center  '>
+        <div className='flex justify-center content-center flex-wrap gap-1 '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1 '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 h-5 w-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1  md:w-auto w-0 overflow-hidden'>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 w-5 h-5 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+        <div className='flex justify-center content-center flex-wrap gap-1 md:w-auto w-0 overflow-hidden '>
+          <Image src={whiteDiamond} className=' object-cover md:h-8 md:w-8 ' alt='' />
+          <div className='font-clash md:text-4xl text-[#E1FF01] font-[600] uppercase '>FEST</div>
+          <div className='font-clash md:text-4xl text-[#FD3EB5] font-[600] uppercase '>BUZZ</div>
+        </div>
+      </div>
+    </section>
+
+  {/* Call-to-Action Section */ }
+  <CallToAction />
+
+    </div >
   );
 }
