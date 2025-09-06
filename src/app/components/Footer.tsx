@@ -37,10 +37,10 @@ const Footer = () => (
         <div>
           <h4 className="font-bold mb-2 text-white">Services</h4>
           <ul className="text-sm space-y-1 text-gray-300">
-            <li>Artists</li>
-            <li>Production</li>
-            <li>Silent DJ</li>
-            <li>Laser Tag</li>
+            <div><Link href={'/artist'}>Artists</Link></div>
+            <div><Link href={'/production'}>Production</Link></div>
+            <div><Link href={'/silentdj'}>Silent DJ</Link></div>
+            <div><Link href={'/lasertag'}>Laser Tag</Link></div>
           </ul>
         </div>
         {/* Resources */}
