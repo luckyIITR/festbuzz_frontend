@@ -22,9 +22,9 @@ const Navbar = () => {
 
         {/* Logo */}
         <div className="flex items-center gap-2 bg-[#00000050] backdrop-blur-sm px-5 py-2 rounded-2xl">
-          <span className="font-extrabold text-lg tracking-tight text-[#E1FF01]">FEST</span>
+          <span className="font-extrabold text-lg tracking-tight text-[#E1FF01] font-clash">FEST</span>
           <span className="text-lg md:text-lg text-white">✦</span>
-          <span className="font-extrabold text-lg tracking-tight text-pink-500">BUZZ</span>
+          <span className="font-extrabold text-lg tracking-tight text-[#FD3EB5] font-clash">BUZZ</span>
         </div>
 
 

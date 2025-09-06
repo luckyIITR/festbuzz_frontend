@@ -41,7 +41,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <main className="relative z-10 flex flex-col items-center justify-center text-center min-h-[100vh] px-4 md:pt-2">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-18 mb-4 font-clash">
           ENGAGE,<br />
           <span className="text-[#E1FD0C]">EXPRESS,</span><br />
           EXHILARATE.
@@ -49,14 +49,14 @@ export default function Home() {
         <div className="flex justify-center mb-4">
           <Image src={PinkDiamond} alt='' className='' />
         </div>
-        <p className="text-lg md:text-2xl text-gray-200 mb-8 max-w-xl mx-auto">
+        <p className="text-lg md:text-2xl font-urbanist text-[#C6C6C6] font-[700] mb-8 max-w-xl mx-auto">
           Integrated platform to all your festival needs.
         </p>
         <a
           href="#"
-          className="inline-block px-8 py-3 rounded-full bg-[#0248F7] text-[#E1FF01] font-bold text-lg shadow-lg hover:bg-blue-600 transition"
+          className="inline-block px-8 py-3 rounded-full bg-[#0248F7] text-[#E1FF01] dm-sans font-[800]  text-lg shadow-lg hover:bg-blue-600 transition"
         >
-          Get started right now! <span className="ml-2 text-[20px]">↗</span>
+          Get started right now! <span className="ml-2 text-[20px] dm-sans font-[800]">↗</span>
         </a>
       </main>
       {/* <section className='realtive z-10 w-full px-5 py-10 bg-black '>
@@ -102,10 +102,11 @@ export default function Home() {
       </section>  */}
 
       {/* Brand Statement Section */}
-      <section className="relative z-10 w-full flex flex-col items-center justify-center text-center px-4 py-10 md:py-10 bg-black">
-        <p className="text-base md:text-xl font-medium text-white max-w-3xl mx-auto">
-          At <span className="font-extrabold text-lime-300">FEST</span><span className="text-white font-extrabold">✦</span><span className="font-extrabold text-pink-400">BUZZ</span>
-          <span className="ml-2 italic font-semibold text-white">we <span className="italic">unite all stakeholders</span></span><br />
+           <div className='absolute z-10 h-80 w-full bg-gradient-to-t from-[rgba(0,0,0,1)] via-[rgba(0,0,0,1)] to-[#090909a3] '></div>
+      <section className="relative z-10 w-full flex flex-col items-center justify-center text-center px-4 py-10 md:py-10 ">
+        <p className="text-base md:text-3xl font-bold text-white max-w-3xl mx-auto font-urbanist">
+          At <span className="font-extrabold text-[#E1FF01] font-clash">FEST</span><span className="text-white font-extrabold">✦</span><span className="font-extrabold text-[#FD3EB5] font-clash">BUZZ</span>
+          <span className="ml-2 italic font-semibold text-white">we <span className="italic font-urbanist">unite all stakeholders</span></span><br />
           for smooth and successful <span className="relative inline-block">college festivals
             <svg className="absolute left-0 bottom-0 w-full h-2" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="#3b82f6" strokeWidth="2" /></svg>
           </span><br />
@@ -115,11 +116,13 @@ export default function Home() {
 
       {/* WE OFFER YOU TO Section */}
       <section className="relative z-10 w-full bg-black pb-0 px-4 ">
+   
         {/* Section Title */}
+        
         <div className="flex items-center gap-3 pt-10 md:pt-10 justify-center">
           <Image alt='pinkdiamond' src={PinkDiamond} className='' />
           <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight">
-            <span className="font-extrabold">WE OFFER YOU TO</span>
+            <span className="font-extrabold uppercase font-clash text-6xl">Our Offerings</span>
           </h2>
         </div>
 
@@ -141,7 +144,7 @@ export default function Home() {
                 <span className='bg-[#0248F7] px-8 py-2 rounded-full  text-[#E1FF01] font-[800] font-urbanist shadow hover:bg-blue-700 transition text-lg w-fit'> List your fest</span><span className='rounded-full text-lg bg-[#0248F7] px-4 py-2 font-urbanist font-[800]  text-[#E1FF01]'>↗</span>
               </a>
             </div>
-            <div className="relative flex-1 min-h-[180px] md:min-h-0">
+            <div className="relative flex-1 h-110 md:min-h-0">
 
               <Image src={Firstcard} alt="Team" width={600} height={160} className="w-full h-full object-cover object-center" />
               {/* Decorative squares */}
@@ -153,7 +156,7 @@ export default function Home() {
 
           {/* 02 Explore & Enjoy */}
           <div className="relative flex flex-col md:flex-row items-stretch bg-[#FD3EB5] min-h-[260px] overflow-hidden ">
-            <div className="relative flex-1 min-h-[180px] md:min-h-0 order-2 md:order-1">
+            <div className="relative flex-1 h-110 md:min-h-0 order-2 md:order-1">
               <Image src={SecondCard} alt="Concert" width={600} height={160} className="w-full h-full object-cover object-center" />
               {/* Decorative squares */}
               <div className="absolute top-0 w-[39.7vw] h-[59vh]">
@@ -198,7 +201,7 @@ export default function Home() {
               </a>
 
           </div>
-          <div className="relative flex-1 min-h-[180px] md:min-h-0">
+          <div className="relative flex-1 h-110 md:min-h-0">
             <Image src={Firstcard} alt="Team" width={600} height={160} className="w-full h-full object-cover object-center" />
             {/* Decorative squares */}
             <div className="absolute top-0 w-[39.7vw] h-[59vh]">
