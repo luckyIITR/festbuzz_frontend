@@ -2,12 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-import fb from '../../../public/assets/gmailicon.webp'
-import insta from '../../../public/assets/Insta.png'
-import linkedin from '../../../public/assets/linkedin.png'
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import CallToAction from '../components/CallToAction'
-import Link from 'next/link'
 import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
@@ -247,7 +243,7 @@ const ContactPage: React.FC = () => {
         <div className='min-h-screen p-6'>
             <div className='flex items-center gap-2 flex-wrap justify-center  '>
                 <Image src={pinkdiamond} alt='' className='w-6 h-6' />
-                <div className='font-clash font-[600] text-3xl uppercase '>Query about Artist Bookings</div>
+                <div className='font-clash   font-[600] text-3xl uppercase '>Query about Artist Bookings</div>
             </div>
             <div className='font-urbanist font-[600] text-[#969696] md:w-100 w-85  pt-4  mx-auto  '>Feel free to ask any query related to our products and any additional help we will be happy to help you out.</div>
             <div className='flex items-center gap-2 flex-wrap mt-10 justify-center'>

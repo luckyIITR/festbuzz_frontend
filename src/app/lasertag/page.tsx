@@ -2,12 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-import fb from '../../../public/assets/gmailicon.webp'
-import insta from '../../../public/assets/Insta.png'
-import linkedin from '../../../public/assets/linkedin.png'
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import CallToAction from '../components/CallToAction'
-import Link from 'next/link'
 import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
