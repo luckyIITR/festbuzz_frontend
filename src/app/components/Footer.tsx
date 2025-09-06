@@ -59,8 +59,8 @@ const Footer = () => (
           <ul className="text-sm space-y-1 text-gray-300">
             <div><Link href={'/about'}>About us</Link></div>
             <div> <Link href={'/contact'}>Contact us</Link></div>
-            <div><Link href={'/contact'}>Privacy Policy</Link></div>
-            <div><Link href={'/contact'}>Terms & Conditions</Link></div>
+            <div><Link href={'/privacy'}>Privacy Policy</Link></div>
+            <div><Link href={'/terms'}>Terms & Conditions</Link></div>
           </ul>
         </div>
       </div>
