@@ -23,8 +23,8 @@ const page = () => {
             <div className='max-w-6xl mx-auto font-urbanist text-white'>
                 <div className='space-y-8'>
                     <div>
-                        <h1 className='text-2xl font-bold mb-4'>Terms &amp; Conditions</h1>
-                        <p className='mb-4'><strong>Last Updated:</strong> [Insert Date]</p>
+                        <h1 className='font-clash text-2xl font-bold mb-4'>Terms &amp; Conditions</h1>
+                        <p className='mb-4'><strong>Last Updated:</strong> 1 September 2025</p>
                         
                         <div className='space-y-6 text-justify leading-relaxed'>
                             <p>
@@ -51,7 +51,7 @@ const page = () => {
 
                     {/* Section 1 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>1. Eligibility &amp; User Obligations</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>1. Eligibility &amp; User Obligations</h2>
                         <div className='ml-4 space-y-3'>
                             <p>To access and use the Services, you agree to:</p>
                             <ul className='list-disc ml-6 space-y-2'>
@@ -64,7 +64,7 @@ const page = () => {
 
                     {/* Section 2 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>2. Use of Services</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>2. Use of Services</h2>
                         <div className='ml-4 space-y-3'>
                             <ul className='list-disc ml-6 space-y-3'>
                                 <li>Neither we nor third parties provide any warranty or guarantee regarding the accuracy, timeliness, performance, completeness, or suitability of the information and materials offered on this Platform or through the Services.</li>
@@ -76,7 +76,7 @@ const page = () => {
 
                     {/* Section 3 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>3. Intellectual Property</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>3. Intellectual Property</h2>
                         <div className='ml-4 space-y-3'>
                             <ul className='list-disc ml-6 space-y-3'>
                                 <li>The contents of the Platform and Services are proprietary to us and licensed to us.</li>
@@ -88,7 +88,7 @@ const page = () => {
 
                     {/* Section 4 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>4. Payments</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>4. Payments</h2>
                         <div className='ml-4'>
                             <p>You agree to pay all charges associated with availing of the Services on the Platform.</p>
                         </div>
@@ -96,7 +96,7 @@ const page = () => {
 
                     {/* Section 5 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>5. Prohibited Uses</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>5. Prohibited Uses</h2>
                         <div className='ml-4'>
                             <p>You agree not to use the Platform and/or Services for any purpose that is unlawful, illegal, or forbidden under these Terms or under applicable Indian/local laws.</p>
                         </div>
@@ -104,7 +104,7 @@ const page = () => {
 
                     {/* Section 6 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>6. Third-Party Links</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>6. Third-Party Links</h2>
                         <div className='ml-4 space-y-3'>
                             <ul className='list-disc ml-6 space-y-3'>
                                 <li>The Platform and Services may contain links to third-party websites.</li>
@@ -116,7 +116,7 @@ const page = () => {
 
                     {/* Section 7 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>7. Contract Formation</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>7. Contract Formation</h2>
                         <div className='ml-4'>
                             <p>By initiating a transaction for availing of the Services, you are entering into a legally binding and enforceable contract with the Platform Owner.</p>
                         </div>
@@ -124,7 +124,7 @@ const page = () => {
 
                     {/* Section 8 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>8. Indemnity</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>8. Indemnity</h2>
                         <div className='ml-4 space-y-3'>
                             <p>You shall indemnify and hold harmless the Platform Owner, its affiliates, group companies, officers, directors, agents, and employees from any claim, demand, or action (including reasonable attorney fees) arising out of:</p>
                             <ul className='list-disc ml-6 space-y-2'>
@@ -137,7 +137,7 @@ const page = () => {
 
                     {/* Section 9 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>9. Limitation of Liability</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>9. Limitation of Liability</h2>
                         <div className='ml-4 space-y-3'>
                             <ul className='list-disc ml-6 space-y-3'>
                                 <li>In no event will the Platform Owner be liable for any indirect, consequential, incidental, special, or punitive damages including (without limitation) loss of profits, revenues, business interruption, data loss, or business opportunities.</li>
@@ -148,7 +148,7 @@ const page = () => {
 
                     {/* Section 10 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>10. Force Majeure</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>10. Force Majeure</h2>
                         <div className='ml-4'>
                             <p>We shall not be liable for any failure or delay in performance of obligations caused by events beyond our reasonable control, including but not limited to acts of God, natural disasters, war, strikes, labour disputes, government restrictions, or network failures.</p>
                         </div>
@@ -156,7 +156,7 @@ const page = () => {
 
                     {/* Section 11 */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#E1FF01]'>11. Governing Law &amp; Jurisdiction</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#E1FF01]'>11. Governing Law &amp; Jurisdiction</h2>
                         <div className='ml-4 space-y-3'>
                             <ul className='list-disc ml-6 space-y-3'>
                                 <li>These Terms shall be governed by and construed in accordance with the laws of India.</li>
@@ -167,13 +167,13 @@ const page = () => {
 
                     {/* Refunds Section */}
                     <div>
-                        <h2 className='text-xl font-bold mb-4 text-[#FD3EB5]'>Refunds</h2>
+                        <h2 className='font-clash text-xl font-bold mb-4 text-[#FD3EB5]'>Refunds</h2>
                         <div className='ml-4 space-y-3'>
                             <ul className='list-disc ml-6 space-y-3'>
                                 <li>We will notify you once we&apos;ve received and inspected your return and let you know if the refund has been approved or not.</li>
                                 <li>If approved, the refund will be automatically processed to your original payment method within 10 business days.</li>
                                 <li>Please note that it may take additional time for your bank or credit card company to process and post the refund.</li>
-                                <li>If more than 15 business days have passed since your refund was approved, please contact us at hello@festbuzz.in or [insert phone number].</li>
+                                <li>If more than 15 business days have passed since your refund was approved, please contact us at hello@festbuzz.in or .</li>
                             </ul>
                         </div>
                     </div>

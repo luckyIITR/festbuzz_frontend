@@ -7,11 +7,11 @@ import pinkdiamond from '../../../public/assets/PinkDiamond.png'
 
 const page = () => {
     return (
-        <div className='min-h-screen p-6  text-white'>
+        <div className='min-h-screen p-6 text-white'>
             {/* Header Section */}
             <div className='flex items-center gap-2 flex-wrap justify-center mb-8'>
                 <Image src={pinkdiamond} alt='' className='w-6 h-6' />
-                <div className='font-clash font-[600] text-3xl uppercase'>Terms and Conditions</div>
+                <div className='font-clash font-[600] text-3xl uppercase'>Privacy Policy</div>
             </div>
 
             {/* Subtitle */}
@@ -19,14 +19,14 @@ const page = () => {
                 Feel free to ask any query related to our products and any additional help we will be happy to help you out.
             </div>
 
-            {/* Terms Content */}
-            <div className='max-w-6xl mx-auto'>
-                <div className=' rounded-lg p-8 mb-8'>
-                    <h1 className='text-2xl font-bold mb-4 text-[#E1FF01]'>Privacy Policy</h1>
+            {/* Privacy Policy Content */}
+            <div className='max-w-6xl mx-auto font-urbanist'>
+                <div className='rounded-lg p-8 mb-8'>
+                    <h1 className='font-clash text-2xl font-bold mb-4 text-[#E1FF01]'>Privacy Policy</h1>
                     <p className='text-sm text-gray-300 mb-6'>Last Updated: 1st September 2025</p>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>1. Introduction</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>1. Introduction</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>
                             This Privacy Policy describes how Maxhilaration Ventures (operating as Festbuzz) and its affiliates (collectively &quot;Company&quot;, &quot;we&quot;, &quot;our&quot;, &quot;us&quot;) collect, use, share, protect, or otherwise process your information/personal data through our website www.festbuzz.in (hereinafter referred to as the &quot;Platform&quot;).
                         </p>
@@ -39,7 +39,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>2. Collection of Information</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>2. Collection of Information</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>We collect your personal data when you:</p>
                         <ul className='list-disc pl-6 mb-4 text-gray-200'>
                             <li>Use our Platform and services,</li>
@@ -65,7 +65,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>3. Use of Information</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>3. Use of Information</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>
                             We use personal data to provide and enhance the services you request. Usage includes but is not limited to:
                         </p>
@@ -86,7 +86,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>4. Sharing of Information</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>4. Sharing of Information</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>We may share your personal data with:</p>
                         <ul className='list-disc pl-6 mb-4 text-gray-200 space-y-2'>
                             <li><strong>Internal Entities:</strong> Group companies, affiliates, and subsidiaries.</li>
@@ -103,7 +103,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>5. Security Precautions</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>5. Security Precautions</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>
                             We adopt reasonable security practices and procedures to protect personal data against unauthorised access, misuse, loss, or disclosure.
                         </p>
@@ -115,7 +115,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>6. Data Retention &amp; Deletion</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>6. Data Retention &amp; Deletion</h2>
                         <ul className='list-disc pl-6 mb-4 text-gray-200 space-y-2'>
                             <li>You may delete your account anytime via Profile → Settings on our Platform or by contacting us.</li>
                             <li>Upon deletion, all related data will be permanently removed, except in cases of pending grievances, claims, or ongoing services.</li>
@@ -124,7 +124,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>7. Your Rights</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>7. Your Rights</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>You may:</p>
                         <ul className='list-disc pl-6 mb-4 text-gray-200'>
                             <li>Access, rectify, or update your personal data through the Platform,</li>
@@ -134,7 +134,7 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>8. Consent</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>8. Consent</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>
                             By using the Platform or providing your information, you consent to the collection, storage, use, disclosure, and processing of your data in accordance with this Privacy Policy.
                         </p>
@@ -151,24 +151,23 @@ const page = () => {
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>9. Updates to this Privacy Policy</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>9. Updates to this Privacy Policy</h2>
                         <p className='text-gray-200 leading-relaxed'>
                             We may update this Privacy Policy periodically to reflect changes in our practices. Significant changes will be notified to you as required under applicable laws.
                         </p>
                     </section>
 
                     <section className='mb-8'>
-                        <h2 className='text-xl font-semibold mb-4 text-[#FD3EB5]'>10. Contact Us</h2>
+                        <h2 className='font-clash text-xl font-semibold mb-4 text-[#FD3EB5]'>10. Contact Us</h2>
                         <p className='text-gray-200 leading-relaxed mb-4'>
                             If you have any questions, concerns, or requests regarding this Privacy Policy, please contact us:
                         </p>
-                        <div className=' rounded-lg p-4 text-gray-200'>
+                        <div className='rounded-lg p-4 text-gray-200'>
                             <p className='mb-2'><strong>Maxhilaration Ventures (operating as Festbuzz)</strong></p>
                             <p className='mb-2'><strong>Website:</strong> www.festbuzz.in</p>
                             <p className='mb-2'><strong>Email:</strong> hello@festbuzz.in</p>
                             <p className='mb-2'><strong>Registered Address:</strong> New Sojan Road, Mahroni, Lalitpur, Uttar Pradesh 284405, India</p>
                             <p className='mb-2'><strong>Grievance Officer:</strong> Nitin Sahu</p>
-                            <p><strong>Phone:</strong> 7424961628</p>
                         </div>
                     </section>
                 </div>
