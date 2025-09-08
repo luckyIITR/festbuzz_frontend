@@ -2,12 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import pinkdiamond from '../../../public/assets/PinkDiamond.png'
-import fb from '../../../public/assets/gmailicon.webp'
-import insta from '../../../public/assets/Insta.png'
-import linkedin from '../../../public/assets/linkedin.png'
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 import CallToAction from '../components/CallToAction'
-import Link from 'next/link'
 import "react-toastify/dist/ReactToastify.css";
 import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
@@ -247,26 +243,13 @@ const ContactPage: React.FC = () => {
         <div className='min-h-screen p-6'>
             <div className='flex items-center gap-2 flex-wrap justify-center  '>
                 <Image src={pinkdiamond} alt='' className='w-6 h-6' />
-                <div className='font-clash font-[600] text-3xl uppercase '>Reach out to us</div>
+                <div className='font-clash font-[600] text-3xl uppercase '>Query about Silent Dj</div>
             </div>
             <div className='font-urbanist font-[600] text-[#969696] md:w-100 w-85  pt-4  mx-auto  '>Feel free to ask any query related to our products and any additional help we will be happy to help you out.</div>
-
-            <div className='font-urbanist text-[#E1FF01] font-[600] text-xl  pt-4 text-center mx-auto'>Email</div>
-            <div className='font-urbanist font-[600] text-[#969696] mt-3 text-center mx-auto'>hi@festbuzz.in </div>
-            <div className='font-urbanist font-[600] text-[#969696] text-center mx-auto '>thefestbuzzgmail.com</div>
-
-            <div className='flex justify-between w-40 content-center mt-10 mx-auto'>
-
-                <Link href={'mailto:partner@festbuzz.in'}>   <Image src={fb} alt='' className='w-6 h-6' /></Link>
-                <Link href={'https://www.instagram.com/festbuzz.in/'} target='_blank'>  <Image src={insta} alt='' className='w-6 h-6' /></Link>
-                <Link href={'https://www.linkedin.com/company/festbuzz/'} target='_blank'>  <Image src={linkedin} alt='' className='w-6 h-6' /></Link>
-            </div>
-
             <div className='flex items-center gap-2 flex-wrap mt-10 justify-center'>
                 <Image src={pinkdiamond} alt='' className='w-6 h-6' />
                 <div className='font-clash font-[600] text-3xl uppercase '>Get in touch</div>
             </div>
-
             <form onSubmit={handleSubmit} className='md:w-120 w-85 mb-40 text-center mx-auto '>
                 <input
                     type="text"
@@ -281,6 +264,7 @@ const ContactPage: React.FC = () => {
                 {formErrors.name && (
                     <div className='text-red-500 text-sm mt-1 font-urbanist'>{formErrors.name}</div>
                 )}
+
 
                 <input
                     type="email"

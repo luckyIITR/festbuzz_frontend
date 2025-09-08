@@ -272,7 +272,7 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
   `}</style>
               </div>
 
-              <div className="ml-1 text-[16px] text-[#717171]  font-urbanist font-[600]">
+              <div className="ml-1 text-[16px] text-[#717171]  font-urbanist font-[600] h-10">
                 {fest.about?.slice(0, 40) || 'Exciting Fest Coming Soon!'}
               </div>
 
