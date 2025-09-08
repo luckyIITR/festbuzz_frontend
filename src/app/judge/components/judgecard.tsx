@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Calendar, MapPin } from 'lucide-react';
 
 // Type definitions
@@ -99,9 +100,11 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
         />
 
         <div className="relative z-10">
-          <img
+          <Image
             src={fest.bannerImage || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop'}
             alt="Fest"
+            width={400}
+            height={160}
             className="w-full h-[160px] object-cover rounded-[10px]"
           />
 
@@ -217,9 +220,11 @@ const FestCard: React.FC<FestCardProps> = ({ fest, fests: propFests }) => {
             />
 
             <div className="relative z-10">
-              <img
+              <Image
                 src={fest.bannerImage || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop'}
                 alt="Event"
+                width={400}
+                height={160}
                 className="w-full h-[160px] object-cover rounded-[10px]"
               />
 

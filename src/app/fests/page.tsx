@@ -5,15 +5,17 @@ import Image from 'next/image';
 import { useFests } from '@/hooks/fest';
 import Link from 'next/link';
 import FestCard from '../components/FestCard';
-import { useFestEventsByStatus } from '@/hooks/events';
 import GradientFestCard from '../components/GradientFestCard';
 import banner from '../../../public/assets/bannerimage.png'
 import { Event } from '@/types/fest';
 import PinkDiamond from '../../../public/assets/PinkDiamond.png'
 import EventCard from '@/app/components/EventCard';
+import { usePublishedEvents } from '@/hooks/events';
 import whiteDiamond from '../../../public/assets/WhiteDiamond.png'
 export default function FestsPage() {
   const { data: allFests, isLoading, error } = useFests();
+  const { data: publishedEventsData, isLoading: eventsLoading, error: eventsError } = usePublishedEvents();
+  const events = publishedEventsData?.data || [];
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading fests</div>;
@@ -123,7 +125,7 @@ export default function FestsPage() {
                 <div>Error loading events</div>
               ) : events && events.length > 0 ? (
                 events.map((event: Event) => (
-                  <Link key={event.id} href={`/fests/${festId}/events/${event.id}`} className=" rounded-2xl overflow-hidden shadow-lg flex  relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
+                  <Link key={event.id} href={`/fests/${event.festId || 'unknown'}/events/${event.id}`} className=" rounded-2xl overflow-hidden shadow-lg flex  relative hover:ring-2 hover:ring-lime-400 transition cursor-pointer">
                     <EventCard event={event} />
                   </Link>
                 ))
