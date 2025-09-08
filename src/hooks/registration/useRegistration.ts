@@ -3,7 +3,8 @@ import { apiFetch } from '../../lib/api';
 import { getToken } from '../../lib/token';
 import { 
   RegistrationCountResponse, 
-  RegistrationStatsResponse 
+  RegistrationStatsResponse,
+  RegistrationCount
 } from '../../types/fest';
 
 // Get registration count for a specific fest
@@ -34,7 +35,7 @@ export function useRegistrationStats(festId: string) {
 
 // Get registration count for multiple fests
 export function useMultipleRegistrationCounts(festIds: string[]) {
-  return useQuery({
+  return useQuery<(RegistrationCount & { festId: string })[]>({
     queryKey: ['registration-counts', festIds],
     queryFn: async () => {
       const token = getToken();

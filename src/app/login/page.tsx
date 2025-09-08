@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const [selected, setSelected] = useState("Organiser");
+  // Removed unused selected state to satisfy eslint no-unused-vars
   const router = useRouter();
 
 
@@ -47,7 +47,7 @@ export default function LoginPage() {
 
   function handleGoogleSuccess(credentialResponse: { credential?: string }) {
     if (credentialResponse.credential) {
-      googleAuth({ accessToken: credentialResponse.credential });
+      googleAuth({ accessToken: credentialResponse.credential, role: 'participant' });
     }
   }
 

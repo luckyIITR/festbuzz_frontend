@@ -108,7 +108,11 @@ function SimpleAddFestForm() {
     setTickets(prev => [...prev, { name: '', feeType: 'free', price: 0 }]);
   };
 
-  const updateTicket = (index: number, field: string, value: any) => {
+  const updateTicket = (
+    index: number,
+    field: keyof SimpleFormData['tickets'][number],
+    value: string | number
+  ) => {
     setTickets(prev => prev.map((ticket, i) => 
       i === index ? { ...ticket, [field]: value } : ticket
     ));

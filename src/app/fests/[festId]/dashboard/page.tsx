@@ -150,12 +150,12 @@ function FestDashboardContent() {
   return (
     <>
       {/* Title Section */}
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold">EVENT DASHBOARD</h1>
         </div>
         <p className="text-gray-400">Manage all events for {fest.name}</p>
-      </div>
+      </div> */}
 
       {/* Fest Info Card */}
       <div className="bg-[#1B1B1B] rounded-lg p-6 mb-8 w-full min-w-120 ">

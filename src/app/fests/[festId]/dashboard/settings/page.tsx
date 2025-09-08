@@ -122,7 +122,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ isOpen, onClose, onSubm
           <div className="flex gap-3 pt-4">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 bg-[#191919] rounded-lg px-4 py-2 font-urbanist font-[600] text-white"
             >
               Cancel
@@ -244,7 +244,7 @@ const TeamManagementPage = () => {
   const params = useParams();
   const festId = params.festId as string;
   
-  const { canAssignEventRoles, canManageTeam } = useFestPermissions(festId);
+  const { canAssignEventRoles } = useFestPermissions(festId);
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

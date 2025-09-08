@@ -7,8 +7,19 @@ import { useUserFestivals } from '@/hooks/team';
 import { useFests, usePublishFest, useUnpublishFest, useArchiveFest } from '@/hooks/fest';
 import { useMultipleRegistrationCounts } from '@/hooks/registration';
 import { UserFestival } from '@/types/team';
+import type { Fest, RegistrationCount } from '@/types/fest';
 import { RouteGuard } from '../../components/RouteGuard';
 import { useAuth } from '@/contexts/AuthContext';
+
+type DashboardFest = Partial<Fest> & {
+  _id?: string;
+  id?: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  venue?: string;
+  college?: string;
+};
 
 function DashboardContent() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,46 +41,49 @@ function DashboardContent() {
   const error = isSuperAdmin ? allFestsError : userFestsError;
   
   // Extract fest data based on user role
-  const fests = isSuperAdmin 
-    ? allFests || []
-    : userFestivals?.data?.map((userFest: UserFestival) => userFest.festId) || [];
+  const fests: DashboardFest[] = isSuperAdmin 
+    ? (allFests || [])
+    : (userFestivals?.data?.map((userFest: UserFestival) => ({
+        ...userFest.festId,
+        id: userFest.festId._id,
+      })) || []);
   
   // Publish / Unpublish mutations (superadmin/admin only)
   const publishFest = usePublishFest();
   const unpublishFest = useUnpublishFest();
   const archiveFest = useArchiveFest();
 
-  const handleTogglePublish = (fest: any) => {
+  const handleTogglePublish = (fest: DashboardFest) => {
     if (!isSuperAdmin) return;
     if (!fest?._id && !fest?.id) return;
     if (fest.status === 'archived') return; // archived cannot be toggled
-    const festId = fest.id || fest._id;
+    const festId = (fest.id || fest._id) as string;
     setPublishError(null);
     const isPublished = fest.status === 'published';
     if (isPublished) {
       unpublishFest.mutate(festId, {
-        onError: (err: any) => setPublishError(err?.message || 'Failed to unpublish fest'),
+        onError: (err: unknown) => setPublishError(err instanceof Error ? err.message : 'Failed to unpublish fest'),
       });
     } else {
       publishFest.mutate(festId, {
-        onError: (err: any) => setPublishError(err?.message || 'Failed to publish fest'),
+        onError: (err: unknown) => setPublishError(err instanceof Error ? err.message : 'Failed to publish fest'),
       });
     }
   };
 
-  const handleArchive = (fest: any) => {
+  const handleArchive = (fest: DashboardFest) => {
     if (!isSuperAdmin) return;
     if (!fest?._id && !fest?.id) return;
     if (fest.status === 'archived') return;
-    const festId = fest.id || fest._id;
+    const festId = (fest.id || fest._id) as string;
     setArchiveError(null);
     archiveFest.mutate(festId, {
-      onError: (err: any) => setArchiveError(err?.message || 'Failed to archive fest'),
+      onError: (err: unknown) => setArchiveError(err instanceof Error ? err.message : 'Failed to archive fest'),
     });
   };
 
   // Get registration counts for all fests
-  const festIds = fests?.map((fest: any) => fest._id || '').filter(Boolean) || [];
+  const festIds = (fests?.map((fest: DashboardFest) => fest._id || fest.id || '').filter(Boolean) as string[]) || [];
   const { data: registrationCounts, isLoading: isLoadingRegistrations } = useMultipleRegistrationCounts(festIds);
 
   // Calculate summary stats from real data
@@ -81,17 +95,17 @@ function DashboardContent() {
     },
     { 
       label: 'Active fests', 
-      value: fests ? fests.filter((fest: any) => fest.isRegistrationOpen).length.toString() : '0', 
+      value: fests ? fests.filter((fest: DashboardFest) => Boolean(fest.isRegistrationOpen)).length.toString() : '0', 
       icon: '🔥' 
     },
     { 
       label: 'Total registrations', 
-      value: registrationCounts ? registrationCounts.reduce((total: number, reg: any) => total + reg.totalRegistrations, 0).toString() : '0', 
+      value: registrationCounts ? registrationCounts.reduce((total: number, reg: RegistrationCount & { festId: string }) => total + reg.totalRegistrations, 0).toString() : '0', 
       icon: '👥' 
     },
     { 
       label: 'Total revenue', 
-      value: fests ? fests.reduce((total: number, fest: any) => total + (fest.tickets?.[0]?.price || 0), 0).toString() : '0', 
+      value: fests ? fests.reduce((total: number, fest: DashboardFest) => total + (fest.tickets?.[0]?.price || 0), 0).toString() : '0', 
       icon: '💰' 
     }
   ];
@@ -107,11 +121,11 @@ function DashboardContent() {
   };
 
   // Filter fests based on search and filters
-  const filteredFests = fests?.filter((fest: any) => {
-    const matchesSearch = fest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         fest.college.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         fest.venue?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         fest.city.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredFests = fests?.filter((fest: DashboardFest) => {
+    const matchesSearch = (fest.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (fest.college || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (fest.venue || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (fest.city || '').toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesCategory = categoryFilter === 'All categories' || fest.type === categoryFilter;
     
@@ -129,7 +143,7 @@ function DashboardContent() {
   }) || [];
 
   // Show archived fests at the end
-  const tableFests = [...filteredFests].sort((a: any, b: any) => {
+  const tableFests = [...filteredFests].sort((a: DashboardFest, b: DashboardFest) => {
     const aArchived = a.status === 'archived' ? 1 : 0;
     const bArchived = b.status === 'archived' ? 1 : 0;
     return aArchived - bArchived;
@@ -266,7 +280,7 @@ function DashboardContent() {
                   }
                 </div>
               ) : (
-                tableFests.map((fest: any) => {
+                tableFests.map((fest: DashboardFest) => {
                   // Determine status based on dates
                   const now = new Date();
                   const startDate = new Date(fest.startDate);

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../../lib/api';
 import { getToken } from '../../lib/token';
-import { Fest } from '../../types/fest';
 
 interface PublishFestResponse {
   success: boolean;

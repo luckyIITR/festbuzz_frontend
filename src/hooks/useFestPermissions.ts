@@ -1,6 +1,6 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useMyFestivalRoles } from './team';
-import { hasPermission, hasAnyPermission, hasAllPermissions, Permission, UserRole } from '../types/user';
+import { hasPermission, Permission } from '../types/user';
 
 export function useFestPermissions(festId?: string) {
   const { user } = useAuth();
